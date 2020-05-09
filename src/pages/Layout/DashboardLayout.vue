@@ -51,7 +51,6 @@
         <p>Shippings</p>
       </sidebar-link>
       <sidebar-link to="/website" style="margin-bottom: 40px">
-        <!-- <md-icon>person</md-icon> -->
         <i class="fab fa-internet-explorer"></i>
         <p>Website</p>
       </sidebar-link>

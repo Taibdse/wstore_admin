@@ -1,6 +1,6 @@
 export const daysInWeek = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
 
-export const ten =  (val) => val >= 10 ? val : '0' + val;
+export const ten = (val) => val >= 10 ? val : '0' + val;
 
 export const thousand =  (val) => {
     if(val >= 1000) return val;
@@ -23,7 +23,8 @@ export const convertVNDateToSQLDateFormat = (d) => {
 }
 
 export const getVNTimeFormat = (time) => {
-    const d = new Date(time);
+    let d = new Date(time);
+    d = new Date(d.setHours(d.getHours() - 7));
     const day = d.getDay();
     const hour = d.getHours();
     const min = d.getMinutes();

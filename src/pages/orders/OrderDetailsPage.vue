@@ -84,6 +84,15 @@
                                 
                             </div>
                             <div class="md-layout md-gutter">
+                                <div class="md-layout-item sm-size-100">
+                                    <md-field >
+                                        <label for="adminNote">Admin note</label>
+                                        <md-input name="adminNote" id="adminNote" v-model="order.adminNote"  />
+                                    </md-field>
+                                </div>
+                                
+                            </div>
+                            <div class="md-layout md-gutter">
                                 <md-button 
                                     type="submit" 
                                     class="md-raised md-primary" 
@@ -95,7 +104,9 @@
                         <div class="md-layout md-gutter">
                             <div class="md-layout-item">
                                 <OrderProducts :orderItems="order.orderDetails" />
-                                <strong style="float: right">Total products price: {{ convertNumToMoneyFormat(order.productsPrice) }} đ</strong>
+                                <strong style="float: right" class="text-primary">
+                                    Total products price: {{ convertNumToMoneyFormat(order.productsPrice) }} đ
+                                </strong>
                             </div>
                         </div>
                       
@@ -105,7 +116,7 @@
                                     <md-table-row >
                                         <md-table-head>Shipping: </md-table-head>
                                         <md-table-cell>
-                                            {{ order.shippingType }}, {{ convertNumToMoneyFormat(order.shippingMoney) }}đ
+                                            {{ order.shippingType }}, {{ convertNumToMoneyFormat(order.shippingMoney) }} đ
                                         </md-table-cell>
                                     </md-table-row>
                                     <md-table-row>
@@ -123,8 +134,11 @@
                                 </md-table>
                             </div>
                         </div>
+                        <h4 style="font-weight: bold; float: right" class="text-success">
+                            Total money: {{ convertNumToMoneyFormat(order.totalPrice) }} đ
+                        </h4>
                     </div>
-                    <h4 style="font-weight: bold; float: right">Total money: {{ convertNumToMoneyFormat(order.totalPrice) }} đ</h4>
+
                     <div v-show="!isLoading && notfound">
                         <h3 style="text-align: center">Không tìm thấy đơn hàng này</h3>
                     </div>
@@ -134,14 +148,15 @@
 </template>
 
 <script>
-import OrderProducts from '@/pages/orders/OrderProducts';
+import OrderProducts from './OrderProducts';
 import OrderService from '../../services/order.service';
 import AddressService from '../../services/address.service';
 import ShippingService from '../../services/shipping.service';
 import { isEmpty } from '../../utils/validations';
 import { convertNumToMoneyFormat } from '../../utils/strings';
-import { getVNTimeFormat } from '@/utils/time.js';
+import { getVNTimeFormat } from '../../utils/time';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
+import { SHIPPING_TYPES } from '../../common/constants';
 
 export default {
     components: {
@@ -173,7 +188,7 @@ export default {
                     this.order = { 
                         ...this.order, 
                         provinceId: customerProvince.id, 
-                        districtId: customerDistrict.id 
+                        districtId: customerDistrict.id
                     }
                     console.log(this.order);
                 }
@@ -184,39 +199,62 @@ export default {
             }
         },
 
+        getShipping: function(provinceId, districtId) {
+            const province = this.provinces.find(p => p.id === provinceId);
+            if(province.shippingType === SHIPPING_TYPES.NGOAI_THANH){
+                return this.shippings.find(s => s.type === SHIPPING_TYPES.NGOAI_THANH);
+            } else {
+                const district = this.districts.find(d => d.id == districtId);
+                return this.shippings.find(s => s.type === district.shippingType);
+            }
+        },
+
         changeProvince: async function(provinceId){
+             console.log('change province');
             await this.getDistrictsByProvinceId(provinceId);
             const province = this.provinces.find(p => p.id == provinceId);
-            
-            const shippingMoney = this.shippings.find(item => item.type == province.shippingType).money;
             const districtId = this.shouldSetDistrict0 ? this.districts[0].id : this.order.districtId;
-
+             
+            const shipping = this.getShipping(provinceId, districtId);
+            
             this.order = { 
                 ...this.order, 
                 customerProvince: province, 
-                shippingType: province.shippingType, 
-                shippingMoney,
-                districtId: districtId
+                shippingType: shipping.type, 
+                shippingMoney: shipping.money,
+                districtId: districtId,
+                totalPrice: this.order.productsPrice + +shipping.money
             };
+
             this.shouldSetDistrict0 = true;
+            console.log('end change province');
         },
 
         changeDistrict: function(districtId){
             console.log('change district');
-            if(this.order.customerProvince.shippingType === 'NOI_THANH'){
+            if(this.order.customerProvince.shippingType === SHIPPING_TYPES.NOI_THANH){
+                
                 const district = this.districts.find(d => d.id == districtId);
-                let shippingType = 'NOI_THANH';
+                 console.log(district);
+                let shippingType = SHIPPING_TYPES.NOI_THANH;
                 if(!isEmpty(district.shippingType)){
                     shippingType = district.shippingType;
                 }
                 this.order.shippingType = shippingType;
-                this.order.shippingMoney =  this.shippings.find(item => item.type == shippingType).money;
-            }
+                let shippingMoney = this.shippings.find(item => item.type == shippingType).money;
+                console.log(shippingMoney);
+                let totalPrice = this.order.productsPrice + +shippingMoney;
+                this.order = {
+                    ...this.order,
+                    shippingType, shippingMoney, totalPrice
+                }
+            } 
         },
 
         getDistrictsByProvinceId: async function(provinceId){
             const res = await AddressService.getDistrictsByProvinceId(provinceId);
             this.districts = res.data;
+            console.log('get districst');
         },
 
         saveOrder: async function(){
@@ -257,6 +295,7 @@ export default {
 
         convertNumToMoneyFormat, getVNTimeFormat
     },
+
     async created(){
         this.isLoading = true;
        try {
@@ -276,7 +315,7 @@ export default {
        } catch (error) {
            
        }
-       console.log(this.$refs.selectProvince);
+       
        this.isLoading = false;
     }
 }

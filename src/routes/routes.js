@@ -43,7 +43,7 @@ const routes = [
       {
         path: '',
         name: 'Index',
-        redirect: 'products',
+        redirect: 'orders',
       },
 
       //=========== AUTH ROUTES ==============

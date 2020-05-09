@@ -22,7 +22,7 @@ import { isEmpty } from "./utils/validations";
 
 // configure router
 const router = new VueRouter({
-  base: process.env.NODE_ENV === 'development' ? '/' : APP_ROOT_DOMAIN + '/admin/',
+  base: '/',
   mode: 'history',
   routes, // short for routes: routes
   linkExactActiveClass: "nav-item active"

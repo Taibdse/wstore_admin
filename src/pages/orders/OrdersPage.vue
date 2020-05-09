@@ -8,6 +8,12 @@
         </md-card-header>
         <md-card-content>
           <div class="md-layout md-gutter">
+             <div class="md-layout-item sm-size-100">
+              <strong>Search customer's name/phone/email</strong>
+              <md-field >
+                  <md-input v-model="filters.keyword"/>
+              </md-field>
+            </div>
             <div class="md-layout-item sm-size-100">
               <strong>from date</strong>
               <md-datepicker v-model="selectedDate.from" md-immediately />
@@ -29,7 +35,7 @@
             
           </div>
           <div class="md-layout md-gutter">
-              <div class="md-layout-item md-size-33">
+              <div class="md-layout-item md-size-25">
                 <strong>Order by Time</strong>
                 <md-field>
                     <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
@@ -63,28 +69,17 @@
             <OrdersList :orders="pagingOrders" />
           </div>
           <div v-show="!isLoading && orders.length === 0">
-            <h3 style="text-align: center">Can not find any orders!</h3>
+            <h3 style="text-align: center">No orders found!</h3>
           </div>
         </md-card-content>
       </md-card>
-
-      <!-- <div>
-        <md-dialog :md-active.sync="showDialog">
-          <md-dialog-title>Chi tiết đơn hàng {{ order.id }}</md-dialog-title>
-
-          <md-dialog-actions>
-            <md-button class="" @click="showDialog = false">Đóng</md-button>
-            <md-button class="md-success" @click="saveOrderStatus(order)">Lưu</md-button>
-          </md-dialog-actions>
-        </md-dialog>
-      </div> -->
     </div>
 
     
 </template>
 
 <script>
-import OrderService from '@/services/order.service';
+import OrderService from '../../services/order.service';
 import OrdersList from '@/pages/orders/OrdersList';
 import { formatVNDate, is2MonthRange, convertVNDateToSQLDateFormat } from '../../utils/time';
 import { isEmpty } from '@/utils/validations.js';
@@ -103,6 +98,7 @@ export default {
       },
       filters: { 
         status: 'all', 
+        keyword: ''
       },
       orderBys: {
         createdAt: 'DESC' 
@@ -130,7 +126,7 @@ export default {
 
   methods: {
     handlePageChange: function(pageNum){
-        this.pagination = { ...this.pagination, currentPage: pageNum };
+      this.pagination = { ...this.pagination, currentPage: pageNum };
     },
 
     getOrders: async function(){
@@ -142,7 +138,9 @@ export default {
         title: 'Khoảng thời gian tìm kiếm không được quá 2 tháng!', 
         text: '' 
       })
-       
+
+      this.isLoading = true;
+
       try {
         const params = { 
           from, to, 
@@ -155,8 +153,10 @@ export default {
         this.pagination = { ...this.pagination, currentPage: 1, pageCount };
       } catch (error) {
         this.orders = [];
-         this.pagination = { pageCount: 0, currentPage: 1, size: 10 }
+        this.pagination = { pageCount: 0, currentPage: 1, size: 10 }
       }
+
+      this.isLoading = false;
     },
 
     getSelectedDateDefault: function(){

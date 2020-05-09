@@ -4,7 +4,7 @@ import { APP_ROOT_API } from '@/configs/api.js';
 
 class OrderService{
     static async getOrders(params){
-        const url = APP_ROOT_API + '/order?from=' + params.from + '&to=' + params.to + '&status=' + params.status + '&orderByTime=' + params.orderByTime;
+        const url = APP_ROOT_API + '/order?from=' + params.from + '&to=' + params.to + '&status=' + params.status + '&orderByTime=' + params.orderByTime + '&keyword=' + params.keyword;
         return axios.get(url);
     }
 
