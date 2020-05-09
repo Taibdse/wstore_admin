@@ -40,7 +40,6 @@
 
 <script>
 import SidebarLink from "./SidebarLink.vue";
-import { getStaticImage } from '../../utils/static_resources';
 
 export default {
   components: {
@@ -53,11 +52,11 @@ export default {
     },
     backgroundImage: {
       type: String,
-      default: getStaticImage("sidebar-4.jpg")
+      default: "/assets/img/sidebar-4.jpg"
     },
     imgLogo: {
       type: String,
-      default: getStaticImage('wstore_avatar.jpg')
+      default: '/assets/img/wstore_avatar.jpg'
     },
     activeColor: {
       type: String,
