@@ -9,7 +9,7 @@
         <md-card-content>
           <div class="md-layout md-gutter">
              <div class="md-layout-item sm-size-100">
-              <strong>Search customer's name/phone/email</strong>
+              <strong>customer's name/phone/email</strong>
               <md-field >
                   <md-input v-model="filters.keyword"/>
               </md-field>
