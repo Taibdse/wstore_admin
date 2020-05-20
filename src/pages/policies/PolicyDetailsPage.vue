@@ -1,10 +1,9 @@
 <template>
    <div class="content">
-        <h2 class="my-page-header">Exchange Policy</h2>
+        <h2 class="my-page-header" v-if="!notfound">Update {{ policy.type }}</h2>
          <md-card>
             <md-card-header data-background-color="orange">
-            <h4 class="title" style="text-align: center">Exchange Policy's information</h4>
-            <p v-if="!isLoading && !notfound && !isEmpty(policy)" style="text-align:center">ID: {{ policy.id }}</p>
+            <h4 class="title" style="text-align: center" v-if="!notfound">{{ policy.type }}'s information</h4>
             </md-card-header>
                 <md-card-content>
                     <div v-if="isLoading" style="text-align: center">
@@ -54,8 +53,9 @@
                             </div>
                         </form>
                     </div>
+
                     <div v-if="!isLoading && notfound">
-                        <h3 style="text-align: center">Can not find exchange policy's information</h3>
+                        <h3 style="text-align: center">No policy found</h3>
                     </div>
             </md-card-content>
         </md-card>
@@ -87,14 +87,13 @@ export default {
     methods: {
         getExchangePolicy: async function () {
             this.isLoading = true;
+            const policyType = this.$route.params.type;
             try {
-                const res = await PolicyService.getPolicyByType('EXCHANGE');
+                const res = await PolicyService.getPolicyByType(policyType);
                 this.policy = res.data;
                 console.log(this.policy);
                 if(isEmpty(this.policy)) this.notfound = true;
-                else {
-
-                }
+                
             } catch (error) {
                 this.notfound = true;
             }
@@ -121,7 +120,7 @@ export default {
                 }
             } catch (error) {
                 showErrors({
-                        title: 'Loi Server',
+                        title: 'Lỗi Server',
                         text: SERVER_ERROR_MESSAGE
                     });
             }

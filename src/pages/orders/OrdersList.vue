@@ -14,7 +14,7 @@
         </md-table-cell>
         <md-table-cell>{{ order.customerEmail }}</md-table-cell>
         <md-table-cell>{{ getVNTimeFormat(order.createdAt) }}</md-table-cell>
-        <md-table-cell style="min-width: 200px; padding-left: 5px; padding-right: 5px">
+        <md-table-cell style="min-width: 150px; padding-left: 5px; padding-right: 5px">
           <div>{{ order.customerAddress }}</div>
           <div>{{ getTitle(order.customerDistrict) }}, {{ getTitle(order.customerProvince) }}</div>
         </md-table-cell>
@@ -25,7 +25,7 @@
           <strong>{{ order.shippingType }}</strong>
           <div>{{ convertNumToMoneyFormat(order.shippingMoney) }} d</div>
         </md-table-cell>
-         <md-table-cell>
+         <md-table-cell style="min-width: 120px;">
           {{ order.adminNote }}
         </md-table-cell>
         <md-table-cell>

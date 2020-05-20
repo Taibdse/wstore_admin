@@ -14,7 +14,10 @@ import OrdersPage from "@/pages/orders/OrdersPage.vue";
 import OrderDetailsPage from "@/pages/orders/OrderDetailsPage.vue";
 import ReviewsPage from '../pages/reviews/ReviewsPage.vue';
 import ReviewDetailsPage from '../pages/reviews/ReviewDetailsPage.vue';
+import TipsPage from '../pages/tips/TipsPage.vue';
+import TipDetailsPage from '../pages/tips/TipDetailsPage.vue';
 import PolicyDetailsPage from '../pages/policies/PolicyDetailsPage.vue';
+import PoliciesPage from '../pages/policies/PoliciesPage.vue';
 import NewsPage from '../pages/news/NewsPage.vue';
 import NewsDetailsPage from '../pages/news/NewsDetailsPage.vue';
 import CategoriesPage from '../pages/categories/CategoriesPage.vue';
@@ -108,9 +111,34 @@ const routes = [
       },
 
 
+       //=========== TIPS ROUTES ==============
+       {
+        path: 'tips',
+        name: 'Tips',
+        component: TipsPage,
+      },
+      
+      {
+        path: 'tips/:tipSlug',
+        name: 'Update Tip',
+        component: TipDetailsPage,
+      },
+      {
+        path: 'tips/insert',
+        name: 'Insert Tip',
+        component: TipDetailsPage,
+      },
+
+
+
       //=========== POLICY ROUTES ==============
       {
         path: 'policies',
+        name: 'Policy',
+        component: PoliciesPage,
+      },
+      {
+        path: 'policies/:type',
         name: 'Policy',
         component: PolicyDetailsPage,
       },

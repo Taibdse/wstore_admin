@@ -1,12 +1,12 @@
 <template>
   <div class="content">
-        <h2 class="my-page-header">News</h2>
+      <h2 class="my-page-header">Tips</h2>
         <div class="md-layout">
             <md-card>
                 <md-card-content>
                     <div class="md-layout md-gutter">
                         <div class="md-layout-item" style="text-align: right">
-                            <md-button class="md-raised md-success" @click="gotoInsertNewsPage">Add more news</md-button>
+                            <md-button class="md-raised md-success" @click="gotoInsertTipPage">Add more tip</md-button>
                         </div>
                     </div>
                         <div class="md-layout md-gutter">
@@ -18,7 +18,7 @@
                                     <md-option value="ASC">Cu nhat</md-option>
                                 </md-select>
                             </md-field>
-                            <md-button class="md-raised md-primary" @click="getReviews">Tìm kiếm</md-button> -->
+                            <md-button class="md-raised md-primary" @click="getTips">Tìm kiếm</md-button> -->
                         </div>
                     </div>
                 </md-card-content>
@@ -26,18 +26,18 @@
 
              <md-card>
                 <md-card-header data-background-color="green">
-                    <h4 class="title">News List</h4>
+                    <h4 class="title">Tips List</h4>
                 </md-card-header>
                 <md-card-content>
                     <div v-show="isLoading" style="text-align: center">
                         <md-progress-spinner md-mode="indeterminate" style="margin: auto"></md-progress-spinner>
                     </div>
-                    <div v-show="newsArray.length !== 0">
+                    <div v-show="tips.length !== 0">
                         <Pagination :pagination="pagination" :handleChange="handlePageChange"/>
-                        <NewsList :newsArray="newsArray" />
+                        <TipsList :tips="pagingTips" />
                     </div>
-                    <div v-show="!isLoading && newsArray.length === 0">
-                        <h3 style="text-align: center">No news found!</h3>
+                    <div v-show="!isLoading && tips.length === 0">
+                        <h3 style="text-align: center">No tip found!</h3>
                     </div>
                 </md-card-content>
             </md-card>
@@ -47,16 +47,16 @@
 
 <script>
 import Pagination from '@/components/common/Pagination';
-import NewsList from './NewsList';
-import NewsService from '../../services/news.service';
+import TipsList from './TipsList';
+import TipService from '../../services/tip.service.js';
 import { isEmpty } from '../../utils/validations';
 
 export default {
     components: {
-        NewsList, Pagination
+        TipsList, Pagination
     },
     data: () => ({
-        newsArray: [],
+        tips: [],
         isLoading: false,
         orderBys: {
             createdAt: 'DESC'
@@ -64,34 +64,44 @@ export default {
         pagination: { pageCount: 0, currentPage: 1, size: 10 }
     }),
 
+    computed: {
+        pagingTips: function(){
+            if(isEmpty(this.tips)) return [];
+            const { currentPage, size } = this.pagination;
+            return this.tips.map((tip, index) => {
+                return { ...tip, index: index + size * (currentPage - 1) }
+            })
+        }
+    },
+
     methods: {
-        getNews: async function(){
+        getTips: async function(){
             this.isLoading = true;
             try {
                 const { currentPage, size } = this.pagination;
-                const res = await NewsService.getNews(currentPage, size);
+                const res = await TipService.getTips(currentPage, size);
                 const { data, numOfPage, page } = res.data;
-                this.newsArray = data;
+                this.tips = data;
                 this.pagination = { ...this.pagination, pageCount: numOfPage }
             } catch (error) {
-                this.newsArray = [];
-                this.pagination = { pageCount: 0, currentPage: 1, size: 10 }
+                this.tips = [];
+                this.pagination = { pageCount: 0, currentPage: 1, size: 10 };
             }
             this.isLoading = false;
         },
 
         handlePageChange: function(pageNum){
             this.pagination = { ...this.pagination, currentPage: pageNum };
-            this.getNews();
+            this.getTips();
         },
 
-        gotoInsertNewsPage: function(){
-            this.$router.push('/news/insert');
+        gotoInsertTipPage: function(){
+            this.$router.push('/tips/insert');
         }
     },
 
     async created (){
-        this.getNews();
+        this.getTips();
     }
 }
 </script>

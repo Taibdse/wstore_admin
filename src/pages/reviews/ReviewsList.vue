@@ -12,7 +12,10 @@
             <md-table-cell>
                 <img :src="formatImageUrl(review.image)" class="img-fluid" />
             </md-table-cell>
-            <md-table-cell>{{ review.active ? 'ACTIVE' : 'INACTIVE' }}</md-table-cell>
+            <md-table-cell>
+                <strong v-if="!review.active" class="text-danger">INACTIVE</strong>
+                <strong v-if="review.active" class="text-success">ACTIVE</strong>
+            </md-table-cell>
             <md-table-cell>
                 <md-button class="md-just-icon md-simple md-primary" @click="showDetails(review)">
                 <md-icon>edit</md-icon>
@@ -37,7 +40,8 @@ export default {
     }),
     methods: {
         showDetails: function(review){
-            this.$router.push('/reviews/' + review.slug);
+            // this.$router.push('/reviews/' + review.slug);
+            window.open('/reviews/' + review.slug, '_blank');
         },
         formatImageUrl, truncate, removeHtmlTags
     }

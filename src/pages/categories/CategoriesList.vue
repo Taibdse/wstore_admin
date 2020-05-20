@@ -9,7 +9,10 @@
             <md-table-cell>{{ category.name }}</md-table-cell>
           
             <md-table-cell>{{ truncate(category.description, 100) }}</md-table-cell>
-            <md-table-cell>{{ category.active ? 'ACTIVE' : 'INACTIVE' }}</md-table-cell>
+            <md-table-cell>
+                <strong v-if="category.active" class="text-success">ACTIVE</strong>
+                <strong v-if="!category.active" class="text-danger">INACTIVE</strong>
+            </md-table-cell>
             <md-table-cell>
                 <md-button class="md-just-icon md-simple md-primary" @click="showDetails(category)">
                 <md-icon>edit</md-icon>

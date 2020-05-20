@@ -8,52 +8,43 @@
         <md-icon>dashboard</md-icon>
         <p>Dashboard</p>
       </sidebar-link> -->
-      <sidebar-link to="/information">
-        <!-- <md-icon>person</md-icon> -->
-        <i class="fas fa-store"></i>
-        <p>Store</p>
+    
+      <sidebar-link to="/orders">
+        <i class="fas fa-shopping-cart"></i> 
+        <p>Orders</p>
       </sidebar-link>
       <sidebar-link to="/products">
-        <!-- <md-icon>dashboard</md-icon> -->
         <i class="fab fa-product-hunt"></i> 
         <p>Products</p>
       </sidebar-link>
       <sidebar-link to="/categories">
-        <!-- <md-icon>dashboard</md-icon> -->
         <i class="fas fa-list-alt"></i> 
         <p>Categories</p>
       </sidebar-link>
-      <sidebar-link to="/orders">
-        <!-- <md-icon>shopping_cart</md-icon> -->
-        <i class="fas fa-shopping-cart"></i> 
-        <p>Orders</p>
-      </sidebar-link>
+      
       <sidebar-link to="/reviews">
-        <!-- <md-icon>dashboard</md-icon> -->
         <i class="fas fa-users"></i> 
         <p>Reviews</p>
       </sidebar-link>
+       <sidebar-link to="/tips">
+        <i class="fas fa-lightbulb"></i>
+        <p>Tips</p>
+        </sidebar-link>
        <sidebar-link to="/news">
-        <!-- <md-icon>person</md-icon> -->
         <i class="fas fa-newspaper"></i> 
         <p>News</p>
       </sidebar-link>
       <sidebar-link to="/policies">
-        <!-- <md-icon>person</md-icon> -->
         <i class="fas fa-file-contract"></i> 
-        <p>Exchange Policy</p>
+        <p>Policies</p>
       </sidebar-link>
       
        
-      <sidebar-link to="/shippings">
-        <!-- <md-icon>person</md-icon> -->
+      <sidebar-link to="/shippings" style="margin-bottom: 40px">
         <i class="fas fa-truck"></i> 
         <p>Shippings</p>
       </sidebar-link>
-      <sidebar-link to="/website" style="margin-bottom: 40px">
-        <i class="fab fa-internet-explorer"></i>
-        <p>Website</p>
-      </sidebar-link>
+    
       
       <!-- <sidebar-link to="/sales">
         <md-icon>attach_money</md-icon>

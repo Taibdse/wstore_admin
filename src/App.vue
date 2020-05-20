@@ -40,6 +40,7 @@ export default {
 
 <style>
 
+
 .my-page-header{
   text-align: center!important;
   margin-top: 0;
@@ -53,6 +54,7 @@ div.md-table-head-label, .md-table-head-container{
   font-weight: 600;
   font-size: 1.1em;
 }
+
 
 .md-table-cell{
   padding-top: 0px;
@@ -69,6 +71,10 @@ div.md-table-head-label, .md-table-head-container{
   padding: 0!important;
   display: inline-block;
   margin: 0;
+}
+
+.md-table-cell-container, .md-table-cell-container *{
+  font-size: 1em;
 }
 
 @media(max-width: 700px){

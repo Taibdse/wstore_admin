@@ -22,7 +22,21 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <li><a href="#" @click="handleLogout">Logout</a></li>
-            <li><a href="#" @click="handleChangePassword">Change Password</a></li>
+            <li><a href="#" @click="() => navigateRoute('/change-password')">Change Password</a></li>
+          </ul>
+        </drop-down>
+    </li>
+     <li style="backgound-color: red; padding-left: 5px">
+        <drop-down>
+          <a slot="title" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fas fa-bell"></i> 
+            <span style="margin-top: 10px">Information</span>
+            <!-- <span class="notification">5</span> -->
+            <!-- <p class="hidden-lg hidden-md">person</p> -->
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="#" @click="() => navigateRoute('/information')">Store</a></li>
+            <li><a href="#" @click="() => navigateRoute('/website')">Website</a></li>
           </ul>
         </drop-down>
     </li>
@@ -78,8 +92,8 @@ export default {
         this.$router.go('/login');
       }
     },
-    handleChangePassword: function(){
-      this.$router.push('/change-password');
+    navigateRoute: function(route){
+      this.$router.push(route);
     }
   }
 };

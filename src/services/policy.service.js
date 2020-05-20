@@ -7,10 +7,14 @@ class PolicyService{
         return axios.get(url);
     }
 
-
     static async updatePolicy(data){
       const url = APP_ROOT_API + '/policies';
       return axios.put(url, data);
+    }
+
+    static async getPolices(){
+      const url = APP_ROOT_API + '/policies/getAll';
+      return axios.get(url);
     }
 }
 

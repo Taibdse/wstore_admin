@@ -14,7 +14,10 @@
             </md-table-cell>
             <md-table-cell>{{ truncate(removeHtmlTags(news.title), 20) }}</md-table-cell>
             <md-table-cell>{{ getVNTimeFormat(news.createdAt) }}</md-table-cell>
-            <md-table-cell>{{ news.active ? 'ACTIVE' : 'INACTIVE' }}</md-table-cell>
+            <md-table-cell>
+                <strong v-if="!news.active" class="text-danger">INACTIVE</strong>
+                <strong v-if="news.active" class="text-success">ACTIVE</strong>
+            </md-table-cell>
             <md-table-cell>
                 <md-button class="md-just-icon md-simple md-primary" @click="showDetails(news)">
                 <md-icon>edit</md-icon>
@@ -40,7 +43,8 @@ export default {
     }),
     methods: {
         showDetails: function(news){
-            this.$router.push('/news/' + news.slug);
+            // this.$router.push('/news/' + news.slug);
+            window.open('/news/' + news.slug, '_blank');
         },
         formatImageUrl, truncate, getVNTimeFormat, isEmpty, removeHtmlTags
     }

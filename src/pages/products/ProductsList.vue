@@ -12,9 +12,21 @@
             </md-table-cell>
             <md-table-cell>{{ product.availableSizes }}</md-table-cell>
             <md-table-cell>{{ product.color }}</md-table-cell>
-            <md-table-cell>{{ convertNumToMoneyFormat(product.price) }} đ</md-table-cell>
-            <md-table-cell>{{ product.available ? 'Còn hàng' : 'Hết hàng' }}</md-table-cell>
-            <md-table-cell>{{ product.active ? 'ACTIVE' : 'INACTIVE' }}</md-table-cell>
+            <md-table-cell>
+                <strong class="text-primary">{{ convertNumToMoneyFormat(product.price) }} đ</strong>
+            </md-table-cell>
+            <md-table-cell>
+                <strong class="text-success" v-if="product.available">
+                   Còn hàng
+                </strong>
+                <strong class="text-danger" v-if="!product.available">
+                   Hết hàng
+                </strong> 
+            </md-table-cell>
+            <md-table-cell>
+                <strong v-if="product.active" class="text-success">ACTIVE</strong>
+                <strong v-if="!product.active" class="text-danger">INACTIVE</strong>
+            </md-table-cell>
             <md-table-cell>{{ product.category.name }}</md-table-cell>
             <md-table-cell>
                 <md-button class="md-just-icon md-simple md-primary" @click="showDetails(product)">

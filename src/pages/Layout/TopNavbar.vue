@@ -16,7 +16,7 @@
         </md-button>
 
         <div class="md-collapse">
-          <!-- <div class="md-autocomplete">
+          <div class="md-autocomplete">
             <md-autocomplete
               class="search"
               v-model="selectedEmployee"
@@ -24,7 +24,7 @@
             >
               <label>Search...</label>
             </md-autocomplete>
-          </div> -->
+          </div>
           <md-list>
             <!-- <md-list-item href="#/">
               <i class="material-icons">dashboard</i>
@@ -49,9 +49,9 @@
             </md-list-item> -->
 
 
-            <!-- <li class="md-list-item">
+            <li class="md-list-item">
               <a
-                href="#/notifications"
+                href="#"
                 class="md-list-item-router md-list-item-container md-button-clean dropdown"
               >
                 <div class="md-list-item-content">
@@ -62,20 +62,17 @@
                       data-toggle="dropdown"
                     >
                       <md-icon>notifications</md-icon>
-                      <span class="notification">5</span>
+                      <!-- <span class="notification">5</span> -->
                       <p class="hidden-lg hidden-md">Notifications</p>
                     </md-button>
                     <ul class="dropdown-menu dropdown-menu-right">
-                      <li><a href="#">Mike John responded to your email</a></li>
-                      <li><a href="#">You have 5 new tasks</a></li>
-                      <li><a href="#">You're now friend with Andrew</a></li>
-                      <li><a href="#">Another Notification</a></li>
-                      <li><a href="#">Another One</a></li>
+                      <li><a href="#" @click="() => navigateRoute('/information')">Store Info</a></li>
+                      <li><a href="#" @click="() => navigateRoute('/website')">W.Store Website</a></li>
                     </ul>
                   </drop-down>
                 </div>
               </a>
-            </li> -->
+            </li>
 
             <!-- <md-list-item href="#">
               <i class="material-icons">person</i>
@@ -107,7 +104,7 @@
                 </a>
                 <ul  class="dropdown-menu dropdown-menu-right">
                   <li><a href="#" @click="handleLogout">Logout</a></li>
-                  <li><a href="#" @click="handleChangePassword">Change Password</a></li>
+                  <li><a href="#" @click="() => navigateRoute('/change-password')">Change Password</a></li>
                 </ul>
               </drop-down>
             </md-list-item>
@@ -145,8 +142,8 @@ export default {
         this.$router.go('/login');
       }
     },
-    handleChangePassword: function(){
-      this.$router.push('/change-password');
+    navigateRoute: function(route){
+      this.$router.push(route);
     }
   }
 };

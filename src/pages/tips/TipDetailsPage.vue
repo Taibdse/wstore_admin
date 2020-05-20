@@ -1,53 +1,45 @@
 <template>
    <div class="content">
         <h2 class="my-page-header">
-            {{ insertReview ? 'Insert review' : 'Update Review' }}
+            {{ insertTip ? 'Insert tip' : 'Update Tip' }}
         </h2>
          <md-card class="my-card">
-            <md-card-header :data-background-color="insertReview ? 'green' : 'orange'">
-                <h4 class="title">Review's information</h4>
+            <md-card-header :data-background-color="insertTip ? 'green' : 'orange'">
+                <h4 class="title">Tip's information</h4>
             </md-card-header>
 
             <md-card-content>
-                <div v-if="!insertReview && isLoading" style="text-align: center">
+                <div v-if="!insertTip && isLoading" style="text-align: center">
                     <md-progress-spinner md-mode="indeterminate" style="margin: auto"></md-progress-spinner>
                 </div>
-                <div v-if="insertReview || (!notfound && !isLoading)">
-                    <form class="md-layout" @submit.prevent="saveReview">
+                <div v-if="insertTip || (!notfound && !isLoading)">
+                    <form class="md-layout" @submit.prevent="saveTip">
                         <md-card class="">
                             <md-card-content>
                                 <div class="md-layout md-gutter">
                                     <div class="md-layout-item sm-size-100">
                                         <md-field >
-                                            <label for="title">Review Title</label>
-                                            <md-input name="title" id="title" v-model="review.title" @input="setReviewSlug" />
+                                            <label for="title">Tip Title</label>
+                                            <md-input name="title" id="title" v-model="tip.title" @input="setTipSlug" />
                                         </md-field>
                                     </div>
 
                                     <div class="md-layout-item sm-size-100">
                                         <md-field>
                                             <label for="slug">Slug</label>
-                                            <md-input name="slug" id="slug"  v-model="review.slug" disabled />
+                                            <md-input name="slug" id="slug"  v-model="tip.slug" disabled />
                                         </md-field>
                                     </div>
                                 </div>
-                                <div class="md-layout md-gutter">
-                                    <div class="md-layout-item sm-small-size-100">
-                                        <md-field>
-                                            <label for="celebrityName">Celebrity Name</label>
-                                            <md-input name="celebrityName" id="celebrityName"  
-                                            v-model="review.celebrityName"  />
-                                        </md-field>
-                                    </div>
-                                </div>
+                                
                                
                                 <div class="md-layout md-gutter">
                                     <div class="md-layout-item md-size-100">
                                         <strong>Content</strong>
-                                        <!-- <md-textarea v-model="review.content"></md-textarea> -->
+                                        <!-- <md-textarea v-model="tip.content"></md-textarea> -->
                                         <MyEditor 
                                             :ref="'myEditor'" 
-                                            :content="review.content" />
+                                            :content="tip.content" />
                                     </div>
                                 </div>
 
@@ -56,10 +48,10 @@
                                         <strong>Upload Image</strong><br/><br/>
                                         <div>
                                             <DropzoneUpload
-                                                ref="dropzoneReviewImage"
-                                                :id="'dropzoneReviewImage'"
+                                                ref="dropzoneTipImage"
+                                                :id="'dropzoneTipImage'"
                                                 :uploadMultiple="false" 
-                                                :uploadedFiles="reviewImages">
+                                                :uploadedFiles="tipImages">
                                             </DropzoneUpload>
                                         </div>
                                     </div>
@@ -67,7 +59,7 @@
 
                                 <div class="md-layout md-gutter">
                                     <div class="md-layout-item md-size-100">
-                                        <md-checkbox v-model="review.active">Active review</md-checkbox>
+                                        <md-checkbox v-model="tip.active">Active tip</md-checkbox>
                                     </div>
                                 </div>
                             </md-card-content>
@@ -78,8 +70,8 @@
                         </md-card>
                     </form>
                 </div>
-                <div v-if="!insertReview && notfound && !isLoading">
-                    <h3 style="text-align: center">Can not find this review</h3>
+                <div v-if="!insertTip && notfound && !isLoading">
+                    <h3 style="text-align: center">Can not find this tip</h3>
                 </div>
             </md-card-content>
         </md-card>
@@ -89,7 +81,7 @@
 <script>
 
 import DropzoneUpload from '../../components/common/DropzoneUpload';
-import ReviewService from '../../services/review.service';
+import TipService from '../../services/tip.service';
 import { convertStringToSlug, formatImageUrl } from '../../utils/strings';
 import { getErrorsFromResponse } from '../../utils/errors';
 import { showErrors, showSuccessMsg } from '../../utils/alert';
@@ -102,57 +94,57 @@ export default {
        DropzoneUpload, MyEditor
     },
     data: () => ({
-        review: { 
+        tip: { 
             active: true, 
         },
         isLoading: false,
         notfound: false,
-        insertReview: false,
-        reviewImages: []
+        insertTip: false,
+        tipImages: []
     }),
     methods: {
-        getReviewDetails: async function(){
-            if(this.$route.path.indexOf('/reviews/insert') > -1){
-                this.insertReview = true;
+        getTipDetails: async function(){
+            if(this.$route.path.indexOf('/tips/insert') > -1){
+                this.insertTip = true;
             } else {
                 this.isLoading = true;
-                const reviewSlug = this.$route.params.reviewSlug;
+                const tipSlug = this.$route.params.tipSlug;
                 try {
-                    const res = await ReviewService.getReviewBySlug(reviewSlug);
-                    this.review = res.data;
+                    const res = await TipService.getTipBySlug(tipSlug);
+                    this.tip = res.data;
 
-                    this.reviewImages = [{
-                        url: formatImageUrl(this.review.image), 
-                        name: this.review.title 
+                    this.tipImages = [{
+                        url: formatImageUrl(this.tip.image), 
+                        name: this.tip.title 
                     }]
                     
-                    if(isEmpty(this.review)) this.notfound = true;
+                    if(isEmpty(this.tip)) this.notfound = true;
                 } catch (error) {
                     this.notfound = true;
                 }
                 this.isLoading = false;
             }
         },
-        saveReview: async function(){
-            const reviewImage = this.$refs.dropzoneReviewImage.getUploadedFiles();
+        saveTip: async function(){
+            const tipImage = this.$refs.dropzoneTipImage.getUploadedFiles();
             const content = this.$refs['myEditor'].$data.myContent;
-            const data = JSON.parse(JSON.stringify(this.review));
-            data.image = isEmpty(reviewImage) ? null : reviewImage[0].dataURL;
+            const data = JSON.parse(JSON.stringify(this.tip));
+            data.image = isEmpty(tipImage) ? null : tipImage[0].dataURL;
             data.content = content;
 
 
-            if(this.insertReview) {
-                await this.handleInsertReview(data);
+            if(this.insertTip) {
+                await this.handleInsertTip(data);
             } else {
-                await this.handleUpdateReview(data);
+                await this.handleUpdateTip(data);
             }
         
         },
 
-        handleInsertReview: async function(data){
+        handleInsertTip: async function(data){
             this.isLoading = true;
             try {
-                const res = await ReviewService.insertReview(data);
+                const res = await TipService.insertTip(data);
                 if(res.data.success === '1') {
                     showSuccessMsg({ title: 'Thêm thành công', text: '' })
                 } else {
@@ -167,11 +159,11 @@ export default {
             this.isLoading = false;
         },
         
-        handleUpdateReview: async function(data){
+        handleUpdateTip: async function(data){
             try {
-                const res = await ReviewService.updateReview(data);
+                const res = await TipService.updateTip(data);
                 if(res.data.success === '1') {
-                    await this.getReviewDetails();
+                    await this.getTipDetails();
                     showSuccessMsg({ title: 'Cap nhat thành công', text: '' })
                 } else {
                     this.showErrorsMessage(res);
@@ -193,14 +185,14 @@ export default {
             })
         },
 
-        setReviewSlug: function(value){
-            this.review.slug = convertStringToSlug(value);
+        setTipSlug: function(value){
+            this.tip.slug = convertStringToSlug(value);
         },
         handleContentChange: function(){},
 
     },
     async created(){
-        this.getReviewDetails();
+        this.getTipDetails();
     }
 }
 </script>

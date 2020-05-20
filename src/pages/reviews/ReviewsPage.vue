@@ -32,12 +32,12 @@
                     <div v-show="isLoading" style="text-align: center">
                         <md-progress-spinner md-mode="indeterminate" style="margin: auto"></md-progress-spinner>
                     </div>
-                    <div v-show="!isLoading && reviews.length !== 0">
+                    <div v-show="reviews.length !== 0">
                         <Pagination :pagination="pagination" :handleChange="handlePageChange"/>
                         <ReviewsList :reviews="pagingReviews" />
                     </div>
                     <div v-show="!isLoading && reviews.length === 0">
-                        <h3 style="text-align: center">Can not find any reviews!</h3>
+                        <h3 style="text-align: center">No review found!</h3>
                     </div>
                 </md-card-content>
             </md-card>
