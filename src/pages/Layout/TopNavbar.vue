@@ -16,15 +16,15 @@
         </md-button>
 
         <div class="md-collapse">
-          <div class="md-autocomplete">
-            <md-autocomplete
-              class="search"
-              v-model="selectedEmployee"
-              :md-options="employees"
-            >
-              <label>Search...</label>
-            </md-autocomplete>
-          </div>
+            <!-- <div class="md-autocomplete">
+              <md-autocomplete
+                class="search"
+                v-model="selectedEmployee"
+                :md-options="employees"
+              >
+                <label>Search...</label>
+              </md-autocomplete>
+            </div> -->
           <md-list>
             <!-- <md-list-item href="#/">
               <i class="material-icons">dashboard</i>
@@ -68,6 +68,7 @@
                     <ul class="dropdown-menu dropdown-menu-right">
                       <li><a href="#" @click="() => navigateRoute('/information')">Store Info</a></li>
                       <li><a href="#" @click="() => navigateRoute('/website')">W.Store Website</a></li>
+                      <li><a href="#" @click="() => navigateRoute('/language')">Multilingual Settings</a></li>
                     </ul>
                   </drop-down>
                 </div>

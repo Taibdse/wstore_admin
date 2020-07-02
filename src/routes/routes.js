@@ -28,6 +28,7 @@ import ShippingDetailsPage from '../pages/shippings/ShippingDetailsPage.vue';
 import AdminLoginPage from '../pages/auth/AdminLoginPage.vue';
 import AdminChangePasswordPage from '../pages/auth/AdminChangePasswordPage.vue';
 import WebsiteInfoPage from '../pages/website/WebsiteInfoPage.vue';
+import LanguagePage from '../pages/language/LanguagePage.vue';
 import NotFoundPage from '../pages/notfound/NotFoundPage';
 
 const routes = [
@@ -205,6 +206,14 @@ const routes = [
         name: 'Website Info',
         component: WebsiteInfoPage,
       },
+
+       //=========== LANGUAGE ROUTES ============== 
+       {
+        path: 'language',
+        name: 'Language',
+        component: LanguagePage,
+      },
+
 
        //=========== NOT FOUND ROUTES ============== 
        {
