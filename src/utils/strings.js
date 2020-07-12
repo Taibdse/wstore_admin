@@ -10,9 +10,9 @@ export const convertNumToMoneyFormat = (val) => {
 export const removeVNAccents = (str) => {
     if(isEmpty(str)) return '';
   // remove accents
-    const from = "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüû";
-    const to   = "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouu";
-    for (var i=0, l=from.length ; i < l ; i++) {
+    const from = "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ";
+    const to   = "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
+    for (var i = 0, l = from.length ; i < l ; i++) {
         str = str.replace(RegExp(from[i], "gi"), to[i]);
     }
 

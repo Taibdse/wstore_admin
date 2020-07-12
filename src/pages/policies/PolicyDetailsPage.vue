@@ -29,19 +29,21 @@
 
                              <div class="md-layout md-gutter">
                                 <div class="md-layout-item sm-size-100">
-                                    <strong for="">Content</strong><br/><br/>
+                                    <strong for="">Content (VN)</strong><br/><br/>
                                     <MyEditor 
-                                        ref="myEditor" 
+                                        ref="myEditorVN" 
                                         :content="policy.content" />
                                 </div>
                             </div>
 
-                             <!-- <div class="md-layout md-gutter">
-                                <div class="md-layout-item md-size-100">
-                                    <md-checkbox v-model="policy.active">Active policy</md-checkbox>
+                             <div class="md-layout md-gutter" style="margin-top: 20px">
+                                <div class="md-layout-item sm-size-100">
+                                    <strong for="">Content (EN)</strong><br/><br/>
+                                    <MyEditor 
+                                        ref="myEditorEN" 
+                                        :content="policy.contentEn" />
                                 </div>
-                            </div> -->
-
+                            </div>
 
                             <div class="md-layout md-gutter">
                                 <md-button 
@@ -91,7 +93,6 @@ export default {
             try {
                 const res = await PolicyService.getPolicyByType(policyType);
                 this.policy = res.data;
-                console.log(this.policy);
                 if(isEmpty(this.policy)) this.notfound = true;
                 
             } catch (error) {
@@ -101,26 +102,27 @@ export default {
         },
 
         savePolicy: async function () {
-            this.policy.content = this.$refs.myEditor.$data.myContent;
+            this.policy.content = this.$refs['myEditorVN'].$data.myContent;
+            this.policy.contentEn = this.$refs['myEditorEN'].$data.myContent;
             this.isLoading = true;
             try {
                 const res = await PolicyService.updatePolicy(this.policy);
                 if(res.data.success == '1') {
                     showSuccessMsg({ 
-                        title: 'Cập nhật thành công', 
-                        text: 'Thông tin đã được lưu vào hệ thống',
+                        title: 'Save successfully!', 
+                        text: '',
                         timer: 4000, 
                     }) 
                 } else {
                     let errorStr = getErrorsFromResponse(res.data);
                     showErrors({
-                        title: 'Thông tin không hợp lệ!',
+                        title: 'Please check input data!',
                         text: errorStr
                     });
                 }
             } catch (error) {
                 showErrors({
-                        title: 'Lỗi Server',
+                        title: 'Server errors!',
                         text: SERVER_ERROR_MESSAGE
                     });
             }

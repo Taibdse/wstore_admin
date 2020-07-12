@@ -13,13 +13,19 @@
                     <div v-if="!isLoading && !notfound && !isEmpty(news)">
                         <form @submit.prevent="saveNews">
                              <div class="md-layout md-gutter">
-                                <div class="md-layout-item sm-size-100">
+                                <div class="md-layout-item md-small-size-100 md-size-33">
                                     <md-field >
-                                        <label for="title">Title</label>
+                                        <label for="title">Title (VN)</label>
                                         <md-input name="title" id="title" v-model="news.title" @input="setNewsSlug"  />
                                     </md-field>
                                 </div>
-                                <div class="md-layout-item sm-size-100">
+                                  <div class="md-layout-item md-small-size-100 md-size-33">
+                                    <md-field >
+                                        <label for="titleEn">Title (EN)</label>
+                                        <md-input name="titleEn" id="titleEn" v-model="news.titleEn" />
+                                    </md-field>
+                                </div>
+                                <div class="md-layout-item md-small-size-100 md-size-33">
                                     <md-field>
                                         <label for="slug">Slug</label>
                                         <md-input name="slug" id="slug" v-model="news.slug" disabled/>
@@ -49,14 +55,25 @@
 
                                         <div class="md-layout md-gutter" style="margin-top: 20px">
                                             <div class="md-layout-item sm-size-100">
-                                                <strong for="">Content</strong><br/>
+                                                <strong for="">Content (VN)</strong><br/>
                                                 <MyEditor 
-                                                    :ref="'myEditor' + newsItem.id" 
+                                                    :ref="'myEditorVN' + newsItem.id" 
                                                     :handleTextChange="handleContentChange" 
                                                     :content="newsItem.content" />
                                             </div>
+                                        </div>
+
+                                          <div class="md-layout md-gutter" style="margin-top: 20px">
+                                            <div class="md-layout-item sm-size-100">
+                                                <strong for="">Content (EN)</strong><br/>
+                                                <MyEditor 
+                                                    :ref="'myEditorEN' + newsItem.id" 
+                                                    :handleTextChange="handleContentChange" 
+                                                    :content="newsItem.contentEn" />
+                                            </div>
                                             
                                         </div>
+
                                         <div class="md-layout md-gutter">
                                             <div class="md-layout-item md-size-100">
                                                 <md-checkbox v-model="newsItem.active">Active</md-checkbox>
@@ -161,10 +178,12 @@ export default {
 
             news.newsItems.forEach((newsItem) => {
                 const imageFile = this.$refs['dropzoneImage' + newsItem.id][0].getUploadedFiles();
-                const content = this.$refs['myEditor' + newsItem.id][0].$data.myContent;
+                const content = this.$refs['myEditorVN' + newsItem.id][0].$data.myContent;
+                const contentEn = this.$refs['myEditorEN' + newsItem.id][0].$data.myContent;
                 
                 newsItem.image = isEmpty(imageFile) ? null : imageFile[0].dataURL;
                 newsItem.content = content;
+                newsItem.contentEn = contentEn;
 
                 if(newsItem.new) {
                     delete newsItem.id;
@@ -172,6 +191,7 @@ export default {
                 }
                 
             });
+
 
             if(this.insertNews){
                 await this.handleInsertNews(news);
@@ -188,20 +208,20 @@ export default {
                 if(res.data.success == '1') {
                     await this.getNews();
                     showSuccessMsg({ 
-                        title: 'Cập nhật thành công', 
-                        text: 'Thông tin đã được lưu vào hệ thống',
+                        title: 'Save successfully!', 
+                        text: '',
                         timer: 4000, 
                     }) 
                 } else {
                     let errorStr = this.getErrorsMsg(res.data.errors);
                     showErrors({
-                        title: 'Thông tin không hợp lệ!',
+                        title: 'Please check input data',
                         text: errorStr
                     });
                 }
             } catch (error) {
                 showErrors({
-                    title: 'Loi Server',
+                    title: 'Server error!',
                     text: SERVER_ERROR_MESSAGE
                 });
             }
@@ -214,20 +234,20 @@ export default {
                 const res = await NewsService.inserNews(news);
                 if(res.data.success == '1') {
                     showSuccessMsg({ 
-                        title: 'Them thành công', 
-                        text: 'Thông tin đã được lưu vào hệ thống',
+                        title: 'Save successfully!',
+                        text: '',
                         timer: 4000, 
                     }) 
                 } else {
                     let errorStr = this.getErrorsMsg(res.data.errors);
                     showErrors({
-                        title: 'Thông tin không hợp lệ!',
+                        title: 'Please check input data',
                         text: errorStr
                     });
                 }
             } catch (error) {
                 showErrors({
-                    title: 'Loi Server',
+                    title: 'Server error',
                     text: SERVER_ERROR_MESSAGE
                 });
             }

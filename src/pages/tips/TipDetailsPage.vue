@@ -13,37 +13,33 @@
                     <md-progress-spinner md-mode="indeterminate" style="margin: auto"></md-progress-spinner>
                 </div>
                 <div v-if="insertTip || (!notfound && !isLoading)">
-                    <form class="md-layout" @submit.prevent="saveTip">
+                    <form @submit.prevent="saveTip">
                         <md-card class="">
                             <md-card-content>
                                 <div class="md-layout md-gutter">
-                                    <div class="md-layout-item sm-size-100">
+                                    <div class="md-layout-item md-small-size-100 md-size-33">
                                         <md-field >
-                                            <label for="title">Tip Title</label>
+                                            <label for="title">Tip Title (VN)</label>
                                             <md-input name="title" id="title" v-model="tip.title" @input="setTipSlug" />
                                         </md-field>
                                     </div>
 
-                                    <div class="md-layout-item sm-size-100">
+                                    <div class="md-layout-item md-small-size-100 md-size-33">
+                                        <md-field >
+                                            <label for="titleEn">Tip Title (EN)</label>
+                                            <md-input name="titleEn" id="titleEn" v-model="tip.titleEn" />
+                                        </md-field>
+                                    </div>
+
+                                    <div class="md-layout-item md-small-size-100 md-size-33">
                                         <md-field>
                                             <label for="slug">Slug</label>
-                                            <md-input name="slug" id="slug"  v-model="tip.slug" disabled />
+                                            <md-input name="slug" id="slug" v-model="tip.slug" disabled />
                                         </md-field>
                                     </div>
                                 </div>
-                                
-                               
-                                <div class="md-layout md-gutter">
-                                    <div class="md-layout-item md-size-100">
-                                        <strong>Content</strong>
-                                        <!-- <md-textarea v-model="tip.content"></md-textarea> -->
-                                        <MyEditor 
-                                            :ref="'myEditor'" 
-                                            :content="tip.content" />
-                                    </div>
-                                </div>
 
-                                <div class="md-layout md-gutter" style="margin-top: 20px">
+                                 <div class="md-layout md-gutter" style="margin-top: 20px">
                                     <div class="md-layout-item md-size-100">
                                         <strong>Upload Image</strong><br/><br/>
                                         <div>
@@ -54,6 +50,24 @@
                                                 :uploadedFiles="tipImages">
                                             </DropzoneUpload>
                                         </div>
+                                    </div>
+                                </div>
+                               
+                                <div class="md-layout md-gutter" style="margin-top: 20px">
+                                    <div class="md-layout-item md-size-100">
+                                        <strong>Content (VN)</strong>
+                                        <MyEditor 
+                                            :ref="'tipContentVN'" 
+                                            :content="tip.content" />
+                                    </div>
+                                </div>
+
+                                 <div class="md-layout md-gutter" style="margin-top: 20px">
+                                    <div class="md-layout-item md-size-100">
+                                        <strong>Content (EN)</strong>
+                                        <MyEditor 
+                                            :ref="'tipContentEN'" 
+                                            :content="tip.contentEn" />
                                     </div>
                                 </div>
 
@@ -127,10 +141,12 @@ export default {
         },
         saveTip: async function(){
             const tipImage = this.$refs.dropzoneTipImage.getUploadedFiles();
-            const content = this.$refs['myEditor'].$data.myContent;
+            const content = this.$refs['tipContentVN'].$data.myContent;
+            const contentEn = this.$refs['tipContentEN'].$data.myContent;
             const data = JSON.parse(JSON.stringify(this.tip));
             data.image = isEmpty(tipImage) ? null : tipImage[0].dataURL;
             data.content = content;
+            data.contentEn = contentEn;
 
 
             if(this.insertTip) {
@@ -146,13 +162,13 @@ export default {
             try {
                 const res = await TipService.insertTip(data);
                 if(res.data.success === '1') {
-                    showSuccessMsg({ title: 'Thêm thành công', text: '' })
+                    showSuccessMsg({ title: 'Save successfully!', text: '' })
                 } else {
                     this.showErrorsMessage(res);
                 }
             } catch (error) {
                 showErrors({ 
-                    title: 'Lỗi hệ thống', 
+                    title: 'Server error!', 
                     text: SERVER_ERROR_MESSAGE
                 });
             }
@@ -164,14 +180,14 @@ export default {
                 const res = await TipService.updateTip(data);
                 if(res.data.success === '1') {
                     await this.getTipDetails();
-                    showSuccessMsg({ title: 'Cap nhat thành công', text: '' })
+                    showSuccessMsg({ title: 'Save successfully!', text: '' })
                 } else {
                     this.showErrorsMessage(res);
                 }
             } catch (error) {
                 console.log(error);
                 showErrors({ 
-                    title: 'Lỗi hệ thống', 
+                    title: 'Server error!', 
                     text: SERVER_ERROR_MESSAGE
                 });
             }
@@ -180,7 +196,7 @@ export default {
         showErrorsMessage: function(res){
             const errors = getErrorsFromResponse(res.data);
             showErrors({
-                title: 'Vui lòng kiểm tra lại thông tin',
+                title: 'Please check input data!',
                 text: errors
             })
         },

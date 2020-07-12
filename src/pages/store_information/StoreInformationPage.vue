@@ -62,10 +62,19 @@
 
                             <div class="md-layout md-gutter">
                                 <div class="md-layout-item sm-size-100">
-                                    <strong>About Us Content</strong>
+                                    <strong>About Us Content (VN)</strong>
                                     <MyEditor 
-                                            :ref="'myEditor'" 
+                                            :ref="'myEditorVN'" 
                                             :content="information.aboutUsContent" />
+                                </div>
+                            </div>
+
+                            <div class="md-layout md-gutter" style="margin-top: 20px">
+                                <div class="md-layout-item sm-size-100">
+                                    <strong>About Us Content (EN)</strong>
+                                    <MyEditor 
+                                            :ref="'myEditorEN'" 
+                                            :content="information.aboutUsContentEn" />
                                 </div>
                             </div>
 
@@ -120,29 +129,32 @@ export default {
             }
             this.isLoading = false;
         },
+        
         saveInformation: async function () {
             this.isLoading = true;
             try {
-                const aboutUsContent = this.$refs['myEditor'].$data.myContent;
+                const aboutUsContent = this.$refs['myEditorVN'].$data.myContent;
+                const aboutUsContentEn = this.$refs['myEditorEN'].$data.myContent;
                 this.information.aboutUsContent = aboutUsContent;
+                this.information.aboutUsContentEn = aboutUsContentEn;
 
                 const res = await InformationService.updateInformation(this.information);
                 if(res.data.success == '1') {
                     showSuccessMsg({ 
-                        title: 'Cập nhật thành công', 
-                        text: 'Thông tin đã được lưu vào hệ thống',
+                        title: 'Save successfully!', 
+                        text: '',
                         timer: 4000, 
                     }) 
                 } else {
                     let errorStr = getErrorsFromResponse(res.data.errors);
                     showErrors({
-                        title: 'Thông tin không hợp lệ!',
+                        title: 'Please check input data!',
                         text: errorStr
                     });
                 }
             } catch (error) {
                 showErrors({
-                        title: 'Loi Server',
+                        title: 'Server error!',
                         text: SERVER_ERROR_MESSAGE
                     });
             }

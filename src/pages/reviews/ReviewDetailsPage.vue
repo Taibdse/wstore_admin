@@ -19,20 +19,30 @@
                                 <div class="md-layout md-gutter">
                                     <div class="md-layout-item sm-size-100">
                                         <md-field >
-                                            <label for="title">Review Title</label>
-                                            <md-input name="title" id="title" v-model="review.title" @input="setReviewSlug" />
+                                            <label for="title">Review Title (VN)</label>
+                                            <md-input name="title" id="title" 
+                                            v-model="review.title" 
+                                            @input="setReviewSlug" />
+                                        </md-field>
+                                    </div>
+
+                                     <div class="md-layout-item sm-size-100">
+                                        <md-field >
+                                            <label for="titleEn">Review Title (EN)</label>
+                                            <md-input name="titleEn" id="titleEn" v-model="review.titleEn" />
                                         </md-field>
                                     </div>
 
                                     <div class="md-layout-item sm-size-100">
                                         <md-field>
                                             <label for="slug">Slug</label>
-                                            <md-input name="slug" id="slug"  v-model="review.slug" disabled />
+                                            <md-input name="slug" id="slug" v-model="review.slug" disabled />
                                         </md-field>
                                     </div>
                                 </div>
-                                <div class="md-layout md-gutter">
-                                    <div class="md-layout-item sm-small-size-100">
+
+                                <div class="md-layout md-gutter" >
+                                    <div class="md-layout-item  sm-small-size-100 md-size-33">
                                         <md-field>
                                             <label for="celebrityName">Celebrity Name</label>
                                             <md-input name="celebrityName" id="celebrityName"  
@@ -40,18 +50,8 @@
                                         </md-field>
                                     </div>
                                 </div>
-                               
-                                <div class="md-layout md-gutter">
-                                    <div class="md-layout-item md-size-100">
-                                        <strong>Content</strong>
-                                        <!-- <md-textarea v-model="review.content"></md-textarea> -->
-                                        <MyEditor 
-                                            :ref="'myEditor'" 
-                                            :content="review.content" />
-                                    </div>
-                                </div>
 
-                                <div class="md-layout md-gutter" style="margin-top: 20px">
+                                 <div class="md-layout md-gutter" style="margin-top: 20px">
                                     <div class="md-layout-item md-size-100">
                                         <strong>Upload Image</strong><br/><br/>
                                         <div>
@@ -65,6 +65,27 @@
                                     </div>
                                 </div>
 
+                               
+                                <div class="md-layout md-gutter" style="margin-top: 20px">
+                                    <div class="md-layout-item md-size-100">
+                                        <strong>Content (VN)</strong>
+                                        <MyEditor 
+                                            :ref="'reviewContentVN'" 
+                                            :content="review.content" />
+                                    </div>
+                                </div>
+
+                                 
+                                <div class="md-layout md-gutter" style="margin-top: 20px">
+                                    <div class="md-layout-item md-size-100">
+                                        <strong>Content (EN)</strong>
+                                        <MyEditor 
+                                            :ref="'reviewContentEN'" 
+                                            :content="review.contentEn" />
+                                    </div>
+                                </div>
+
+                               
                                 <div class="md-layout md-gutter">
                                     <div class="md-layout-item md-size-100">
                                         <md-checkbox v-model="review.active">Active review</md-checkbox>
@@ -101,6 +122,7 @@ export default {
     components: {
        DropzoneUpload, MyEditor
     },
+
     data: () => ({
         review: { 
             active: true, 
@@ -110,6 +132,7 @@ export default {
         insertReview: false,
         reviewImages: []
     }),
+    
     methods: {
         getReviewDetails: async function(){
             if(this.$route.path.indexOf('/reviews/insert') > -1){
@@ -133,12 +156,17 @@ export default {
                 this.isLoading = false;
             }
         },
+
         saveReview: async function(){
             const reviewImage = this.$refs.dropzoneReviewImage.getUploadedFiles();
-            const content = this.$refs['myEditor'].$data.myContent;
+            const content = this.$refs['reviewContentVN'].$data.myContent;
+            const contentEn = this.$refs['reviewContentEN'].$data.myContent;
             const data = JSON.parse(JSON.stringify(this.review));
             data.image = isEmpty(reviewImage) ? null : reviewImage[0].dataURL;
             data.content = content;
+            data.contentEn = contentEn;
+
+            console.log(data);
 
 
             if(this.insertReview) {
@@ -154,13 +182,13 @@ export default {
             try {
                 const res = await ReviewService.insertReview(data);
                 if(res.data.success === '1') {
-                    showSuccessMsg({ title: 'Thêm thành công', text: '' })
+                    showSuccessMsg({ title: 'Save successfully!', text: '' })
                 } else {
                     this.showErrorsMessage(res);
                 }
             } catch (error) {
                 showErrors({ 
-                    title: 'Lỗi hệ thống', 
+                    title: 'Server error!', 
                     text: SERVER_ERROR_MESSAGE
                 });
             }
@@ -172,14 +200,14 @@ export default {
                 const res = await ReviewService.updateReview(data);
                 if(res.data.success === '1') {
                     await this.getReviewDetails();
-                    showSuccessMsg({ title: 'Cap nhat thành công', text: '' })
+                    showSuccessMsg({ title: 'Save successfully!', text: '' })
                 } else {
                     this.showErrorsMessage(res);
                 }
             } catch (error) {
                 console.log(error);
                 showErrors({ 
-                    title: 'Lỗi hệ thống', 
+                    title: 'Server error!', 
                     text: SERVER_ERROR_MESSAGE
                 });
             }
@@ -188,7 +216,7 @@ export default {
         showErrorsMessage: function(res){
             const errors = getErrorsFromResponse(res.data);
             showErrors({
-                title: 'Vui lòng kiểm tra lại thông tin',
+                title: 'Please check input data!',
                 text: errors
             })
         },
@@ -196,6 +224,7 @@ export default {
         setReviewSlug: function(value){
             this.review.slug = convertStringToSlug(value);
         },
+
         handleContentChange: function(){},
 
     },

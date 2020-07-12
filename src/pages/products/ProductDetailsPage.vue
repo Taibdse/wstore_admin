@@ -75,11 +75,21 @@
                                     </div>
                                     
                                 </div>
+
                                 <div class="md-layout md-gutter">
                                     <div class="md-layout-item md-size-100">
                                         <md-field>
-                                            <label>Description</label>
+                                            <label>Description (VN)</label>
                                             <md-textarea v-model="product.description"></md-textarea>
+                                        </md-field>
+                                    </div>
+                                </div>
+
+                                  <div class="md-layout md-gutter">
+                                    <div class="md-layout-item md-size-100">
+                                        <md-field>
+                                            <label>Description (EN)</label>
+                                            <md-textarea v-model="product.descriptionEn"></md-textarea>
                                         </md-field>
                                     </div>
                                 </div>
@@ -105,6 +115,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="md-layout md-gutter" style="margin-top: 20px">
                                     <div class="md-layout-item md-size-100">
                                         <strong style="margin-bottom: 20px">Upload sub image (can upload multiple images)</strong><br/><br/>
@@ -161,7 +172,7 @@ export default {
         productSubImages: [],
         productMainImages: [],
         insertProduct: false,
-        serverErrorMsg: 'Không thể thêm sản phẩm, do đã có lỗi xảy ra trên server, vui lòng kiểm tra lại thông tin sản phẩm'
+        serverErrorMsg: 'Can not save product, due to some errord from server!'
     }),
     methods: {
         getProductDetails: async function(){
@@ -195,7 +206,7 @@ export default {
         showErrorsMessage: function(res){
             const errors = getErrorsFromResponse(res.data);
             showErrors({
-                title: 'Vui lòng kiểm tra lại thông tin',
+                title: 'Please check input data!',
                 text: errors
             })
         },
@@ -218,7 +229,6 @@ export default {
                 data.inactiveSubImages = [];
             }
 
-
             if(this.insertProduct) {
                 await this.handleInsertProduct(data);
             } else {
@@ -232,13 +242,13 @@ export default {
             try {
                 const res = await ProductService.insertProduct(data);
                 if(res.data.success === '1') {
-                    showSuccessMsg({ title: 'Thêm thành công', text: '' })
+                    showSuccessMsg({ title: 'Save successfully!', text: '' })
                 } else {
                     this.showErrorsMessage(res);
                 }
             } catch (error) {
                 showErrors({ 
-                    title: 'Lỗi hệ thống', 
+                    title: 'Server errors!', 
                     text: this.serverErrorMsg
                 });
             }
@@ -252,7 +262,7 @@ export default {
                 if(res.data.success === '1') {
                     await this.getProductDetails();
                     showSuccessMsg({
-                        title: 'Cập nhật thành công',
+                        title: 'Save successfully!',
                         text: ''
                     });
 
@@ -261,7 +271,7 @@ export default {
                 }
             } catch (error) {
                 showErrors({ 
-                    title: 'Lỗi hệ thống', 
+                    title: 'Server errors!', 
                     text: this.serverErrorMsg
                 });
             }
@@ -279,6 +289,7 @@ export default {
 
         convertNumToMoneyFormat, getVNTimeFormat
     },
+
     async created(){
         if(this.$route.path.indexOf('/products/insert') > -1){
             this.insertProduct = true;
