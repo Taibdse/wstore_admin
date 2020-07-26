@@ -76,21 +76,21 @@
                                     
                                 </div>
 
-                                <div class="md-layout md-gutter">
-                                    <div class="md-layout-item md-size-100">
-                                        <md-field>
-                                            <label>Description (VN)</label>
-                                            <md-textarea v-model="product.description"></md-textarea>
-                                        </md-field>
+                                <div class="md-layout md-gutter" style="margin-top: 20px">
+                                     <div class="md-layout-item md-size-100">
+                                        <strong>Description (VN)</strong>
+                                        <MyEditor 
+                                            :ref="'descriptionVN'" 
+                                            :content="product.description" />
                                     </div>
                                 </div>
 
                                   <div class="md-layout md-gutter">
-                                    <div class="md-layout-item md-size-100">
-                                        <md-field>
-                                            <label>Description (EN)</label>
-                                            <md-textarea v-model="product.descriptionEn"></md-textarea>
-                                        </md-field>
+                                    <div class="md-layout-item md-size-100" style="margin-top: 20px">
+                                        <strong>Description (EN)</strong>
+                                        <MyEditor 
+                                            :ref="'descriptionEN'" 
+                                            :content="product.descriptionEn" />
                                     </div>
                                 </div>
 
@@ -152,11 +152,12 @@ import { getVNTimeFormat } from '../../utils/time';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
 import { getErrorsFromResponse } from '../../utils/errors';
 import DropzoneUpload from '@/components/common/DropzoneUpload';
+import MyEditor from '../../components/common/MyEditor';
 import { APP_ROOT_DOMAIN } from '../../configs/api';
 
 export default {
     components: {
-       DropzoneUpload
+       DropzoneUpload, MyEditor
     },
     data: () => ({
         product: { 
@@ -228,6 +229,11 @@ export default {
             } else {
                 data.inactiveSubImages = [];
             }
+
+            data.description = this.$refs['descriptionVN'].$data.myContent;
+            data.descriptionEn = this.$refs['descriptionEN'].$data.myContent;
+
+
 
             if(this.insertProduct) {
                 await this.handleInsertProduct(data);

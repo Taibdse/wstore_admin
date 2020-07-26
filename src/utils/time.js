@@ -24,7 +24,7 @@ export const convertVNDateToSQLDateFormat = (d) => {
 
 export const getVNTimeFormat = (time) => {
     let d = new Date(time);
-    d = new Date(d.setHours(d.getHours() - 7));
+    // d = new Date(d.setHours(d.getHours() - 7));
     const day = d.getDay();
     const hour = d.getHours();
     const min = d.getMinutes();
