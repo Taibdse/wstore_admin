@@ -32,5 +32,7 @@ export default {
 </script>
 
 <style>
-
+.ql-editor {
+    max-height: 600px!important;
+}
 </style>

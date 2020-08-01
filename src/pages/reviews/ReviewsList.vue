@@ -7,7 +7,7 @@
         <md-table-row  v-for="(review) in reviews" :key="review.id" >
             <md-table-cell>{{ review.index + 1 }}</md-table-cell>
             <md-table-cell>{{ truncate(review.title, 10) }}</md-table-cell>
-            <md-table-cell>{{ truncate(removeHtmlTags(review.content), 40) }}</md-table-cell>
+            <!-- <md-table-cell>{{ truncate(removeHtmlTags(review.content), 40) }}</md-table-cell> -->
             <md-table-cell>{{ review.celebrityName }}</md-table-cell>
             <md-table-cell>
                 <img :src="formatImageUrl(review.image)" class="img-fluid" />
@@ -36,7 +36,7 @@ export default {
         reviews: Array,
     },
     data: () => ({
-        tblHeaders: ['#', 'Title', 'Content', 'Celebrity Name', 'Image', 'Status'],
+        tblHeaders: ['#', 'Title', 'Celebrity Name', 'Image', 'Status'],
     }),
     methods: {
         showDetails: function(review){

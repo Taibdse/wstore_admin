@@ -154,9 +154,9 @@ export default {
                 }
             } catch (error) {
                 showErrors({
-                        title: 'Server error!',
-                        text: SERVER_ERROR_MESSAGE
-                    });
+                    title: 'Server error!',
+                    text: SERVER_ERROR_MESSAGE
+                });
             }
             this.isLoading = false;
         },
