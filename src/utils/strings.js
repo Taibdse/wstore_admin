@@ -47,3 +47,9 @@ export const removeHtmlTags = (myString) => {
     if(isEmpty(myString)) return '';
     return myString.replace(/<[^>]*>?/gm, '');
 }
+
+export const getByteSize = (str) => {
+    // return new Blob([str]).size;
+    const size = (new TextEncoder().encode(str)).length / 1024;
+    return size.toFixed(2);
+}
