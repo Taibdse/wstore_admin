@@ -27,7 +27,7 @@
           <div class="md-layout md-gutter">
             <md-button class="md-raised md-primary" style="margin-left: auto" @click="handleSearchCustomers">Search</md-button>
             <md-button class="md-raised md-warning" :disabled="isLoadingExcel" @click="exportExcel">
-                {{ isLoadingExcel ? 'Exporting Excel' : 'Export Excel' }}
+                {{ isLoadingExcel ? 'Downloading Excel...' : 'Export Excel' }}
             </md-button>
           </div>
         </md-card-content>
