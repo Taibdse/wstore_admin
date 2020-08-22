@@ -29,6 +29,7 @@ import AdminLoginPage from '../pages/auth/AdminLoginPage.vue';
 import AdminChangePasswordPage from '../pages/auth/AdminChangePasswordPage.vue';
 import WebsiteInfoPage from '../pages/website/WebsiteInfoPage.vue';
 import LanguagePage from '../pages/language/LanguagePage.vue';
+import CustomersPage from '../pages/customer/CustomersPage.vue';
 import NotFoundPage from '../pages/notfound/NotFoundPage';
 
 const routes = [
@@ -213,6 +214,14 @@ const routes = [
         name: 'Language',
         component: LanguagePage,
       },
+
+       //=========== CUSTOMER ROUTES ============== 
+       {
+        path: 'customer',
+        name: 'Customer',
+        component: CustomersPage,
+      },
+
 
 
        //=========== NOT FOUND ROUTES ============== 

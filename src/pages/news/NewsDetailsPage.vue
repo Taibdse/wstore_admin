@@ -58,7 +58,6 @@
                                                 <strong for="">Content (VN)</strong><br/>
                                                 <MyEditor 
                                                     :ref="'myEditorVN' + newsItem.id" 
-                                                    :handleTextChange="handleContentChange" 
                                                     :content="newsItem.content" />
                                             </div>
                                         </div>
@@ -68,7 +67,6 @@
                                                 <strong for="">Content (EN)</strong><br/>
                                                 <MyEditor 
                                                     :ref="'myEditorEN' + newsItem.id" 
-                                                    :handleTextChange="handleContentChange" 
                                                     :content="newsItem.contentEn" />
                                             </div>
                                             
@@ -278,8 +276,7 @@ export default {
             this.news = { ...this.news };
         },
 
-        handleContentChange: function(value){
-        },
+      
 
         setNewsSlug: function(value){
             this.news.slug = convertStringToSlug(value);

@@ -30,13 +30,14 @@
         <drop-down>
           <a slot="title" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-bell"></i> 
-            <span style="margin-top: 10px">Information</span>
+            <span style="margin-top: 10px">Settings</span>
             <!-- <span class="notification">5</span> -->
             <!-- <p class="hidden-lg hidden-md">person</p> -->
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <li><a href="#" @click="() => navigateRoute('/information')">Store</a></li>
             <li><a href="#" @click="() => navigateRoute('/website')">Website</a></li>
+            <li><a href="#" @click="() => navigateRoute('/language')">Multilingual Settings</a></li>
           </ul>
         </drop-down>
     </li>

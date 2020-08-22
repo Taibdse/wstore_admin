@@ -26,6 +26,10 @@
         <i class="fas fa-users"></i> 
         <p>Reviews</p>
       </sidebar-link>
+      <sidebar-link to="/customer">
+        <i class="fas fa-users"></i> 
+        <p>Customer</p>
+      </sidebar-link>
        <sidebar-link to="/tips">
         <i class="fas fa-lightbulb"></i>
         <p>Tips</p>

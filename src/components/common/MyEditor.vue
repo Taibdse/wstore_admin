@@ -2,7 +2,7 @@
     <div>
         <small style="float: right">Size: {{sizeContent}} kb</small>
         <div style="clear: both"></div>
-        <vue-editor v-model="myContent" text-change="handleTextChange" style="width: 100%"></vue-editor>
+        <vue-editor ref="vueEditor" v-model="myContent" :text-change="handleTextChange()" style="width: 100%"></vue-editor>
 
     </div>
 </template>
@@ -14,9 +14,10 @@ import { getByteSize } from '../../utils/strings';
 
 export default {
     props: {
-        handleTextChange: Function,
+        // handleTextChange: Function,
         content: String
     },
+
     components: {
         VueEditor
     },
@@ -26,9 +27,19 @@ export default {
         sizeContent: 0
     }),
 
+    methods: {
+        handleTextChange: function(val) {
+            //  console.log(this.$refs['vueEditor'].value)
+        }
+    },
+
     watch: {
         content: function(newVal, oldval){
             this.myContent = newVal;
+            
+
+        },
+        myContent: function(newVal, oldVal) {
             this.sizeContent = getByteSize(newVal);
         }
     },
@@ -42,6 +53,6 @@ export default {
 
 <style>
 .ql-editor {
-    max-height: 600px!important;
+    max-height: 400px!important;
 }
 </style>
