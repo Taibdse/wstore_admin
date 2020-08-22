@@ -57,6 +57,7 @@ export default {
       }
     }
   },
+  
   methods: {
         showUploadedFilesOnDropzone: function(){
             this.uploadedFiles.forEach(file => {
