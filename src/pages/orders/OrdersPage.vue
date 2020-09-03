@@ -66,21 +66,26 @@
           </div>
           <div v-show="!isLoading && orders.length !== 0">
             <Pagination :pagination="pagination" :handleChange="handlePageChange"/>
-            <OrdersList :orders="pagingOrders" />
+            <OrdersList :orders="pagingOrders" :onViewDetails="viewDetails"  />
           </div>
           <div v-show="!isLoading && orders.length === 0">
             <h3 style="text-align: center">No orders found!</h3>
           </div>
         </md-card-content>
       </md-card>
+      <OrderDetailsDialog 
+        :order="order" 
+        :onClose="handleCloseDialog"
+        :showDialog="showDialog" />
     </div>
-
+  <!-- <OrderDetailsDialog :order="order" /> -->
     
 </template>
 
 <script>
 import OrderService from '../../services/order.service';
 import OrdersList from '@/pages/orders/OrdersList';
+import OrderDetailsDialog from './OrderDetailsDialog'
 import { formatVNDate, is2MonthRange, convertVNDateToSQLDateFormat } from '../../utils/time';
 import { isEmpty } from '@/utils/validations.js';
 import Pagination from '@/components/common/Pagination';
@@ -88,7 +93,7 @@ import { showErrors } from '../../utils/alert';
 
 export default {
   components: {
-    OrdersList, Pagination
+    OrdersList, Pagination, OrderDetailsDialog
   },
   data: () => ({
       orders: [],
@@ -111,7 +116,10 @@ export default {
       
       isLoading: false,
       arrStatus: [],
-      pagination: { pageCount: 0, currentPage: 1, size: 10 }
+      pagination: { pageCount: 0, currentPage: 1, size: 10 },
+
+      order: {},
+      showDialog: false
   }),
 
   computed: {
@@ -129,13 +137,22 @@ export default {
       this.pagination = { ...this.pagination, currentPage: pageNum };
     },
 
+    handleCloseDialog: function(){
+      this.showDialog = false
+    },
+
+    viewDetails: function(order){
+      this.order = order;
+      this.showDialog = true;
+    },
+
     getOrders: async function(){
       let { from, to } = this.selectedDate;
       from = convertVNDateToSQLDateFormat(from);
       to = convertVNDateToSQLDateFormat(to);
       
       if(!is2MonthRange(from, to)) return showErrors({ 
-        title: 'Khoảng thời gian tìm kiếm không được quá 2 tháng!', 
+        title: 'Time range can not exceed 2 months!', 
         text: '' 
       })
 
@@ -148,6 +165,7 @@ export default {
           orderByTime: this.orderBys.createdAt 
         };
         const res = await OrderService.getOrders(params);
+        console.log(res)
         this.orders = res.data;
         const pageCount = Math.ceil(res.data.length / this.pagination.size);
         this.pagination = { ...this.pagination, currentPage: 1, pageCount };
@@ -171,8 +189,6 @@ export default {
     this.isLoading = true;
     this.$material.locale.dateFormat = 'dd/MM/yyyy';
     this.getSelectedDateDefault();
-    
-    
     try {
       const res = await OrderService.getOrderStatus();
       this.arrStatus = res.data;

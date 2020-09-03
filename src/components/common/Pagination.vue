@@ -75,9 +75,6 @@ export default {
     font-size: 15px!important;
 }
 
-
-
-
 .active-item{
     background-color: #ccc;
 }

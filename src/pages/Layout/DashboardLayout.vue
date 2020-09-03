@@ -29,7 +29,13 @@
       <sidebar-link to="/customer">
         <i class="fas fa-users"></i> 
         <p>Customer</p>
+      
       </sidebar-link>
+        <sidebar-link to="/payment-method">
+        <i class="fas fa-money-check-alt"></i> 
+        <p>Payment Method</p>
+      </sidebar-link>
+      
        <sidebar-link to="/tips">
         <i class="fas fa-lightbulb"></i>
         <p>Tips</p>
@@ -42,8 +48,6 @@
         <i class="fas fa-file-contract"></i> 
         <p>Policies</p>
       </sidebar-link>
-      
-       
       <sidebar-link to="/shippings" style="margin-bottom: 40px">
         <i class="fas fa-truck"></i> 
         <p>Shippings</p>

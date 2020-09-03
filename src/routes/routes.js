@@ -30,6 +30,7 @@ import AdminChangePasswordPage from '../pages/auth/AdminChangePasswordPage.vue';
 import WebsiteInfoPage from '../pages/website/WebsiteInfoPage.vue';
 import LanguagePage from '../pages/language/LanguagePage.vue';
 import CustomersPage from '../pages/customer/CustomersPage.vue';
+import PaymentMethodPage from '../pages/payment-method/PaymentMethodPage.vue';
 import NotFoundPage from '../pages/notfound/NotFoundPage';
 
 const routes = [
@@ -222,6 +223,11 @@ const routes = [
         component: CustomersPage,
       },
 
+      {
+        path: 'payment-method',
+        name: 'PaymentMethod',
+        component: PaymentMethodPage,
+      },
 
 
        //=========== NOT FOUND ROUTES ============== 

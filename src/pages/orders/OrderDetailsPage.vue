@@ -20,17 +20,7 @@
                                     </md-field>
                                 </div>
 
-                                <div class="md-layout-item sm-size-100">
-                                    <md-field>
-                                        <label for="status">Status</label>
-                                        <md-select v-model="order.status" name="status" id="status" >
-                                            <md-option v-for="(status) in arrStatus" :key="status" :value="status">{{ status }}</md-option>
-                                        </md-select>
-                                    </md-field>
-                                </div>
-                            </div>
-
-                            <div class="md-layout md-gutter">
+                                
                                 <div class="md-layout-item sm-size-100">
                                     <md-field>
                                         <label for="customerPhone">Phone</label>
@@ -83,6 +73,48 @@
                                 </div>
                                 
                             </div>
+
+                            <div class="md-layout md-gutter">
+                                 
+                                <div class="md-layout-item sm-size-100">
+                                    <md-field >
+                                        <label for="adminNote">Payment Method</label>
+                                        <md-select  v-model="order.paymentMethodId"
+                                            name="paymentMethodId" id="paymentMethodId" >
+                                            <md-option 
+                                                v-for="p in paymentMethods" 
+                                                :key="p.id" 
+                                                :value="p.id">
+                                                {{ p.nameEn }}
+                                            </md-option>
+                                        </md-select>
+                                    </md-field>
+                                </div>
+                                <div class="md-layout-item sm-size-100">
+                                    <md-field>
+                                        <label for="status">Status</label>
+                                        <md-select v-model="order.status" name="status" id="status" >
+                                            <md-option v-for="(status) in arrStatus" :key="status" :value="status">{{ status }}</md-option>
+                                        </md-select>
+                                    </md-field>
+                                </div>
+                                 <div class="md-layout-item sm-size-100">
+                                    <md-field >
+                                        <label for="adminNote">Payment Status</label>
+                                        <md-select v-model="order.paymentStatus"
+                                            name="paymentStatus" id="paymentStatus" >
+                                            <md-option 
+                                                v-for="p in paymentStatusList" 
+                                                :key="p.value" 
+                                                :value="p.value">
+                                                {{ p.title }}
+                                            </md-option>
+                                        </md-select>
+                                    </md-field>
+                                </div>
+                                
+                            </div>
+
                             <div class="md-layout md-gutter">
                                 <div class="md-layout-item sm-size-100">
                                     <md-field >
@@ -90,8 +122,8 @@
                                         <md-input name="adminNote" id="adminNote" v-model="order.adminNote"  />
                                     </md-field>
                                 </div>
-                                
-                            </div>
+                            </div> 
+                           
                             <div class="md-layout md-gutter">
                                 <md-button 
                                     type="submit" 
@@ -156,7 +188,8 @@ import { isEmpty } from '../../utils/validations';
 import { convertNumToMoneyFormat } from '../../utils/strings';
 import { getVNTimeFormat } from '../../utils/time';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
-import { SHIPPING_TYPES } from '../../common/constants';
+import { SHIPPING_TYPES, getPaymentStatus } from '../../common/constants';
+import PaymentMethodService from '../../services/paymentMethod.service';
 
 export default {
     components: {
@@ -170,7 +203,9 @@ export default {
         provinces: [],
         districts: [],
         shippings: [],
-        shouldSetDistrict0: false
+        shouldSetDistrict0: false,
+        paymentStatusList: getPaymentStatus(),
+        paymentMethods: []
     }),
     methods: {
         isEmpty,
@@ -188,7 +223,8 @@ export default {
                     this.order = { 
                         ...this.order, 
                         provinceId: customerProvince.id, 
-                        districtId: customerDistrict.id
+                        districtId: customerDistrict.id,
+                        paymentMethodId: this.order.paymentMethod.id
                     }
                     console.log(this.order);
                 }
@@ -210,7 +246,6 @@ export default {
         },
 
         changeProvince: async function(provinceId){
-             console.log('change province');
             await this.getDistrictsByProvinceId(provinceId);
             const province = this.provinces.find(p => p.id == provinceId);
             const districtId = this.shouldSetDistrict0 ? this.districts[0].id : this.order.districtId;
@@ -227,22 +262,18 @@ export default {
             };
 
             this.shouldSetDistrict0 = true;
-            console.log('end change province');
         },
 
         changeDistrict: function(districtId){
-            console.log('change district');
             if(this.order.customerProvince.shippingType === SHIPPING_TYPES.NOI_THANH){
                 
                 const district = this.districts.find(d => d.id == districtId);
-                 console.log(district);
                 let shippingType = SHIPPING_TYPES.NOI_THANH;
                 if(!isEmpty(district.shippingType)){
                     shippingType = district.shippingType;
                 }
                 this.order.shippingType = shippingType;
                 let shippingMoney = this.shippings.find(item => item.type == shippingType).money;
-                console.log(shippingMoney);
                 let totalPrice = this.order.productsPrice + +shippingMoney;
                 this.order = {
                     ...this.order,
@@ -254,7 +285,16 @@ export default {
         getDistrictsByProvinceId: async function(provinceId){
             const res = await AddressService.getDistrictsByProvinceId(provinceId);
             this.districts = res.data;
-            console.log('get districst');
+        },
+
+        getPaymentMethods: async function(){
+            try {
+                const res = await PaymentMethodService.getAll();
+                const { data } = res.data;
+                this.paymentMethods = data;
+            } catch (error) {
+                this.paymentMethods = [];
+            }
         },
 
         saveOrder: async function(){
@@ -299,6 +339,7 @@ export default {
     async created(){
         this.isLoading = true;
        try {
+            await this.getPaymentMethods();
             const [res1, res2, res3] = await Promise.all([
                 OrderService.getOrderStatus(),
                 AddressService.getProvinces(),
