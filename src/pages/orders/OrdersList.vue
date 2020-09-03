@@ -70,7 +70,7 @@ export default {
     },
     data: () => ({
         tblHeaders: [
-            '#', 'Customer', 'Phone', 'Email', 'Time', 'Status', 'Payment status', 'Total Price'
+            '#', 'Customer', 'Phone', 'Email', 'Time', 'Status', 'Payment Status', 'Total Price'
         ],
     }),
     methods: {

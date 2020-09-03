@@ -22,7 +22,7 @@
               <strong>Status:</strong> {{ order.status }}
             </div>
             <div>
-              <strong>Payment method:</strong> {{ order.paymentMethod.nameEn }}
+              <strong>Payment method:</strong> {{ !isEmpty(order.paymentMethod) ? order.paymentMethod.nameEn : '' }}
             </div>
              <div>
               <strong>Payment status:</strong> {{ order.paymentStatus }}

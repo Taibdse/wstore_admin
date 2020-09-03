@@ -75,7 +75,6 @@
                             </div>
 
                             <div class="md-layout md-gutter">
-                                 
                                 <div class="md-layout-item sm-size-100">
                                     <md-field >
                                         <label for="adminNote">Payment Method</label>
@@ -224,7 +223,7 @@ export default {
                         ...this.order, 
                         provinceId: customerProvince.id, 
                         districtId: customerDistrict.id,
-                        paymentMethodId: this.order.paymentMethod.id
+                        paymentMethodId: !isEmpty(this.order.paymentMethod) ? this.order.paymentMethod.id : null
                     }
                     console.log(this.order);
                 }
@@ -333,7 +332,7 @@ export default {
             this.isLoading = false;
         },
 
-        convertNumToMoneyFormat, getVNTimeFormat
+        convertNumToMoneyFormat, getVNTimeFormat, isEmpty
     },
 
     async created(){
