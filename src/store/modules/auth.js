@@ -8,8 +8,6 @@ const getters = {
 
 const actions = {
     setIsAuthorized({ commit }, isAuthorized) {
-      console.log('setIsAuthorized');
-      console.log(isAuthorized);
         commit('setIsAuthorized', isAuthorized);
     },
 };

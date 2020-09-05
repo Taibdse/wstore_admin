@@ -3,8 +3,10 @@
         <md-dialog-title>{{ editMode ? 'Update' : 'Create' }} payment method</md-dialog-title>
         <md-dialog-content>
 
-          <md-progress-spinner v-if="loading" md-mode="indeterminate" style="margin: auto"></md-progress-spinner>
-          
+          <div v-if="loading" style="text-align: center">
+            <md-progress-spinner md-mode="indeterminate" style="margin: auto"></md-progress-spinner>
+          </div>          
+
           <div style="padding: 20px" v-if="!loading">
             <h3 class="text-center" v-if="notfound">Can not find this payment method</h3>
             <form v-if="!notfound" @submit.prevent="handleSave" style="width: 100%">
