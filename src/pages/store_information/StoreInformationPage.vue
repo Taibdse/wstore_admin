@@ -79,6 +79,24 @@
                             </div>
 
                             <div class="md-layout md-gutter">
+                                <div class="md-layout-item sm-size-100">
+                                    <strong>Order success content (VN)</strong>
+                                    <MyEditor 
+                                            :ref="'orderSuccessContent'" 
+                                            :content="information.orderSuccessContent" />
+                                </div>
+                            </div>
+
+                            <div class="md-layout md-gutter" style="margin-top: 20px">
+                                <div class="md-layout-item sm-size-100">
+                                    <strong>Order success content (EN)</strong>
+                                    <MyEditor 
+                                            :ref="'orderSuccessContentEn'" 
+                                            :content="information.orderSuccessContentEn" />
+                                </div>
+                            </div>
+
+                            <div class="md-layout md-gutter">
                                 <md-button 
                                     type="submit" 
                                     class="md-raised md-primary" 
@@ -135,8 +153,13 @@ export default {
             try {
                 const aboutUsContent = this.$refs['myEditorVN'].$data.myContent;
                 const aboutUsContentEn = this.$refs['myEditorEN'].$data.myContent;
+                const orderSuccessContent = this.$refs['orderSuccessContent'].$data.myContent;
+                const orderSuccessContentEn = this.$refs['orderSuccessContentEn'].$data.myContent;
                 this.information.aboutUsContent = aboutUsContent;
                 this.information.aboutUsContentEn = aboutUsContentEn;
+                this.information.orderSuccessContent = orderSuccessContent;
+                this.information.orderSuccessContentEn = orderSuccessContentEn;
+                
 
                 const res = await InformationService.updateInformation(this.information);
                 if(res.data.success == '1') {
