@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <div class="md-layout md-gutter">
+                            <div class="md-layout md-gutter" style="margin-top: 20px">
                                 <div class="md-layout-item sm-size-100">
                                     <strong>Order success content (VN)</strong>
                                     <MyEditor 
