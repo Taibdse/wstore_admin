@@ -147,7 +147,7 @@
 import CategoryService from '../../services/category.service';
 import ProductService from '../../services/product.service';
 import { isEmpty } from '@/utils/validations.js';
-import { convertNumToMoneyFormat, convertStringToSlug, formatImageUrl } from '../../utils/strings';
+import { toMoneyFormat, convertStringToSlug, formatImageUrl } from '../../utils/strings';
 import { getVNTimeFormat } from '../../utils/time';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
 import { getErrorsFromResponse } from '../../utils/errors';
@@ -293,7 +293,7 @@ export default {
             this.product.slug = convertStringToSlug(value);
         },
 
-        convertNumToMoneyFormat, getVNTimeFormat
+        toMoneyFormat, getVNTimeFormat
     },
 
     async created(){

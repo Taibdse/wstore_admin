@@ -58,7 +58,7 @@
 
 import ShippingService from '../../services/shipping.service';
 import { isEmpty } from '@/utils/validations.js';
-import { convertNumToMoneyFormat } from '../../utils/strings';
+import { toMoneyFormat } from '../../utils/strings';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
 import { getErrorsFromResponse } from '../../utils/errors';
 import { SERVER_ERROR_MESSAGE } from '../../utils/constants';
@@ -73,7 +73,7 @@ export default {
 
     computed: {
         money: function(){
-            return convertNumToMoneyFormat(this.shipping.money);
+            return toMoneyFormat(this.shipping.money);
         }
     },
 

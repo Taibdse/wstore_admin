@@ -3,9 +3,9 @@
       <h2 class="my-page-header">Payment Methods</h2>
         <div class="md-layout">
             
-            <div class="md-layout-item" style="text-align: right">
+            <!-- <div class="md-layout-item" style="text-align: right">
                 <md-button class="md-raised md-success" @click="handleOpenCreateDialog">Create payment method</md-button>
-            </div>
+            </div> -->
 
              <md-card>
                 <md-card-header data-background-color="green">
@@ -71,7 +71,7 @@ export default {
             try {
                 const res = await PaymentMethodService.getAll();
                 console.log(res);
-                const { data } = res.data;
+                const { data } = res;
                 this.paymentMethods = data;
             } catch (error) {
                 this.paymentMethods = [];
@@ -89,7 +89,7 @@ export default {
                 await this.handleCreate(paymentMethod)
             }
             this.isSaving = false;
-            
+        
         },
 
         handleCreate: async function(paymentMethod){
@@ -139,7 +139,7 @@ export default {
             try {
                 const res = await PaymentMethodService.getById(paymentMethod.id);
                 console.log(res);
-                const { data } = res.data;
+                const { data } = res;
                 this.paymentMethod = data;
                 if(isEmpty(data)) {
                     this.notfound = true;

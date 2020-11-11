@@ -19,13 +19,13 @@
                     </div>
                 </md-table-cell>
                 <md-table-cell>
-                    <strong>{{ convertNumToMoneyFormat(item.productPrice) }} đ</strong>
+                    <strong>{{ toMoneyFormat(item.productPrice) }} đ</strong>
                 </md-table-cell>
                 <md-table-cell>
                     <strong>{{ item.quantity }}</strong>
                 </md-table-cell>
                 <md-table-cell>
-                    <strong>{{ convertNumToMoneyFormat(item.quantity * item.productPrice) }} đ</strong>
+                    <strong>{{ toMoneyFormat(item.quantity * item.productPrice) }} đ</strong>
                 </md-table-cell>
             
             </md-table-row>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { convertNumToMoneyFormat } from '@/utils/strings.js';
+import { toMoneyFormat } from '@/utils/strings.js';
 import { formatImageUrl } from '../../utils/strings';
 
 export default {
@@ -48,7 +48,7 @@ export default {
         ]
     }),
     methods: {
-        convertNumToMoneyFormat, formatImageUrl
+        toMoneyFormat, formatImageUrl
     }
 }
 </script>

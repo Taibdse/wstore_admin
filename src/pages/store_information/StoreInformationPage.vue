@@ -62,6 +62,15 @@
 
                             <div class="md-layout md-gutter">
                                 <div class="md-layout-item sm-size-100">
+                                    <md-field>
+                                        <label for="storeYoutube">Youtube</label>
+                                        <md-input name="storeYoutube" id="storeYoutube" v-model="information.storeYoutube"/>
+                                    </md-field>
+                                </div>
+                            </div>
+
+                            <div class="md-layout md-gutter">
+                                <div class="md-layout-item sm-size-100">
                                     <strong>About Us Content (VN)</strong>
                                     <MyEditor 
                                             :ref="'myEditorVN'" 
