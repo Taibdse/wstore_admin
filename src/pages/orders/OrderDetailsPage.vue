@@ -19,8 +19,13 @@
                                         <md-input name="customerFullName" id="customerFullName" v-model="order.customerFullName"  />
                                     </md-field>
                                 </div>
-
-                                
+                                <div class="md-layout-item sm-size-100">
+                                    <!-- <label for="customerDob">Date of birth</label> -->
+                                    <small>Date of birth</small>
+                                    <md-datepicker style="margin-top: -17px" v-model="order.customerDob" md-immediately />
+                                </div>
+                            </div>
+                            <div class="md-layout md-gutter">
                                 <div class="md-layout-item sm-size-100">
                                     <md-field>
                                         <label for="customerPhone">Phone</label>
@@ -136,7 +141,7 @@
                             <div class="md-layout-item">
                                 <OrderProducts :orderItems="order.orderDetails" />
                                 <strong style="float: right" class="text-primary">
-                                    Total products price: {{ convertNumToMoneyFormat(order.productsPrice) }} đ
+                                    Total products price: {{ toMoneyFormat(order.productsPrice) }} đ
                                 </strong>
                             </div>
                         </div>
@@ -147,7 +152,7 @@
                                     <md-table-row >
                                         <md-table-head>Shipping: </md-table-head>
                                         <md-table-cell>
-                                            {{ order.shippingType }}, {{ convertNumToMoneyFormat(order.shippingMoney) }} đ
+                                            {{ order.shippingType }}, {{ order.freeship ? 0 : toMoneyFormat(order.shippingMoney) }} đ
                                         </md-table-cell>
                                     </md-table-row>
                                     <md-table-row>
@@ -166,7 +171,7 @@
                             </div>
                         </div>
                         <h4 style="font-weight: bold; float: right" class="text-success">
-                            Total money: {{ convertNumToMoneyFormat(order.totalPrice) }} đ
+                            Total money: {{ toMoneyFormat(order.totalPrice) }} đ
                         </h4>
                     </div>
 
@@ -184,8 +189,8 @@ import OrderService from '../../services/order.service';
 import AddressService from '../../services/address.service';
 import ShippingService from '../../services/shipping.service';
 import { isEmpty } from '../../utils/validations';
-import { convertNumToMoneyFormat } from '../../utils/strings';
-import { getVNTimeFormat } from '../../utils/time';
+import { toMoneyFormat } from '../../utils/strings';
+import { formatVNDate, getVNTimeFormat } from '../../utils/time';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
 import { SHIPPING_TYPES, getPaymentStatus } from '../../common/constants';
 import PaymentMethodService from '../../services/paymentMethod.service';
@@ -223,6 +228,7 @@ export default {
                         ...this.order, 
                         provinceId: customerProvince.id, 
                         districtId: customerDistrict.id,
+                        customerDob: new Date(this.order.customerDob),
                         paymentMethodId: !isEmpty(this.order.paymentMethod) ? this.order.paymentMethod.id : null
                     }
                     console.log(this.order);
@@ -250,14 +256,15 @@ export default {
             const districtId = this.shouldSetDistrict0 ? this.districts[0].id : this.order.districtId;
              
             const shipping = this.getShipping(provinceId, districtId);
+            const shippingMoney = !this.order.freeship ? +shipping.money : 0;
             
             this.order = { 
                 ...this.order, 
                 customerProvince: province, 
                 shippingType: shipping.type, 
-                shippingMoney: shipping.money,
+                shippingMoney,
                 districtId: districtId,
-                totalPrice: this.order.productsPrice + +shipping.money
+                totalPrice: this.order.productsPrice + shippingMoney
             };
 
             this.shouldSetDistrict0 = true;
@@ -289,7 +296,8 @@ export default {
         getPaymentMethods: async function(){
             try {
                 const res = await PaymentMethodService.getAll();
-                const { data } = res.data;
+                console.log(res)
+                const { data } = res;
                 this.paymentMethods = data;
             } catch (error) {
                 this.paymentMethods = [];
@@ -332,7 +340,7 @@ export default {
             this.isLoading = false;
         },
 
-        convertNumToMoneyFormat, getVNTimeFormat, isEmpty
+        toMoneyFormat, getVNTimeFormat, isEmpty
     },
 
     async created(){

@@ -7,6 +7,9 @@
               <strong>Customer:</strong> {{ order.customerFullName }}
             </div>
             <div>
+              <strong>Date of birth:</strong> {{ formatVNDate(order.customerDob) }}
+            </div>
+            <div>
               <strong>Phone:</strong> {{ order.customerPhone }}
             </div>
             <div>
@@ -28,8 +31,8 @@
               <strong>Payment status:</strong> {{ order.paymentStatus }}
             </div>
             <div>
-              <strong>Shipping:</strong> <strong> {{ order.shippingType }}</strong>
-              {{ convertNumToMoneyFormat(order.shippingMoney) }} d
+              <strong>Shipping:</strong> <strong> {{ order.shippingType }} / </strong>
+              {{ order.freeship ? 'freeship' : toMoneyFormat(order.shippingMoney) + 'đ' }} 
             </div>
             <div>
               <strong>Customer's note:</strong> {{ order.note }}
@@ -38,10 +41,10 @@
               <strong>Admin's note:</strong> {{ order.adminNote }}
             </div>
              <div>
-              <strong>Product price:</strong> {{ convertNumToMoneyFormat(order.productsPrice) }} d
+              <strong>Product price:</strong> {{ toMoneyFormat(order.productsPrice) }} d
             </div>
             <div>
-              <strong>Total price:</strong> {{ convertNumToMoneyFormat(order.totalPrice) }} d
+              <strong>Total price:</strong> {{ toMoneyFormat(order.totalPrice) }} d
             </div>
         </div>
         </md-dialog-content>
@@ -49,13 +52,13 @@
         <md-button class="md-default" type="button" @click="onClose">Close</md-button>
       </md-dialog-actions>
     </md-dialog>
-
 </template>
 
 <script>
 import { getVNTimeFormat } from '../../utils/time';
-import { convertNumToMoneyFormat } from '../../utils/strings';
+import { toMoneyFormat } from '../../utils/strings';
 import { isEmpty } from '../../utils/validations';
+import { formatVNDate } from '../../utils/time'
 
 
   export default {
@@ -70,7 +73,7 @@ import { isEmpty } from '../../utils/validations';
           if(isEmpty(obj)) return '';
           return obj.title;
         },
-      getVNTimeFormat, convertNumToMoneyFormat, isEmpty
+      getVNTimeFormat, toMoneyFormat, isEmpty, formatVNDate
     }
   }
 </script>

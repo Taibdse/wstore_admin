@@ -291,7 +291,6 @@ export default {
     async created(){
         this.getNews();
     }
-    
 }
 </script>
 

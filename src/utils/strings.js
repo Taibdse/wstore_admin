@@ -1,7 +1,7 @@
 import { isEmpty } from './validations';
 import { APP_ROOT_DOMAIN } from '../configs/api';
 
-export const convertNumToMoneyFormat = (val) => {
+export const toMoneyFormat = (val) => {
     if(isEmpty(val)) return '';
     if(typeof val !== 'number') val = Number(val);
     return val.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,').slice(0, -2);

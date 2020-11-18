@@ -8,7 +8,7 @@
             <md-table-cell>{{ index + 1 }}</md-table-cell>
             <md-table-cell>{{ shipping.title }}</md-table-cell>
           
-            <md-table-cell>{{ convertNumToMoneyFormat(shipping.money) }} d</md-table-cell>
+            <md-table-cell>{{ toMoneyFormat(shipping.money) }} d</md-table-cell>
             <md-table-cell>{{ shipping.type }}</md-table-cell>
             <md-table-cell>
                 <md-button class="md-just-icon md-simple md-primary" @click="showDetails(shipping)">
@@ -22,7 +22,7 @@
 
 <script>
 import { isEmpty } from '../../utils/validations';
-import { convertNumToMoneyFormat } from '../../utils/strings';
+import { toMoneyFormat } from '../../utils/strings';
 
 export default {
     props: {
@@ -35,7 +35,7 @@ export default {
         showDetails: function(shipping){
             this.$router.push('/shippings/' + shipping.type);
         },
-        convertNumToMoneyFormat
+        toMoneyFormat
     }
 }
 </script>

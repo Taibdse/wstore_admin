@@ -13,7 +13,7 @@
             <md-table-cell>{{ product.availableSizes }}</md-table-cell>
             <md-table-cell>{{ product.color }}</md-table-cell>
             <md-table-cell>
-                <strong class="text-primary">{{ convertNumToMoneyFormat(product.price) }} đ</strong>
+                <strong class="text-primary">{{ toMoneyFormat(product.price) }} đ</strong>
             </md-table-cell>
             <md-table-cell>
                 <strong class="text-success" v-if="product.available">
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { convertNumToMoneyFormat } from '@/utils/strings.js';
+import { toMoneyFormat } from '@/utils/strings.js';
 import { APP_ROOT_DOMAIN } from '../../configs/api';
 import { isEmpty } from '../../utils/validations';
 import { formatImageUrl } from '../../utils/strings';
@@ -57,7 +57,7 @@ export default {
         showDetails: function(product){
             this.$router.push('/products/' + product.slug);
         },
-        convertNumToMoneyFormat, formatImageUrl
+        toMoneyFormat, formatImageUrl
     }
 }
 </script>

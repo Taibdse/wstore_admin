@@ -27,13 +27,13 @@
         </md-table-cell>
         <!-- <md-table-cell>
           <strong>{{ order.shippingType }}</strong>
-          <div>{{ convertNumToMoneyFormat(order.shippingMoney) }} d</div>
+          <div>{{ toMoneyFormat(order.shippingMoney) }} d</div>
         </md-table-cell> -->
          <!-- <md-table-cell style="min-width: 120px;">
           {{ order.adminNote }}
         </md-table-cell> -->
         <md-table-cell>
-          <strong class="text-success" style="white-space: nowrap; font-size: 1.2em">{{ convertNumToMoneyFormat(order.totalPrice) }} d</strong>
+          <strong class="text-success" style="white-space: nowrap; font-size: 1.2em">{{ toMoneyFormat(order.totalPrice) }} d</strong>
         </md-table-cell>
         <md-table-cell>
             <!-- <md-button class="md-just-icon md-simple md-primary" @click="edit(order)">
@@ -61,7 +61,7 @@
 
 import { getVNTimeFormat } from '../../utils/time';
 import { isEmpty } from '../../utils/validations';
-import { convertNumToMoneyFormat } from '../../utils/strings';
+import { toMoneyFormat } from '../../utils/strings';
 
 export default {
     props: {
@@ -82,7 +82,7 @@ export default {
           if(isEmpty(obj)) return '';
           return obj.title;
         },
-        getVNTimeFormat, convertNumToMoneyFormat
+        getVNTimeFormat, toMoneyFormat
     }
 }
 </script>
