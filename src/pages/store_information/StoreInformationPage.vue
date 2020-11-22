@@ -159,7 +159,13 @@ export default {
             try {
                 const res = await InformationService.getLatestInformation();
                 this.information = res.data;
-                if(isEmpty(this.information)) this.notfound = true;
+                if(isEmpty(this.information)) {
+                    this.notfound = true;
+                } else {
+                    if(isEmpty(this.information.pageMetadata)){
+                        this.information = { ...this.information, pageMetadata: {} }
+                    }
+                }
             } catch (error) {
                 this.notfound = true;
             }
