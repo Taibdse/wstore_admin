@@ -1,3 +1,5 @@
+import { isEmpty } from './validations'
+
 export const daysInWeek = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
 
 export const ten = (val) => val >= 10 ? val : '0' + val;
@@ -10,6 +12,7 @@ export const thousand =  (val) => {
 }
 
 export const formatVNDate = (d) => {
+    if(!d) return '';
     d = new Date(d);
     const y = thousand(d.getFullYear());
     const m = ten(d.getMonth() + 1);

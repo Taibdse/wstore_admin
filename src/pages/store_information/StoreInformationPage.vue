@@ -105,6 +105,14 @@
                                 </div>
                             </div>
 
+                            <div class="md-layout md-gutter" style="margin-top: 20px">
+                                <div class="md-layout-item sm-size-100">
+                                    <PageMetadata 
+                                        ref="pageMetadata" 
+                                        :pageMetadataContent="information.pageMetadata" />
+                                </div>
+                            </div>
+
                             <div class="md-layout md-gutter">
                                 <md-button 
                                     type="submit" 
@@ -131,15 +139,16 @@ import { showErrors, showSuccessMsg } from '../../utils/alert';
 import { getErrorsFromResponse } from '../../utils/errors';
 import { SERVER_ERROR_MESSAGE } from '../../utils/constants';
 import MyEditor from '../../components/common/MyEditor.vue';
+import PageMetadata from '../../components/common/PageMetadata.vue';
 
 
 export default {
     components: {
-        MyEditor
+        MyEditor, PageMetadata
     },
     
     data: () => ({
-        information: {},
+        information: { pageMetadata: {} },
         isLoading: false,
         notfound: false,
     }),
@@ -164,10 +173,12 @@ export default {
                 const aboutUsContentEn = this.$refs['myEditorEN'].$data.myContent;
                 const orderSuccessContent = this.$refs['orderSuccessContent'].$data.myContent;
                 const orderSuccessContentEn = this.$refs['orderSuccessContentEn'].$data.myContent;
+                const pageMetadata = this.$refs['pageMetadata'].$data.pageMetadata;
                 this.information.aboutUsContent = aboutUsContent;
                 this.information.aboutUsContentEn = aboutUsContentEn;
                 this.information.orderSuccessContent = orderSuccessContent;
                 this.information.orderSuccessContentEn = orderSuccessContentEn;
+                this.information.pageMetadata = pageMetadata;
                 
 
                 const res = await InformationService.updateInformation(this.information);

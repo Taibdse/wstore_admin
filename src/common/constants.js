@@ -10,6 +10,12 @@ export const PAYMENT_STATUS = {
     PAID: "PAID"
 }
 
+export const PAGE_TYPES = {
+    HOME_PAGE: 'HOME_PAGE', 
+    PRODUCT_DETAIL_PAGE: 'PRODUCT_DETAIL_PAGE', 
+    ABOUT_US_PAGE: 'ABOUT_US_PAGE'
+}
+
 export const getPaymentStatus = () => {
     return [
         { title: 'Wait for Confirmation', value: PAYMENT_STATUS.CONFIRMATION_WAITING },

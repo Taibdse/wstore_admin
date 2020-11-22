@@ -10,6 +10,9 @@
             {{ customer.fullName }}
         </md-table-cell>
         <md-table-cell>
+            {{ formatVNDate(customer.dob) }}
+        </md-table-cell>
+        <md-table-cell>
          {{ customer.phone }}
         </md-table-cell>
         <md-table-cell>{{ customer.email }}</md-table-cell>
@@ -27,18 +30,20 @@
 </template>
 
 <script>
+import { formatVNDate } from '../../utils/time'
 
 export default {
     props: {
         customers: Array,
     },
     data: () => ({
-        tblHeaders: ['#', 'Fullname', 'Phone', 'Email', 'Address', 'Province'],
+        tblHeaders: ['#', 'Fullname', 'Date of Birth', 'Phone', 'Email', 'Address', 'Province'],
     }),
     methods: {
         showDetails: function(customer){
    
         },
+        formatVNDate
     }
 }
 </script>
