@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { APP_ROOT_API } from '@/configs/api.js';
 
-
 class ProductService{
     static async getProducts(categorySlug, page, size){
         const url = APP_ROOT_API + '/products?categorySlug=' + categorySlug + '&page=' + page + '&size=' + size;
@@ -23,6 +22,10 @@ class ProductService{
         return axios.post(url, product)
     }
 
+    static async saveSortIndexes(products){
+        const url = APP_ROOT_API + '/products/sortIndexes'
+        return axios.put(url, products)
+    }
 }
 
 export default ProductService;

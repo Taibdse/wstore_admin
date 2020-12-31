@@ -120,6 +120,21 @@
 
                 <div class="md-layout md-gutter" style="margin-top: 20px">
                   <div class="md-layout-item md-size-100">
+                    <md-field style="width: 100px">
+                      <label for="productForm">Sort Index</label>
+                      <md-input
+                        style="width: 100px"
+                        name="sortIndex"
+                        id="sortIndex"
+                        v-model="product.sortIndex"
+                        type="number"
+                      />
+                    </md-field>
+                  </div>
+                </div>
+
+                <div class="md-layout md-gutter" style="margin-top: 20px">
+                  <div class="md-layout-item md-size-100">
                     <strong>Description (VN)</strong>
                     <MyEditor
                       :ref="'descriptionVN'"
@@ -143,22 +158,16 @@
 
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-100">
-                    <md-checkbox v-model="product.available"
-                      >Available</md-checkbox
-                    >
-                    <md-checkbox v-model="product.inHomePage"
-                      >Show product in home page</md-checkbox
-                    >
-                    <md-checkbox v-model="product.active"
-                      >Active product</md-checkbox
-                    >
+                    <md-checkbox v-model="product.available">Available</md-checkbox>
+                    <md-checkbox v-model="product.inHomePage">Show product in home page</md-checkbox>
+                    <md-checkbox v-model="product.active">Active product</md-checkbox>
                   </div>
                 </div>
 
                 <div class="md-layout md-gutter" style="margin-top: 20px">
                   <div class="md-layout-item md-size-100">
-                    <strong>Upload main image (only 1 image)</strong
-                    ><br /><br />
+                    <strong>Upload main image (only 1 image)</strong>
+                    <br/><br/>
                     <div>
                       <DropzoneUpload
                         ref="dropzoneMainImage"
@@ -189,8 +198,9 @@
                   <div class="md-layout-item md-size-100">
                     <!-- <strong style="margin-bottom: 20px">Upload sub image (can upload multiple images)</strong><br/><br/> -->
                     <PageMetadata 
-                        ref="pageMetadata" 
-                        :pageMetadataContent="product.pageMetadata" />
+                      ref="pageMetadata" 
+                      :pageMetadataContent="product.pageMetadata" 
+                    />
                   </div>
                 </div>
               </md-card-content>
@@ -224,7 +234,6 @@ import { getErrorsFromResponse } from "../../utils/errors";
 import DropzoneUpload from "@/components/common/DropzoneUpload";
 import MyEditor from "../../components/common/MyEditor";
 import PageMetadata from "../../components/common/PageMetadata";
-import { APP_ROOT_DOMAIN } from "../../configs/api";
 
 export default {
   components: {
@@ -320,7 +329,6 @@ export default {
       data.descriptionEn = this.$refs["descriptionEN"].$data.myContent;
       console.log(this.$refs["pageMetadata"].$data);
       data.pageMetadata = this.$refs["pageMetadata"].$data.pageMetadata;
-
       if (this.insertProduct) {
         await this.handleInsertProduct(data);
       } else {
@@ -328,7 +336,7 @@ export default {
       }
     },
 
-    handleInsertProduct: async function (data) {
+    handleInsertProduct: async function(data) {
       this.isLoading = true;
       try {
         const res = await ProductService.insertProduct(data);
@@ -346,7 +354,7 @@ export default {
       this.isLoading = false;
     },
 
-    handleUpdateProduct: async function (data) {
+    handleUpdateProduct: async function(data) {
       this.isLoading = true;
       try {
         const res = await ProductService.updateProduct(data);
@@ -368,7 +376,7 @@ export default {
       this.isLoading = false;
     },
 
-    getCategories: async function () {
+    getCategories: async function() {
       const res = await CategoryService.getCategories("");
       this.categories = res.data;
     },
