@@ -71,7 +71,7 @@ import { getVNTimeFormat } from '../../utils/time';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
 import { getErrorsFromResponse } from '../../utils/errors';
 import { APP_ROOT_DOMAIN } from '../../configs/api';
-import { SERVER_ERROR_MESSAGE } from '../../utils/constants';
+import { SAVE_SUCCESS, SERVER_ERROR_MESSAGE } from '../../utils/constants';
 
 export default {
     components: {
@@ -106,7 +106,7 @@ export default {
         showErrorsMessage: function(res){
             const errors = getErrorsFromResponse(res.data.errors);
             showErrors({
-                title: 'Vui lòng kiểm tra lại thông tin',
+                title: 'Please check input data again!',
                 text: errors
             })
         },
@@ -125,13 +125,13 @@ export default {
             try {
                 const res = await CategoryService.insertCategory(data);
                 if(res.data.success === '1') {
-                    showSuccessMsg({ title: 'Thêm thành công', text: '' })
+                    showSuccessMsg({ title: SAVE_SUCCESS, text: '' })
                 } else {
                     this.showErrorsMessage(res);
                 }
             } catch (error) {
                 showErrors({ 
-                    title: 'Lỗi hệ thống', 
+                    title: 'System errors', 
                     text: SERVER_ERROR_MESSAGE
                 });
             }
@@ -142,7 +142,7 @@ export default {
                 const res = await CategoryService.updateCategory(data);
                 if(res.data.success === '1') {
                     showSuccessMsg({
-                        title: 'Cập nhật thành công',
+                        title: SAVE_SUCCESS,
                         text: ''
                     });
                 } else {
@@ -150,7 +150,7 @@ export default {
                 }
             } catch (error) {
                 showErrors({ 
-                    title: 'Lỗi hệ thống', 
+                    title: 'System errors', 
                     text: SERVER_ERROR_MESSAGE
                 });
             }

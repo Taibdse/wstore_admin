@@ -165,7 +165,6 @@ export default {
           orderByTime: this.orderBys.createdAt 
         };
         const res = await OrderService.getOrders(params);
-        console.log(res)
         this.orders = res.data;
         const pageCount = Math.ceil(res.data.length / this.pagination.size);
         this.pagination = { ...this.pagination, currentPage: 1, pageCount };

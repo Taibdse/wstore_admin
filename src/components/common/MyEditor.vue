@@ -29,7 +29,6 @@ export default {
 
     methods: {
         handleTextChange: function(val) {
-            //  console.log(this.$refs['vueEditor'].value)
         }
     },
 

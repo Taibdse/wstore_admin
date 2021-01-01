@@ -90,7 +90,6 @@ export default {
                 this.words  = data.map((item, i) => ({ ...item, index: (currentPage - 1) * size + i + 1 }));
                 this.pagination = { ...this.pagination, pageCount: numOfPage };
             } catch (error) {
-                console.log(error);
                 this.words = [];
                 this.pagination = { pageCount: 0, currentPage: 1, size: 10 }
             }
@@ -122,7 +121,6 @@ export default {
                 this.showDialog = false;
                
             } catch (error) {
-                console.log(error);
                 showErrors({
                     title: 'Can not save word!',
                     text: 'Please try again!'

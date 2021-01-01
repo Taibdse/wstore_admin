@@ -99,7 +99,6 @@ export default {
             size: pagination.size, 
             page: pagination.currentPage 
         });
-        console.log(res);
         const { data, page, size, numOfPage } = res.data;
         this.customers = data.map((cus, index) => ({ ...cus, index: size * (page - 1) + index + 1 }));
         this.pagination = { ...this.pagination, currentPage: page, pageCount: numOfPage };
@@ -114,13 +113,8 @@ export default {
         this.isLoadingExcel = true;
         try {
             const res = await CustomerService.exportCustomerInfoListToExcel({ ...this.filters });
-            console.log(res);
-
             this.save('wstore_customers', res.data, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            // const blob = new Blob(res.data);
-           
         } catch (error) {
-            console.log(error);
         }
         this.isLoadingExcel = false;
     },

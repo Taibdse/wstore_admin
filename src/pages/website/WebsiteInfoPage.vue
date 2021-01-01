@@ -84,7 +84,6 @@ export default {
             this.isLoading = true;
             try {
                 const res = await WebsiteService.getLatestWebsiteInfo();
-                console.log(res);
                 this.website = res.data;
                 if(isEmpty(this.website)) {
                     this.notfound = true;
@@ -109,7 +108,6 @@ export default {
                     }
                 }
             } catch (error) {
-                console.log(error);
                 this.notfound = true;
             }
             this.isLoading = false;
@@ -132,11 +130,7 @@ export default {
                                                 return img.type == IMAGE_HOME_BANNER && manaullyAddedHomeBannerImages.findIndex(item => item.name == img.name) == -1
                                             }).map(item => item.id);
 
-                console.log(websiteDto);
-
                 const res = await WebsiteService.updateWebsiteInfo(websiteDto);
-                console.log(res);
-
                 if(res.data.success == '1') {
                     this.getWebsiteInfo();
 
@@ -153,7 +147,6 @@ export default {
                     });
                 }
             } catch (error) {
-                console.log(error);
                 showErrors({
                     title: 'Loi Server',
                     text: SERVER_ERROR_MESSAGE

@@ -231,10 +231,8 @@ export default {
                         customerDob: new Date(this.order.customerDob),
                         paymentMethodId: !isEmpty(this.order.paymentMethod) ? this.order.paymentMethod.id : null
                     }
-                    console.log(this.order);
                 }
             } catch (error) {
-                console.log(error);
                 this.notfound = true;
                 this.order = {};
             }
@@ -296,7 +294,6 @@ export default {
         getPaymentMethods: async function(){
             try {
                 const res = await PaymentMethodService.getAll();
-                console.log(res)
                 const { data } = res;
                 this.paymentMethods = data;
             } catch (error) {

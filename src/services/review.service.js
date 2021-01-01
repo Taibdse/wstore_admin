@@ -27,6 +27,12 @@ class ReviewService{
         const url = APP_ROOT_API + '/reviews';
         return axios.put(url, review);
     }
+
+    static async saveSortIndexes(reviews){
+        const url = APP_ROOT_API + '/reviews/sortIndexes';
+        return axios.put(url, reviews);
+    }
+    
 }
 
 export default ReviewService;

@@ -100,7 +100,7 @@ import { convertStringToSlug, formatImageUrl } from '../../utils/strings';
 import { getErrorsFromResponse } from '../../utils/errors';
 import { showErrors, showSuccessMsg } from '../../utils/alert';
 import { isEmpty } from '../../utils/validations';
-import { SERVER_ERROR_MESSAGE } from '../../utils/constants';
+import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from '../../utils/constants';
 import MyEditor from '../../components/common/MyEditor.vue';
 
 export default {
@@ -162,7 +162,7 @@ export default {
             try {
                 const res = await TipService.insertTip(data);
                 if(res.data.success === '1') {
-                    showSuccessMsg({ title: 'Save successfully!', text: '' })
+                    showSuccessMsg({ title: SAVE_SUCCESS, text: '' })
                 } else {
                     this.showErrorsMessage(res);
                 }
@@ -180,12 +180,11 @@ export default {
                 const res = await TipService.updateTip(data);
                 if(res.data.success === '1') {
                     await this.getTipDetails();
-                    showSuccessMsg({ title: 'Save successfully!', text: '' })
+                    showSuccessMsg({ title: SAVE_SUCCESS, text: '' })
                 } else {
                     this.showErrorsMessage(res);
                 }
             } catch (error) {
-                console.log(error);
                 showErrors({ 
                     title: 'Server error!', 
                     text: SERVER_ERROR_MESSAGE

@@ -61,7 +61,7 @@ import { isEmpty } from '@/utils/validations.js';
 import { toMoneyFormat } from '../../utils/strings';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
 import { getErrorsFromResponse } from '../../utils/errors';
-import { SERVER_ERROR_MESSAGE } from '../../utils/constants';
+import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from '../../utils/constants';
 
 export default {
     
@@ -111,7 +111,7 @@ export default {
             try {
                 const res = await ShippingService.updateShipping(this.shipping);
                 if(res.data.success === '1') {
-                    showSuccessMsg({ title: 'Cap nhat thành công', text: '' })
+                    showSuccessMsg({ title: SAVE_SUCCESS, text: '' })
                 } else {
                     this.showErrorsMessage(res);
                 }

@@ -45,7 +45,6 @@ export default {
             this.isLoading = true;
             try {
                 const res = await PolicyService.getPolices();
-                console.log(res);
                 this.policies = res.data;
             } catch (error) {
                 this.policies = [];

@@ -165,7 +165,6 @@ export default {
                         })
                     }
                 } catch (error) {
-                    console.log(error);
                     this.notfound = true;
                 }
                 this.isLoading = false;

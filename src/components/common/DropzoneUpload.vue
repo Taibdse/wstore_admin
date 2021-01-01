@@ -71,7 +71,6 @@ export default {
         },
         
         sendingEvent: function(){
-            // formData.append('paramName', 'some value or other');
         },
 
         handleRemoveFile: function(file, error, xhr){
@@ -82,13 +81,6 @@ export default {
         },
 
         getAllFiles: function(){
-          // console.log(this.$refs.dropzone);
-          // console.log(this.$refs.dropzone.dropzone.files);
-          // console.log(this.$refs.dropzone.getActiveFiles())
-          // console.log(this.$refs.dropzone.getAddedFiles());
-          // console.log(this.$refs.dropzone.getRejectedFiles());
-          //   console.log(this.$refs.dropzone.getQueuedFiles())
-          //   return this.$refs.dropzone.getAcceptedFiles();
             return this.$refs.dropzone.dropzone.files
         },
 

@@ -121,7 +121,7 @@
                 <div class="md-layout md-gutter" style="margin-top: 20px">
                   <div class="md-layout-item md-size-100">
                     <md-field style="width: 100px">
-                      <label for="productForm">Sort Index</label>
+                      <label for="sortIndex">Sort Index</label>
                       <md-input
                         style="width: 100px"
                         name="sortIndex"
@@ -167,7 +167,7 @@
                 <div class="md-layout md-gutter" style="margin-top: 20px">
                   <div class="md-layout-item md-size-100">
                     <strong>Upload main image (only 1 image)</strong>
-                    <br/><br/>
+                    <br /><br />
                     <div>
                       <DropzoneUpload
                         ref="dropzoneMainImage"
@@ -197,9 +197,9 @@
                 <div class="md-layout md-gutter" style="margin-top: 20px">
                   <div class="md-layout-item md-size-100">
                     <!-- <strong style="margin-bottom: 20px">Upload sub image (can upload multiple images)</strong><br/><br/> -->
-                    <PageMetadata 
-                      ref="pageMetadata" 
-                      :pageMetadataContent="product.pageMetadata" 
+                    <PageMetadata
+                      ref="pageMetadata"
+                      :pageMetadataContent="product.pageMetadata"
                     />
                   </div>
                 </div>
@@ -234,6 +234,7 @@ import { getErrorsFromResponse } from "../../utils/errors";
 import DropzoneUpload from "@/components/common/DropzoneUpload";
 import MyEditor from "../../components/common/MyEditor";
 import PageMetadata from "../../components/common/PageMetadata";
+import { SERVER_ERROR_MESSAGE } from '../../utils/constants';
 
 export default {
   components: {
@@ -256,7 +257,6 @@ export default {
     productSubImages: [],
     productMainImages: [],
     insertProduct: false,
-    serverErrorMsg: "Can not save product, due to some errord from server!",
   }),
   methods: {
     getProductDetails: async function () {
@@ -327,7 +327,6 @@ export default {
 
       data.description = this.$refs["descriptionVN"].$data.myContent;
       data.descriptionEn = this.$refs["descriptionEN"].$data.myContent;
-      console.log(this.$refs["pageMetadata"].$data);
       data.pageMetadata = this.$refs["pageMetadata"].$data.pageMetadata;
       if (this.insertProduct) {
         await this.handleInsertProduct(data);
@@ -336,25 +335,25 @@ export default {
       }
     },
 
-    handleInsertProduct: async function(data) {
+    handleInsertProduct: async function (data) {
       this.isLoading = true;
       try {
         const res = await ProductService.insertProduct(data);
         if (res.data.success === "1") {
-          showSuccessMsg({ title: "Save successfully!", text: "" });
+          showSuccessMsg({ title: SAVE_SUCCESS, text: "" });
         } else {
           this.showErrorsMessage(res);
         }
       } catch (error) {
         showErrors({
           title: "Server errors!",
-          text: this.serverErrorMsg,
+          text: SERVER_ERROR_MESSAGE,
         });
       }
       this.isLoading = false;
     },
 
-    handleUpdateProduct: async function(data) {
+    handleUpdateProduct: async function (data) {
       this.isLoading = true;
       try {
         const res = await ProductService.updateProduct(data);
@@ -370,13 +369,13 @@ export default {
       } catch (error) {
         showErrors({
           title: "Server errors!",
-          text: this.serverErrorMsg,
+          text: SERVER_ERROR_MESSAGE,
         });
       }
       this.isLoading = false;
     },
 
-    getCategories: async function() {
+    getCategories: async function () {
       const res = await CategoryService.getCategories("");
       this.categories = res.data;
     },

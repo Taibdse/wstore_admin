@@ -73,9 +73,7 @@ import MyEditor from '../../components/common/MyEditor'
             ...this.paymentMethod,
             content, contentEn
           }
-          console.log(data)
           this.onSave(data);
-
         }
     },
 

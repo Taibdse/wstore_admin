@@ -49,7 +49,6 @@ import { isEmpty } from '../../utils/validations';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
 import { add_success, add_fail, update_success, update_fail } from '../../common/message-constants';
 
-
 export default {
     components: {
         PaymentMethodList, PaymentMethodDialog
@@ -70,7 +69,6 @@ export default {
             this.isLoading = true;
             try {
                 const res = await PaymentMethodService.getAll();
-                console.log(res);
                 const { data } = res;
                 this.paymentMethods = data;
             } catch (error) {
@@ -95,7 +93,6 @@ export default {
         handleCreate: async function(paymentMethod){
             try {
                 const res = await PaymentMethodService.create(paymentMethod)
-                console.log(res);
                 const { success, errors } = res.data;
                 if(success) {
                     showSuccessMsg({ title: add_success, text: '' })
@@ -108,14 +105,12 @@ export default {
                     })
                 }
             } catch (error) {
-                console.log(error);
             }
         },
 
         handleUpdate: async function(paymentMethod){
             try {
                 const res = await PaymentMethodService.update(paymentMethod)
-                console.log(res);
                  const { data, success, errors } = res.data;
                  if(success) {
                     showSuccessMsg({ title: update_success, text: '' })
@@ -128,7 +123,6 @@ export default {
                     })
                 }
             } catch (error) {
-                console.log(error);
             }
         },
 
@@ -138,14 +132,12 @@ export default {
             this.editMode = true;
             try {
                 const res = await PaymentMethodService.getById(paymentMethod.id);
-                console.log(res);
                 const { data } = res;
                 this.paymentMethod = data;
                 if(isEmpty(data)) {
                     this.notfound = true;
                 } 
             } catch (error) {
-                console.log(error);
             }
             this.loadingPaymentMethod = false;
         },

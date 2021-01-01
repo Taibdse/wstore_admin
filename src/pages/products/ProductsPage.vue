@@ -88,6 +88,8 @@ import CategoryService from "@/services/category.service";
 import ProductsList from "@/pages/products/ProductsList";
 import Pagination from "@/components/common/Pagination";
 import DropzoneUpload from "@/components/common/DropzoneUpload";
+import { showErrors, showSuccessMsg } from '../../utils/alert';
+import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from '../../utils/constants';
 
 export default {
   components: {
@@ -164,15 +166,13 @@ export default {
           id,
           sortIndex: sortIndexes[id],
         }));
-        console.log(data);
         const res = await ProductService.saveSortIndexes(data);
-        console.log(res);
+        showSuccessMsg({ title: SAVE_SUCCESS, text: "" });
         this.getProducts();
       } catch (error) {
-        console.log(error);
         showErrors({
           title: "Server errors!",
-          text: this.serverErrorMsg,
+          text: SERVER_ERROR_MESSAGE,
         });
       }
       this.isLoading = false;
