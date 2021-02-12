@@ -2,7 +2,7 @@
     <md-table md-card>
       <md-table-row>
         <md-table-head v-for="(header, index) in tblHeaders" :key="index">{{ header }}</md-table-head>
-        <md-table-head></md-table-head>
+        <md-table-head style="min-width: 100px"></md-table-head>
       </md-table-row>
       <md-table-row  v-for="(order) in orders" :key="order.id">
         <md-table-cell>{{ order.index + 1 }}</md-table-cell>
@@ -40,7 +40,17 @@
               <md-icon>edit</md-icon>
               <md-tooltip md-direction="top">Chi tiết</md-tooltip>
             </md-button> -->
-            <md-menu 
+            
+              <md-button @click="edit(order)" class="md-icon-button md-raised md-primary order-action-btn">
+                  <md-icon>edit</md-icon>
+                  <md-tooltip md-direction="top">Edit</md-tooltip>
+              </md-button>
+            
+              <md-button @click="onViewDetails(order)" class="md-icon-button md-raised md-warning order-action-btn">
+                  <md-icon>info</md-icon>
+                  <md-tooltip md-direction="top">View Details</md-tooltip>
+              </md-button>
+            <!-- <md-menu 
               md-direction="bottom-end" 
               style="padding: 0;" 
               :mdCloseOnClick="true" 
@@ -51,7 +61,7 @@
               <md-menu-item @click="edit(order)">Edit</md-menu-item>
               <md-menu-item @click="onViewDetails(order)">View Details</md-menu-item>
             </md-menu-content>
-          </md-menu>
+          </md-menu> -->
         </md-table-cell>
       </md-table-row>
     </md-table>
@@ -88,5 +98,12 @@ export default {
 </script>
 
 <style>
-
+.order-action-btn {
+  width: 35px !important;
+  min-width: 35px !important;
+  height: 35px!important;
+  border-radius: 50%!important;
+  display: inline-block !important;
+  margin-right: 5px;
+}
 </style>

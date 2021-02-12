@@ -3,14 +3,14 @@
         v-model="pagination.currentPage"
         :page-count="pagination.pageCount"
         :click-handler="handleChange"
-        prev-text="Prev"
-        next-text="Next"
+        prev-text="<<"
+        next-text=">>"
         container-class="pagination"
         page-class="page-item"
         next-class="next"
         prev-class="prev"
         active-class="active-item"
-        >
+    >
     </Paginate>
 </template>
 
@@ -35,10 +35,9 @@ export default {
 
 .page-item {
     float: left;
-    /* width: 40px; */
     min-width: 40px;
     height: 40px;
-    border: 1px solid #ccc;
+    border-radius: 50%;
     text-align: center;
     color: black!important;
     padding: 0!important;
@@ -52,8 +51,12 @@ export default {
     height: 40px;
     font-size: 5px;
     line-height: 40px;
-    border: 1px solid #ccc;
+    border-radius: 50%;
     text-align: center;
+}
+
+.page-item:hover, .next:hover, .prev:hover{
+    background-color: #ccc;
 }
 
 .page-item a, .next a, .prev a{
@@ -64,15 +67,14 @@ export default {
     line-height: 40px!important;
     margin: 0!important;
     padding: 0!important;
-    /* background-color: red!important; */
 }
 
 .next a, .prev a{
-    font-size: 12px!important;
+    font-size: 15px!important;
 }
 
 .page-item a{
-    font-size: 15px!important;
+    font-size: 16px!important;
 }
 
 .active-item{

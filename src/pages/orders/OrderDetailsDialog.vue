@@ -1,5 +1,5 @@
 <template>
-    <md-dialog :md-active="showDialog" style="max-width: 600px; min-width: 500px">
+    <md-dialog :md-active="showDialog" style="max-width: 100vw; min-width: 450px">
         <md-dialog-title>Order Information</md-dialog-title>
         <md-dialog-content>
           <div style="padding: 10px" class="detail-list">
