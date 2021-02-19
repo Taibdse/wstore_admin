@@ -36,32 +36,14 @@
           <strong class="text-success" style="white-space: nowrap; font-size: 1.2em">{{ toMoneyFormat(order.totalPrice) }} d</strong>
         </md-table-cell>
         <md-table-cell>
-            <!-- <md-button class="md-just-icon md-simple md-primary" @click="edit(order)">
+          <md-button @click="edit(order)" class="md-icon-button md-raised md-primary order-action-btn">
               <md-icon>edit</md-icon>
-              <md-tooltip md-direction="top">Chi tiết</md-tooltip>
-            </md-button> -->
-            
-              <md-button @click="edit(order)" class="md-icon-button md-raised md-primary order-action-btn">
-                  <md-icon>edit</md-icon>
-                  <md-tooltip md-direction="top">Edit</md-tooltip>
-              </md-button>
-            
-              <md-button @click="onViewDetails(order)" class="md-icon-button md-raised md-warning order-action-btn">
-                  <md-icon>info</md-icon>
-                  <md-tooltip md-direction="top">View Details</md-tooltip>
-              </md-button>
-            <!-- <md-menu 
-              md-direction="bottom-end" 
-              style="padding: 0;" 
-              :mdCloseOnClick="true" 
-              :mdCloseOnSelect="true">
-            <md-button md-menu-trigger style="padding: 0; background: red">...</md-button>
-
-            <md-menu-content>
-              <md-menu-item @click="edit(order)">Edit</md-menu-item>
-              <md-menu-item @click="onViewDetails(order)">View Details</md-menu-item>
-            </md-menu-content>
-          </md-menu> -->
+              <md-tooltip md-direction="top">Edit</md-tooltip>
+          </md-button>
+          <md-button @click="onViewDetails(order)" class="md-icon-button md-raised md-warning order-action-btn">
+              <md-icon>info</md-icon>
+              <md-tooltip md-direction="top">View Details</md-tooltip>
+          </md-button>
         </md-table-cell>
       </md-table-row>
     </md-table>

@@ -194,6 +194,7 @@ import { formatVNDate, getVNTimeFormat } from '../../utils/time';
 import { showSuccessMsg, showErrors } from '../../utils/alert';
 import { SHIPPING_TYPES, getPaymentStatus } from '../../common/constants';
 import PaymentMethodService from '../../services/paymentMethod.service';
+import ConfigurationService from '../../services/configuration.service';
 
 export default {
     components: {
@@ -209,7 +210,8 @@ export default {
         shippings: [],
         shouldSetDistrict0: false,
         paymentStatusList: getPaymentStatus(),
-        paymentMethods: []
+        paymentMethods: [],
+        minPriceForFreeship: 1000000
     }),
     methods: {
         isEmpty,
@@ -276,12 +278,13 @@ export default {
                 if(!isEmpty(district.shippingType)){
                     shippingType = district.shippingType;
                 }
-                this.order.shippingType = shippingType;
-                let shippingMoney = this.shippings.find(item => item.type == shippingType).money;
+                let shippingMoney = !this.order.freeship ? this.shippings.find(item => item.type == shippingType).money : 0;
                 let totalPrice = this.order.productsPrice + +shippingMoney;
                 this.order = {
                     ...this.order,
-                    shippingType, shippingMoney, totalPrice
+                    shippingType, 
+                    shippingMoney, 
+                    totalPrice
                 }
             } 
         },
@@ -342,7 +345,7 @@ export default {
 
     async created(){
         this.isLoading = true;
-       try {
+        try {
             await this.getPaymentMethods();
             const [res1, res2, res3] = await Promise.all([
                 OrderService.getOrderStatus(),
@@ -355,11 +358,8 @@ export default {
             this.shippings = res3.data;
 
             await this.getOrderDetails();
-
-
-       } catch (error) {
-           
-       }
+        } catch (error) {
+        }
        
        this.isLoading = false;
     }
