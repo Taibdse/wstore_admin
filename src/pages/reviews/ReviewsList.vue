@@ -39,8 +39,6 @@
 </template>
 
 <script>
-import { APP_ROOT_DOMAIN } from "../../configs/api";
-import { isEmpty } from "../../utils/validations";
 import { formatImageUrl, truncate, removeHtmlTags } from "../../utils/strings";
 
 export default {
@@ -53,7 +51,8 @@ export default {
   }),
   methods: {
     showDetails: function (review) {
-      window.open("/reviews/" + review.slug, "_blank");
+      this.$router.push("/reviews/" + review.slug);
+      // window.open("/reviews/" + review.slug, "_blank");
     },
     formatImageUrl,
     truncate,

@@ -43,8 +43,8 @@ export default {
     }),
     methods: {
         showDetails: function(news){
-            // this.$router.push('/news/' + news.slug);
-            window.open('/news/' + news.slug, '_blank');
+            this.$router.push('/news/' + news.slug);
+            // window.open('/news/' + news.slug, '_blank');
         },
         formatImageUrl, truncate, getVNTimeFormat, isEmpty, removeHtmlTags
     }

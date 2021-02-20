@@ -39,8 +39,8 @@ export default {
     }),
     methods: {
         showDetails: function(tip){
-            // this.$router.push('/tips/' + tip.slug);
-            window.open('/tips/' + tip.slug, '_blank');
+            this.$router.push('/tips/' + tip.slug);
+            // window.open('/tips/' + tip.slug, '_blank');
         },
         formatImageUrl, truncate, removeHtmlTags
     }

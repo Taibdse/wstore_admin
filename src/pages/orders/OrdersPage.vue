@@ -28,7 +28,7 @@
                     <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
                     <md-select v-model="filters.status" name="status" id="status" >
                         <md-option value="all" >all</md-option>
-                        <md-option v-for="(status) in arrStatus" :key="status" :value="status">{{ status }}</md-option>
+                        <md-option v-for="(status) in orderStatuses" :key="status" :value="status">{{ status }}</md-option>
                     </md-select>
                 </md-field>
             </div>
@@ -47,7 +47,7 @@
           </div>
 
           <div class="md-layout md-gutter">
-            <md-button class="md-raised md-primary" style="margin-left: auto" @click="getOrders">Search</md-button>
+            <md-button class="md-raised md-primary" style="margin-left: auto" @click="handleSearch">Search</md-button>
           </div>
         </md-card-content>
       </md-card>
@@ -66,7 +66,7 @@
           </div>
           <div v-show="!isLoading && orders.length !== 0">
             <Pagination :pagination="pagination" :handleChange="handlePageChange"/>
-            <OrdersList :orders="pagingOrders" :onViewDetails="viewDetails"  />
+            <OrdersList :orders="pagingOrders" :onViewDetails="handleViewOrderDetails"  />
           </div>
           <div v-show="!isLoading && orders.length === 0">
             <h3 style="text-align: center">No orders found!</h3>
@@ -78,7 +78,6 @@
         :onClose="handleCloseDialog"
         :showDialog="showDialog" />
     </div>
-  <!-- <OrderDetailsDialog :order="order" /> -->
     
 </template>
 
@@ -86,10 +85,12 @@
 import OrderService from '../../services/order.service';
 import OrdersList from '@/pages/orders/OrdersList';
 import OrderDetailsDialog from './OrderDetailsDialog'
-import { formatVNDate, is2MonthRange, convertVNDateToSQLDateFormat } from '../../utils/time';
+import { formatVNDate, convertVNDateToSQLDateFormat } from '../../utils/time';
 import { isEmpty } from '@/utils/validations.js';
 import Pagination from '@/components/common/Pagination';
-import { showErrors } from '../../utils/alert';
+
+const DEFAULT_PAGINATION = { pageCount: 0, currentPage: 1, size: 10 };
+const ORDER_SEARCH_CONDITION_KEY = 'orderSearchConditionKey';
 
 export default {
   components: {
@@ -109,93 +110,117 @@ export default {
         createdAt: 'DESC' 
       },
       orderByOptions: [
-        // { text: 'Khong sap', value: '0' },
         { text: 'Tăng dần', value: 'ASC' },
         { text: 'Giảm dần', value: 'DESC' }
       ],
       
       isLoading: false,
-      arrStatus: [],
+      orderStatuses: [],
       pagination: { pageCount: 0, currentPage: 1, size: 10 },
-
       order: {},
-      showDialog: false
+      showDialog: false,
   }),
 
   computed: {
     pagingOrders: function(){
       if(isEmpty(this.orders)) return [];
       const { currentPage, size } = this.pagination;
-      return this.orders.filter((order, index) => {
-        return index >= size * (currentPage - 1) && index < currentPage * size;
-      }).map((item, index) => ({ ...item, index: index + (currentPage - 1) * size }))
+      return this.orders.map((order, index) => ({ ...order, index: index + (currentPage - 1) * size }))
     }
   },
 
   methods: {
     handlePageChange: function(pageNum){
       this.pagination = { ...this.pagination, currentPage: pageNum };
+      this.getOrders();
     },
 
     handleCloseDialog: function(){
       this.showDialog = false
     },
 
-    viewDetails: function(order){
+    handleViewOrderDetails: function(order){
       this.order = order;
       this.showDialog = true;
     },
 
+    handleSearch: function(){
+      this.pagination = { ...this.pagination, currentPage: 1 };
+      this.getOrders();
+    },
+
     getOrders: async function(){
+      this.isLoading = true;
       let { from, to } = this.selectedDate;
       from = convertVNDateToSQLDateFormat(from);
       to = convertVNDateToSQLDateFormat(to);
-      
-      if(!is2MonthRange(from, to)) return showErrors({ 
-        title: 'Time range can not exceed 2 months!', 
-        text: '' 
-      })
-
-      this.isLoading = true;
-
       try {
         const params = { 
           from, to, 
           ...this.filters, 
-          orderByTime: this.orderBys.createdAt 
+          orderByTime: this.orderBys.createdAt,
+          page: this.pagination.currentPage,
+          size: this.pagination.size
         };
         const res = await OrderService.getOrders(params);
-        this.orders = res.data;
-        const pageCount = Math.ceil(res.data.length / this.pagination.size);
-        this.pagination = { ...this.pagination, currentPage: 1, pageCount };
+        const { numOfPage, size, page, data } = res.data;
+        this.orders = data;
+        this.pagination = { 
+          ...this.pagination, 
+          currentPage: page, 
+          pageCount: numOfPage 
+        };
       } catch (error) {
         this.orders = [];
-        this.pagination = { pageCount: 0, currentPage: 1, size: 10 }
+        this.pagination = { ...DEFAULT_PAGINATION };
       }
-
       this.isLoading = false;
     },
-
-    getSelectedDateDefault: function(){
+    getDefaultSelectedDate: function(){
       let d = new Date();
       const to = formatVNDate(d);
       d = new Date(d.setDate(d.getDate() - 7)); 
       const from = formatVNDate(d);
-      this.selectedDate = { from, to };
+      return{ from, to };
     },
+    saveSearchCondition: function(){
+      const searchCondition = {
+        selectedDate: this.selectedDate,
+        filters: this.filters, 
+        orderBys: this.orderBys,
+        pagination: this.pagination
+      };
+      window.localStorage.setItem(ORDER_SEARCH_CONDITION_KEY, JSON.stringify(searchCondition));
+    },
+    loadSearchCondition: function(){
+      const json = window.localStorage.getItem(ORDER_SEARCH_CONDITION_KEY);
+      try {
+        const searchCondition = JSON.parse(json);
+        this.selectedDate = searchCondition.selectedDate;
+        this.filters = searchCondition.filters;
+        this.orderBys = searchCondition.orderBys;
+        this.pagination = searchCondition.pagination;
+      } catch (error) {
+        this.selectedDate = this.getDefaultSelectedDate();
+      }
+    }
   },
   async created (){
     this.isLoading = true;
     this.$material.locale.dateFormat = 'dd/MM/yyyy';
-    this.getSelectedDateDefault();
+    this.loadSearchCondition();
     try {
       const res = await OrderService.getOrderStatus();
-      this.arrStatus = res.data;
+      this.orderStatuses = res.data;
       await this.getOrders();
     } catch (error) {
 
     }
     this.isLoading = false;
+  },
+
+  beforeDestroy(){
+    this.saveSearchCondition();
   }
 }
 </script>

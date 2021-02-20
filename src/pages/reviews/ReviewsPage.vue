@@ -69,6 +69,8 @@ import { isEmpty } from "../../utils/validations";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
 
+const REVIEW_SEARCH_CONDITION_KEY = "reviewSearchConditionKey"
+
 export default {
   components: {
     ReviewsList,
@@ -136,11 +138,30 @@ export default {
       }
       this.isLoading = false;
     },
+    saveSearchCondition: function(){
+      const searchCondition = {
+        pagination: this.pagination
+      };
+      window.localStorage.setItem(REVIEW_SEARCH_CONDITION_KEY, JSON.stringify(searchCondition));
+    },
+    loadSearchCondition: function(){
+      const json = window.localStorage.getItem(REVIEW_SEARCH_CONDITION_KEY);
+      try {
+        const searchCondition = JSON.parse(json);
+        this.pagination = searchCondition.pagination;
+      } catch (error) {
+        
+      }
+    }
   },
 
   async created() {
+    this.loadSearchCondition();
     this.getReviews();
   },
+  beforeDestroy(){
+    this.saveSearchCondition();
+  }
 };
 </script>
 
