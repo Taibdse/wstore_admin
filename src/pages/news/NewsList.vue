@@ -8,8 +8,7 @@
             <md-table-cell>{{ index + 1 }}</md-table-cell>
             <md-table-cell>
                 <img 
-                    v-if="!isEmpty(news.newsItems[0]) && !isEmpty(news.newsItems[0].image)" 
-                    :src="formatImageUrl(news.newsItems[0].image)" 
+                    :src="formatImageUrl(news.image)" 
                     class="img-fluid" />
             </md-table-cell>
             <md-table-cell>{{ truncate(removeHtmlTags(news.title), 20) }}</md-table-cell>
