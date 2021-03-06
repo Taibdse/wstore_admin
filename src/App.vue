@@ -77,6 +77,16 @@ div.md-table-head-label, .md-table-head-container{
   font-size: 1em;
 }
 
+.md-card-header {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+div.content {
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;

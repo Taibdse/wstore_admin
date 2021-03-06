@@ -122,9 +122,9 @@ export default {
     this.loadSearchCondition();
     this.getNews();
   },
-  beforeDestroy(){
+  beforeDestroy() {
     this.saveSearchCondition();
-  }
+  },
 };
 </script>
 

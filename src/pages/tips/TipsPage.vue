@@ -12,16 +12,7 @@
             </div>
           </div>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-50">
-              <!-- <md-field>
-                                <label for="createdAt">Sort By Date</label>
-                                <md-select v-model="orderBys.createdAt" name="createdAt" id="createdAt">
-                                    <md-option value="DESC">Moi nhat</md-option>
-                                    <md-option value="ASC">Cu nhat</md-option>
-                                </md-select>
-                            </md-field>
-                            <md-button class="md-raised md-primary" @click="getTips">Tìm kiếm</md-button> -->
-            </div>
+            <div class="md-layout-item md-size-50"></div>
           </div>
         </md-card-content>
       </md-card>
@@ -131,9 +122,9 @@ export default {
     this.loadSearchCondition();
     this.getTips();
   },
-  beforeDestroy(){
+  beforeDestroy() {
     this.saveSearchCondition();
-  }
+  },
 };
 </script>
 

@@ -17,7 +17,6 @@ import Notifications from "./components/NotificationPlugin";
 import MaterialDashboard from "./material-dashboard";
 
 // import Chartist from "chartist";
-import { APP_ROOT_DOMAIN } from './configs/api';
 import { isEmpty } from "./utils/validations";
 
 // configure router
@@ -51,7 +50,4 @@ new Vue({
   store,
   render: h => h(App),
   router,
-  // data: {
-  //   Chartist: Chartist
-  // }
 });

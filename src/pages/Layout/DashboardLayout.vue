@@ -1,109 +1,64 @@
 <template>
-  <div  class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
+  <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
     <notifications></notifications>
 
     <side-bar v-if="isAuthorized">
       <mobile-menu slot="content"></mobile-menu>
-      <!-- <sidebar-link to="/dashboard">
-        <md-icon>dashboard</md-icon>
-        <p>Dashboard</p>
-      </sidebar-link> -->
-    
+
       <sidebar-link to="/orders">
-        <i class="fas fa-shopping-cart"></i> 
+        <i class="fas fa-shopping-cart"></i>
         <p>Orders</p>
       </sidebar-link>
       <sidebar-link to="/products">
-        <i class="fab fa-product-hunt"></i> 
+        <i class="fab fa-product-hunt"></i>
         <p>Products</p>
       </sidebar-link>
       <sidebar-link to="/categories">
-        <i class="fas fa-list-alt"></i> 
+        <i class="fas fa-list-alt"></i>
         <p>Categories</p>
       </sidebar-link>
-      
       <sidebar-link to="/reviews">
-        <i class="fas fa-users"></i> 
+        <i class="fas fa-users"></i>
         <p>Reviews</p>
       </sidebar-link>
-      <sidebar-link to="/customer">
-        <i class="fas fa-users"></i> 
-        <p>Customer</p>
-      
-      </sidebar-link>
-        <sidebar-link to="/payment-method">
-        <i class="fas fa-money-check-alt"></i> 
-        <p>Payment Method</p>
-      </sidebar-link>
-      
-       <sidebar-link to="/tips">
+      <sidebar-link to="/tips">
         <i class="fas fa-lightbulb"></i>
         <p>Tips</p>
-        </sidebar-link>
-       <sidebar-link to="/news">
-        <i class="fas fa-newspaper"></i> 
+      </sidebar-link>
+      <sidebar-link to="/news">
+        <i class="fas fa-newspaper"></i>
         <p>News</p>
       </sidebar-link>
+
+      <sidebar-link to="/customer">
+        <i class="fas fa-users"></i>
+        <p>Customer</p>
+      </sidebar-link>
+      <sidebar-link to="/payment-method">
+        <i class="fas fa-money-check-alt"></i>
+        <p>Payment Method</p>
+      </sidebar-link>
       <sidebar-link to="/policies">
-        <i class="fas fa-file-contract"></i> 
+        <i class="fas fa-file-contract"></i>
         <p>Policies</p>
       </sidebar-link>
       <sidebar-link to="/shippings" style="margin-bottom: 40px">
-        <i class="fas fa-truck"></i> 
+        <i class="fas fa-truck"></i>
         <p>Shippings</p>
       </sidebar-link>
-    
-      
-      <!-- <sidebar-link to="/sales">
-        <md-icon>attach_money</md-icon>
-        <p>Sales</p>
-      </sidebar-link> -->
-      <!-- <sidebar-link to="/user">
-        <md-icon>person</md-icon>
-        <p>User Profile</p>
-      </sidebar-link>
-      <sidebar-link to="/table">
-        <md-icon>content_paste</md-icon>
-        <p>Table list</p>
-      </sidebar-link>
-      <sidebar-link to="/typography">
-        <md-icon>library_books</md-icon>
-        <p>Typography</p>
-      </sidebar-link>
-      <sidebar-link to="/icons">
-        <md-icon>bubble_chart</md-icon>
-        <p>Icons</p>
-      </sidebar-link>
-      <sidebar-link to="/maps">
-        <md-icon>location_on</md-icon>
-        <p>Maps</p>
-      </sidebar-link>
-      <sidebar-link to="/notifications">
-        <md-icon>notifications</md-icon>
-        <p>Notifications</p>
-      </sidebar-link>
-      <sidebar-link to="/upgrade" class="active-pro">
-        <md-icon>unarchive</md-icon>
-        <p>Upgrade to PRO</p>
-      </sidebar-link> -->
     </side-bar>
-
-    <div :class="{ 'main-panel': true, 'width-cover': !isAuthorized }" >
+    <div :class="{ 'main-panel': true, 'width-cover': !isAuthorized }">
       <top-navbar v-if="isAuthorized"></top-navbar>
-
       <dashboard-content> </dashboard-content>
-
-      <content-footer v-if="isAuthorized"></content-footer>
+      <!-- <content-footer></content-footer> -->
     </div>
   </div>
 </template>
 
 <style lang="css" scoped>
-.md-list-item .router-link-active i{
-  color: #fff!important;
+.md-list-item .router-link-active i {
+  color: #fff !important;
 }
-
-
 </style>
 
 <script>
@@ -111,20 +66,19 @@ import TopNavbar from "./TopNavbar.vue";
 import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
 import MobileMenu from "@/pages/Layout/MobileMenu.vue";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     TopNavbar,
     DashboardContent,
     ContentFooter,
-    MobileMenu
+    MobileMenu,
   },
   data: () => ({
-    // ...mapState(['isAuthorized'])
   }),
   computed: {
-    ...mapGetters(['isAuthorized'])
-  }
+    ...mapGetters(["isAuthorized"]),
+  },
 };
 </script>

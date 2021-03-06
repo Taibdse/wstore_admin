@@ -122,13 +122,11 @@
 
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-100">
-                    <md-checkbox v-model="review.active"
-                      >Active review</md-checkbox
-                    >
+                    <md-checkbox v-model="review.active">Active review</md-checkbox>
+                    <md-checkbox v-model="review.hot">Hot review (show in homepage)</md-checkbox>
                   </div>
                 </div>
               </md-card-content>
-
               <md-card-actions>
                 <md-button type="submit" class="md-primary">Save</md-button>
               </md-card-actions>

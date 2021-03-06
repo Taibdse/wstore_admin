@@ -20,16 +20,10 @@
         >
       </md-table-cell>
       <md-table-cell>
-        <strong class="text-success" v-if="product.available">
-          Còn hàng
-        </strong>
-        <strong class="text-danger" v-if="!product.available">
-          Hết hàng
-        </strong>
+        <Status :value="product.available" />
       </md-table-cell>
       <md-table-cell>
-        <strong v-if="product.active" class="text-success">ACTIVE</strong>
-        <strong v-if="!product.active" class="text-danger">INACTIVE</strong>
+        <Status :value="product.active" />
       </md-table-cell>
       <md-table-cell>{{ product.category.name }}</md-table-cell>
       <md-table-cell>
@@ -56,11 +50,13 @@
 
 <script>
 import { toMoneyFormat } from "@/utils/strings.js";
-import { APP_ROOT_DOMAIN } from "../../configs/api";
-import { isEmpty } from "../../utils/validations";
 import { formatImageUrl } from "../../utils/strings";
+import Status from '@/components/common/Status';
 
 export default {
+  components: {
+    Status
+  },
   props: {
     products: Array,
     isLoading: Boolean,
@@ -74,7 +70,7 @@ export default {
       "Colors",
       "Price",
       "Available",
-      "Status",
+      "Active",
       "Category",
       "Sort Index",
     ],

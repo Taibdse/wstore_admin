@@ -1,13 +1,4 @@
 import DashboardLayout from "@/pages/Layout/DashboardLayout.vue";
-
-// import Dashboard from "@/pages/others/Dashboard.vue";
-// import UserProfile from "@/pages/others/UserProfile.vue";
-// import TableList from "@/pages/others/TableList.vue";
-// import Typography from "@/pages/others/Typography.vue";
-// import Icons from "@/pages/others/Icons.vue";
-// import Maps from "@/pages/others/Maps.vue";
-// import Notifications from "@/pages/others/Notifications.vue";
-// import UpgradeToPRO from "@/pages/others/UpgradeToPRO.vue";
 import ProductsPage from "@/pages/products/ProductsPage.vue";
 import ProductDetailsPage from "@/pages/products/ProductDetailsPage.vue";
 import OrdersPage from "@/pages/orders/OrdersPage.vue";
@@ -32,64 +23,59 @@ import LanguagePage from '../pages/language/LanguagePage.vue';
 import CustomersPage from '../pages/customer/CustomersPage.vue';
 import PaymentMethodPage from '../pages/payment-method/PaymentMethodPage.vue';
 import NotFoundPage from '../pages/notfound/NotFoundPage';
+import LoginTempPage from '../pages/auth/LoginTemp.vue';
+
+import { PathRouteConstants } from './pathRoutes'
 
 const routes = [
   {
     path: "/",
     component: DashboardLayout,
-    // redirect: "/dashboard",
     children: [
-      // {
-      //   path: '',
-      //   name: 'dashboard',
-      //   component: Dashboard
-      // },
-
       //=========== INDEX ROUTES ==============
       {
-        path: '',
+        path: PathRouteConstants.indexRoute,
         name: 'Index',
         redirect: 'orders',
       },
 
       //=========== AUTH ROUTES ==============
       {
-        path: 'login',
+        path: PathRouteConstants.loginRoute,
         name: 'Login',
-        component: AdminLoginPage,
+        component: LoginTempPage,
       },
       {
-        path: 'change-password',
+        path: PathRouteConstants.changePasswordRoute,
         name: 'Change Password',
         component: AdminChangePasswordPage,
       },
 
       //=========== PRODUCT ROUTES ==============
       {
-        path: 'products',
+        path: PathRouteConstants.productsRoute,
         name: 'Products',
         component: ProductsPage,
       },
       {
-        path: 'products/:productSlug',
+        path: PathRouteConstants.productDetailsRoute,
         name: 'Update Product',
         component: ProductDetailsPage,
       },
       {
-        path: 'products/insert',
+        path: PathRouteConstants.productInsertRoute,
         name: 'Insert product',
         component: ProductDetailsPage,
       },
 
-
       //=========== ORDER ROUTES ==============
       {
-        path: 'orders',
+        path: PathRouteConstants.ordersRoute,
         name: 'Orders',
         component: OrdersPage,
       },
       {
-        path: 'orders/:orderId',
+        path: PathRouteConstants.orderDetailsRoute,
         name: 'Order Details',
         component: OrderDetailsPage,
       },
@@ -97,18 +83,18 @@ const routes = [
 
       //=========== REVIEWS ROUTES ==============
       {
-        path: 'reviews',
+        path: PathRouteConstants.reviewsRoute,
         name: 'Reviews',
         component: ReviewsPage,
       },
       
       {
-        path: 'reviews/:reviewSlug',
+        path: PathRouteConstants.reviewDetailsRoute,
         name: 'Update Review',
         component: ReviewDetailsPage,
       },
       {
-        path: 'reviews/insert',
+        path: PathRouteConstants.reviewInsertRoute,
         name: 'Insert Review',
         component: ReviewDetailsPage,
       },
@@ -116,18 +102,18 @@ const routes = [
 
        //=========== TIPS ROUTES ==============
        {
-        path: 'tips',
+        path: PathRouteConstants.tipsRoute,
         name: 'Tips',
         component: TipsPage,
       },
       
       {
-        path: 'tips/:tipSlug',
+        path: PathRouteConstants.tipDetailsRoute,
         name: 'Update Tip',
         component: TipDetailsPage,
       },
       {
-        path: 'tips/insert',
+        path: PathRouteConstants.tipInsertRoute,
         name: 'Insert Tip',
         component: TipDetailsPage,
       },
@@ -136,12 +122,12 @@ const routes = [
 
       //=========== POLICY ROUTES ==============
       {
-        path: 'policies',
+        path: PathRouteConstants.policiesRoute,
         name: 'Policy',
         component: PoliciesPage,
       },
       {
-        path: 'policies/:type',
+        path: PathRouteConstants.policyDetailsRoute,
         name: 'Policy',
         component: PolicyDetailsPage,
       },
@@ -149,17 +135,17 @@ const routes = [
 
       //=========== NEWS ROUTES ==============
       {
-        path: 'news',
+        path: PathRouteConstants.newsListRoute,
         name: 'News',
         component: NewsPage,
       },
       {
-        path: 'news/insert',
+        path: PathRouteConstants.newsInsertRoute,
         name: 'Insert News',
         component: NewsDetailsPage,
       },
       {
-        path: 'news/:newsSlug',
+        path: PathRouteConstants.newsDetailsRoute,
         name: 'Update News',
         component: NewsDetailsPage,
       },
@@ -167,17 +153,17 @@ const routes = [
       
       //=========== CATEGORY ROUTES ==============
       {
-        path: 'categories',
+        path: PathRouteConstants.categoriesRoute,
         name: 'Categories',
         component: CategoriesPage,
       },
       {
-        path: 'categories/insert',
+        path: PathRouteConstants.categoryInsertRoute,
         name: 'Insert Categories',
         component: CategoryDetailsPage,
       },
       {
-        path: 'categories/:categorySlug',
+        path: PathRouteConstants.categoryDetailsRoute,
         name: 'Update Categories',
         component: CategoryDetailsPage,
       },
@@ -185,46 +171,46 @@ const routes = [
 
       //=========== STORE INFORMATION ROUTES ==============
       {
-        path: 'information',
+        path: PathRouteConstants.categoryDetailsRoute,
         name: 'Store Information',
         component: StoreInformationPage,
       },
 
       //=========== SHIPPING ROUTES ============== 
       {
-        path: 'shippings',
+        path: PathRouteConstants.shippingsRoute,
         name: 'Shippings',
         component: ShippingsPage,
       },
       {
-        path: 'shippings/:shippingType',
+        path: PathRouteConstants.shippingDetailsRoute,
         name: 'Update Shipping',
         component: ShippingDetailsPage,
       },
       
        //=========== SHIPPING ROUTES ============== 
        {
-        path: 'website',
+        path: PathRouteConstants.websiteRoute,
         name: 'Website Info',
         component: WebsiteInfoPage,
       },
 
        //=========== LANGUAGE ROUTES ============== 
        {
-        path: 'language',
+        path: PathRouteConstants.languagesRoute,
         name: 'Language',
         component: LanguagePage,
       },
 
        //=========== CUSTOMER ROUTES ============== 
        {
-        path: 'customer',
+        path: PathRouteConstants.customersRoute,
         name: 'Customer',
         component: CustomersPage,
       },
 
       {
-        path: 'payment-method',
+        path: PathRouteConstants.paymentMethodsRoute,
         name: 'PaymentMethod',
         component: PaymentMethodPage,
       },
@@ -236,51 +222,6 @@ const routes = [
         name: 'Not Found',
         component: NotFoundPage,
       },
-
-      
-      // {
-      //   path: "dashboard",
-      //   name: "Dashboard",
-      //   component: Dashboard
-      // },
-      // {
-      //   path: "user",
-      //   name: "User Profile",
-      //   component: UserProfile
-      // },
-      // {
-      //   path: "table",
-      //   name: "Table List",
-      //   component: TableList
-      // },
-      // {
-      //   path: "typography",
-      //   name: "Typography",
-      //   component: Typography
-      // },
-      // {
-      //   path: "icons",
-      //   name: "Icons",
-      //   component: Icons
-      // },
-      // {
-      //   path: "maps",
-      //   name: "Maps",
-      //   meta: {
-      //     hideFooter: true
-      //   },
-      //   component: Maps
-      // },
-      // {
-      //   path: "notifications",
-      //   name: "Notifications",
-      //   component: Notifications
-      // },
-      // {
-      //   path: "upgrade",
-      //   name: "Upgrade to PRO",
-      //   component: UpgradeToPRO
-      // }
     ]
   }
 ];

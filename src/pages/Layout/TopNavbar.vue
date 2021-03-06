@@ -1,9 +1,6 @@
 <template>
   <md-toolbar md-elevation="0" class="md-transparent my-top-navbar">
     <div class="md-toolbar-row">
-      <!-- <div class="md-toolbar-section-start">
-        <h3 class="md-title">{{ $route.name }}</h3>
-      </div> -->
       <div class="md-toolbar-section-end">
         <md-button
           class="md-just-icon md-simple md-toolbar-toggle"
@@ -16,39 +13,7 @@
         </md-button>
 
         <div class="md-collapse">
-            <!-- <div class="md-autocomplete">
-              <md-autocomplete
-                class="search"
-                v-model="selectedEmployee"
-                :md-options="employees"
-              >
-                <label>Search...</label>
-              </md-autocomplete>
-            </div> -->
           <md-list>
-            <!-- <md-list-item href="#/">
-              <i class="material-icons">dashboard</i>
-              <p class="hidden-lg hidden-md">Dashboard</p>
-            </md-list-item> -->
-
-            <!-- <md-list-item href="#" class="dropdown">
-              <drop-down>
-                <a slot="title" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="material-icons">notifications</i>
-                  <span class="notification">5</span>
-                  <p class="hidden-lg hidden-md">Notifications</p>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                  <li><a href="#">Mike John responded to your email</a></li>
-                  <li><a href="#">You have 5 new tasks</a></li>
-                  <li><a href="#">You're now friend with Andrew</a></li>
-                  <li><a href="#">Another Notification</a></li>
-                  <li><a href="#">Another One</a></li>
-                </ul>
-              </drop-down>
-            </md-list-item> -->
-
-
             <li class="md-list-item">
               <a
                 href="#"
@@ -62,54 +27,46 @@
                       data-toggle="dropdown"
                     >
                       <md-icon>notifications</md-icon>
-                      <!-- <span class="notification">5</span> -->
                       <p class="hidden-lg hidden-md">Notifications</p>
                     </md-button>
                     <ul class="dropdown-menu dropdown-menu-right">
-                      <li><a href="#" @click="() => navigateRoute('/information')">Store Info</a></li>
-                      <li><a href="#" @click="() => navigateRoute('/website')">W.Store Website</a></li>
-                      <li><a href="#" @click="() => navigateRoute('/language')">Multilingual Settings</a></li>
+                      <li>
+                        <a href="#" @click="() => navigateRoute('/information')"
+                          >Store Info</a
+                        >
+                      </li>
+                      <li>
+                        <a href="#" @click="() => navigateRoute('/website')"
+                          >W.Store Website</a
+                        >
+                      </li>
+                      <li>
+                        <a href="#" @click="() => navigateRoute('/language')"
+                          >Multilingual Settings</a
+                        >
+                      </li>
                     </ul>
                   </drop-down>
                 </div>
               </a>
             </li>
-
-            <!-- <md-list-item href="#">
-              <i class="material-icons">person</i>
-              <p class="hidden-lg hidden-md">Profile</p>
-            </md-list-item> -->
-
-             <!-- <md-list-item href="#" class="dropdown">
-              <drop-down>
-                <a slot="title" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="material-icons">person</i>
-                  <span class="notification">5</span>
-                  <p class="hidden-lg hidden-md">person</p>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-left">
-                  <li><a href="#">Logout</a></li>
-                  <li><a href="#">Logout</a></li>
-                  <li><a href="#">Logout</a></li>
-                  <li><a href="#">Logout</a></li>
-                </ul>
-              </drop-down>
-            </md-list-item> -->
           </md-list>
-           <md-list-item href="#" class="dropdown">
-              <drop-down>
-                <a slot="title" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="material-icons">person</i>
-                  <!-- <span class="notification">5</span> -->
-                  <p class="hidden-lg hidden-md">person</p>
-                </a>
-                <ul  class="dropdown-menu dropdown-menu-right">
-                  <li><a href="#" @click="handleLogout">Logout</a></li>
-                  <li><a href="#" @click="() => navigateRoute('/change-password')">Change Password</a></li>
-                </ul>
-              </drop-down>
-            </md-list-item>
-         
+          <md-list-item href="#" class="dropdown">
+            <drop-down>
+              <a slot="title" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="material-icons">person</i>
+                <p class="hidden-lg hidden-md">person</p>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="#" @click="handleLogout">Logout</a></li>
+                <li>
+                  <a href="#" @click="() => navigateRoute('/change-password')"
+                    >Change Password</a
+                  >
+                </li>
+              </ul>
+            </drop-down>
+          </md-list-item>
         </div>
       </div>
     </div>
@@ -117,41 +74,39 @@
 </template>
 
 <script>
-import { showConfirm } from '../../utils/alert';
-import { clearAuthorization } from '../../utils/auth';
-import { mapActions } from 'vuex';
+import { showConfirm } from "../../utils/alert";
+import { clearAuthorization } from "../../utils/auth";
+import { mapActions } from "vuex";
 
 export default {
   data() {
-    return {
-      
-    };
+    return {};
   },
   methods: {
-    ...mapActions(['setIsAuthorized']),
+    ...mapActions(["setIsAuthorized"]),
     toggleSidebar() {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
     },
-    handleLogout: async function(){
+    handleLogout: async function () {
       const res = await showConfirm({
-        title: 'Are you sure to logout wstore admin?',
-        text: ''
-      })
-      if(res){
+        title: "Are you sure to logout wstore admin?",
+        text: "",
+      });
+      if (res) {
         clearAuthorization();
         this.setIsAuthorized(false);
-        this.$router.go('/login');
+        this.$router.go("/login");
       }
     },
-    navigateRoute: function(route){
+    navigateRoute: function (route) {
       this.$router.push(route);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="css">
-.my-top-navbar{
+.my-top-navbar {
   background-color: red;
 }
 </style>

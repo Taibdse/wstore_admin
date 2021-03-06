@@ -4,8 +4,9 @@ import SideBar from "./components/SidebarPlugin";
 // asset imports
 import VueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
-import "./assets/scss/material-dashboard.scss";
 
+import "./assets/scss/material-dashboard.scss";
+import "@/assets/scss/material-kit.scss";
 // library auto imports
 import "es6-promise/auto";
 

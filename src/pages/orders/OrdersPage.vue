@@ -1,174 +1,204 @@
 <template>
-    <div class="content">
-      <h2 class="my-page-header">Orders</h2>
-      <md-card>
-         <md-card-header data-background-color="green">
-          <h4 class="title">Filters</h4>
-          <!-- <p class="category"></p> -->
-        </md-card-header>
-        <md-card-content>
-          <div class="md-layout md-gutter">
-             <div class="md-layout-item sm-size-100">
-              <strong>customer's name/phone/email</strong>
-              <md-field >
-                  <md-input v-model="filters.keyword"/>
-              </md-field>
-            </div>
-            <div class="md-layout-item sm-size-100">
-              <strong>from date</strong>
-              <md-datepicker v-model="selectedDate.from" md-immediately />
-            </div>
-            <div class="md-layout-item sm-size-100">
-              <strong>to date</strong>
-              <md-datepicker v-model="selectedDate.to" md-immediately />
-            </div>
-            <div class="md-layout-item sm-size-100">
-                <strong>Status</strong>
-                <md-field>
-                    <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
-                    <md-select v-model="filters.status" name="status" id="status" >
-                        <md-option value="all" >all</md-option>
-                        <md-option v-for="(status) in orderStatuses" :key="status" :value="status">{{ status }}</md-option>
-                    </md-select>
-                </md-field>
-            </div>
-            
+  <div class="content">
+    <h2 class="my-page-header">Orders</h2>
+    <md-card>
+      <md-card-header data-background-color="green">
+        <h4 class="title">Filters</h4>
+        <!-- <p class="category"></p> -->
+      </md-card-header>
+      <md-card-content>
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item sm-size-100">
+            <strong>customer's name/phone/email</strong>
+            <md-field>
+              <md-input v-model="filters.keyword" />
+            </md-field>
           </div>
-          <div class="md-layout md-gutter">
-              <div class="md-layout-item md-size-25">
-                <strong>Order by Time</strong>
-                <md-field>
-                    <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
-                    <md-select v-model="orderBys.createdAt" name="orderByTime" id="orderByTime" >
-                        <md-option v-for="(orderBy) in orderByOptions" :key="orderBy.value" :value="orderBy.value">{{ orderBy.text }}</md-option>
-                    </md-select>
-                </md-field>
-              </div>
+          <div class="md-layout-item sm-size-100">
+            <strong>from date</strong>
+            <md-datepicker v-model="selectedDate.from" md-immediately />
           </div>
+          <div class="md-layout-item sm-size-100">
+            <strong>to date</strong>
+            <md-datepicker v-model="selectedDate.to" md-immediately />
+          </div>
+          <div class="md-layout-item sm-size-100">
+            <strong>Status</strong>
+            <md-field>
+              <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
+              <md-select v-model="filters.status" name="status" id="status">
+                <md-option value="all">all</md-option>
+                <md-option
+                  v-for="status in orderStatuses"
+                  :key="status"
+                  :value="status"
+                  >{{ status }}</md-option
+                >
+              </md-select>
+            </md-field>
+          </div>
+        </div>
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item md-size-25">
+            <strong>Order by Time</strong>
+            <md-field>
+              <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
+              <md-select
+                v-model="orderBys.createdAt"
+                name="orderByTime"
+                id="orderByTime"
+              >
+                <md-option
+                  v-for="orderBy in orderByOptions"
+                  :key="orderBy.value"
+                  :value="orderBy.value"
+                  >{{ orderBy.text }}</md-option
+                >
+              </md-select>
+            </md-field>
+          </div>
+        </div>
 
-          <div class="md-layout md-gutter">
-            <md-button class="md-raised md-primary" style="margin-left: auto" @click="handleSearch">Search</md-button>
-          </div>
-        </md-card-content>
-      </md-card>
-    <div>
-        
-      </div>
-      
-      <md-card>
-        <md-card-header data-background-color="green">
-          <h4 class="title">Orders List</h4>
-          <!-- <p class="category"></p> -->
-        </md-card-header>
-        <md-card-content>
-          <div v-show="isLoading" style="text-align: center">
-              <md-progress-spinner md-mode="indeterminate" style="margin: auto"></md-progress-spinner>
-          </div>
-          <div v-show="!isLoading && orders.length !== 0">
-            <Pagination :pagination="pagination" :handleChange="handlePageChange"/>
-            <OrdersList :orders="pagingOrders" :onViewDetails="handleViewOrderDetails"  />
-          </div>
-          <div v-show="!isLoading && orders.length === 0">
-            <h3 style="text-align: center">No orders found!</h3>
-          </div>
-        </md-card-content>
-      </md-card>
-      <OrderDetailsDialog 
-        :order="order" 
-        :onClose="handleCloseDialog"
-        :showDialog="showDialog" />
-    </div>
-    
+        <div class="md-layout md-gutter">
+          <md-button
+            class="md-raised md-primary"
+            style="margin-left: auto"
+            @click="handleSearch"
+            >Search</md-button
+          >
+        </div>
+      </md-card-content>
+    </md-card>
+    <div></div>
+
+    <md-card>
+      <md-card-header data-background-color="green">
+        <h4 class="title">Orders List</h4>
+      </md-card-header>
+      <md-card-content>
+        <div v-show="isLoading" style="text-align: center">
+          <md-progress-spinner
+            md-mode="indeterminate"
+            style="margin: auto"
+          ></md-progress-spinner>
+        </div>
+        <div v-show="!isLoading && orders.length !== 0">
+          <Pagination
+            :pagination="pagination"
+            :handleChange="handlePageChange"
+          />
+          <OrdersList
+            :orders="pagingOrders"
+            :onViewDetails="handleViewOrderDetails"
+          />
+        </div>
+        <div v-show="!isLoading && orders.length === 0">
+          <h3 style="text-align: center">No orders found!</h3>
+        </div>
+      </md-card-content>
+    </md-card>
+    <OrderDetailsDialog
+      :order="order"
+      :onClose="handleCloseDialog"
+      :showDialog="showDialog"
+    />
+  </div>
 </template>
 
 <script>
-import OrderService from '../../services/order.service';
-import OrdersList from '@/pages/orders/OrdersList';
-import OrderDetailsDialog from './OrderDetailsDialog'
-import { formatVNDate, convertVNDateToSQLDateFormat } from '../../utils/time';
-import { isEmpty } from '@/utils/validations.js';
-import Pagination from '@/components/common/Pagination';
+import OrderService from "../../services/order.service";
+import OrdersList from "@/pages/orders/OrdersList";
+import OrderDetailsDialog from "./OrderDetailsDialog";
+import { formatVNDate, convertVNDateToSQLDateFormat } from "../../utils/time";
+import { isEmpty } from "@/utils/validations.js";
+import Pagination from "@/components/common/Pagination";
 
 const DEFAULT_PAGINATION = { pageCount: 0, currentPage: 1, size: 10 };
-const ORDER_SEARCH_CONDITION_KEY = 'orderSearchConditionKey';
+const ORDER_SEARCH_CONDITION_KEY = "orderSearchConditionKey";
 
 export default {
   components: {
-    OrdersList, Pagination, OrderDetailsDialog
+    OrdersList,
+    OrderDetailsDialog,
+    Pagination,
   },
   data: () => ({
-      orders: [],
-      selectedDate: {
-        from: '01/01/2010',
-        to: '31/01/2010'
-      },
-      filters: { 
-        status: 'all', 
-        keyword: ''
-      },
-      orderBys: {
-        createdAt: 'DESC' 
-      },
-      orderByOptions: [
-        { text: 'Tăng dần', value: 'ASC' },
-        { text: 'Giảm dần', value: 'DESC' }
-      ],
-      
-      isLoading: false,
-      orderStatuses: [],
-      pagination: { pageCount: 0, currentPage: 1, size: 10 },
-      order: {},
-      showDialog: false,
+    orders: [],
+    selectedDate: {
+      from: "01/01/2010",
+      to: "31/01/2010",
+    },
+    filters: {
+      status: "all",
+      keyword: "",
+    },
+    orderBys: {
+      createdAt: "DESC",
+    },
+    orderByOptions: [
+      { text: "Tăng dần", value: "ASC" },
+      { text: "Giảm dần", value: "DESC" },
+    ],
+
+    isLoading: false,
+    orderStatuses: [],
+    pagination: { pageCount: 0, currentPage: 1, size: 10 },
+    order: {},
+    showDialog: false,
   }),
 
   computed: {
-    pagingOrders: function(){
-      if(isEmpty(this.orders)) return [];
+    pagingOrders: function () {
+      if (isEmpty(this.orders)) return [];
       const { currentPage, size } = this.pagination;
-      return this.orders.map((order, index) => ({ ...order, index: index + (currentPage - 1) * size }))
-    }
+      return this.orders.map((order, index) => ({
+        ...order,
+        index: index + (currentPage - 1) * size,
+      }));
+    },
   },
 
   methods: {
-    handlePageChange: function(pageNum){
+    handlePageChange: function (pageNum) {
       this.pagination = { ...this.pagination, currentPage: pageNum };
       this.getOrders();
     },
 
-    handleCloseDialog: function(){
-      this.showDialog = false
+    handleCloseDialog: function () {
+      this.showDialog = false;
     },
 
-    handleViewOrderDetails: function(order){
+    handleViewOrderDetails: function (order) {
       this.order = order;
       this.showDialog = true;
     },
 
-    handleSearch: function(){
+    handleSearch: function () {
       this.pagination = { ...this.pagination, currentPage: 1 };
       this.getOrders();
     },
 
-    getOrders: async function(){
+    getOrders: async function () {
       this.isLoading = true;
       let { from, to } = this.selectedDate;
       from = convertVNDateToSQLDateFormat(from);
       to = convertVNDateToSQLDateFormat(to);
       try {
-        const params = { 
-          from, to, 
-          ...this.filters, 
+        const params = {
+          from,
+          to,
+          ...this.filters,
           orderByTime: this.orderBys.createdAt,
           page: this.pagination.currentPage,
-          size: this.pagination.size
+          size: this.pagination.size,
         };
         const res = await OrderService.getOrders(params);
         const { numOfPage, size, page, data } = res.data;
         this.orders = data;
-        this.pagination = { 
-          ...this.pagination, 
-          currentPage: page, 
-          pageCount: numOfPage 
+        this.pagination = {
+          ...this.pagination,
+          currentPage: page,
+          pageCount: numOfPage,
         };
       } catch (error) {
         this.orders = [];
@@ -176,23 +206,26 @@ export default {
       }
       this.isLoading = false;
     },
-    getDefaultSelectedDate: function(){
+    getDefaultSelectedDate: function () {
       let d = new Date();
       const to = formatVNDate(d);
-      d = new Date(d.setDate(d.getDate() - 7)); 
+      d = new Date(d.setDate(d.getDate() - 7));
       const from = formatVNDate(d);
-      return{ from, to };
+      return { from, to };
     },
-    saveSearchCondition: function(){
+    saveSearchCondition: function () {
       const searchCondition = {
         selectedDate: this.selectedDate,
-        filters: this.filters, 
+        filters: this.filters,
         orderBys: this.orderBys,
-        pagination: this.pagination
+        pagination: this.pagination,
       };
-      window.localStorage.setItem(ORDER_SEARCH_CONDITION_KEY, JSON.stringify(searchCondition));
+      window.localStorage.setItem(
+        ORDER_SEARCH_CONDITION_KEY,
+        JSON.stringify(searchCondition)
+      );
     },
-    loadSearchCondition: function(){
+    loadSearchCondition: function () {
       const json = window.localStorage.getItem(ORDER_SEARCH_CONDITION_KEY);
       try {
         const searchCondition = JSON.parse(json);
@@ -203,41 +236,39 @@ export default {
       } catch (error) {
         this.selectedDate = this.getDefaultSelectedDate();
       }
-    }
+    },
   },
-  async created (){
+  async created() {
     this.isLoading = true;
-    this.$material.locale.dateFormat = 'dd/MM/yyyy';
+    this.$material.locale.dateFormat = "dd/MM/yyyy";
     this.loadSearchCondition();
     try {
       const res = await OrderService.getOrderStatus();
       this.orderStatuses = res.data;
       await this.getOrders();
-    } catch (error) {
-
-    }
+    } catch (error) {}
     this.isLoading = false;
   },
 
-  beforeDestroy(){
+  beforeDestroy() {
     this.saveSearchCondition();
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-.md-table-cell{
+.md-table-cell {
   padding-top: 0px;
   padding-bottom: 0px;
   text-align: center;
 }
 
 .md-dialog {
-    max-width: 768px;
-    min-width: 500px;
+  max-width: 768px;
+  min-width: 500px;
 }
 
-.md-input{
+.md-input {
   width: 20px;
 }
 </style>

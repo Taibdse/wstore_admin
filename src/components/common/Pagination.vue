@@ -1,31 +1,31 @@
 <template>
-     <Paginate
-        v-model="pagination.currentPage"
-        :page-count="pagination.pageCount"
-        :click-handler="handleChange"
-        prev-text="<<"
-        next-text=">>"
-        container-class="pagination"
-        page-class="page-item"
-        next-class="next"
-        prev-class="prev"
-        active-class="active-item"
-    >
-    </Paginate>
+  <Paginate
+    v-model="pagination.currentPage"
+    :page-count="pagination.pageCount"
+    :click-handler="handleChange"
+    prev-text="<<"
+    next-text=">>"
+    container-class="pagination"
+    page-class="page-item"
+    next-class="next"
+    prev-class="prev"
+    active-class="active-item"
+  >
+  </Paginate>
 </template>
 
 <script>
-import Paginate from 'vuejs-paginate';
+import Paginate from "vuejs-paginate";
 
 export default {
-    components: {
-        Paginate
-    },
-    props: {
-        pagination: Object,
-        handleChange: Function
-    }
-}
+  components: {
+    Paginate,
+  },
+  props: {
+    pagination: Object,
+    handleChange: Function,
+  },
+};
 </script>
 
 <style>
@@ -67,6 +67,7 @@ export default {
     line-height: 40px!important;
     margin: 0!important;
     padding: 0!important;
+    font-weight: bold !important;
 }
 
 .next a, .prev a{
@@ -77,7 +78,7 @@ export default {
     font-size: 16px!important;
 }
 
-.active-item{
-    background-color: #ccc;
+.active-item {
+  background-color: #ccc;
 }
 </style>
