@@ -91,6 +91,15 @@
                     <md-checkbox v-model="tip.hot">Hot tip (show in homepage)</md-checkbox>
                   </div>
                 </div>
+
+                <div class="md-layout md-gutter" style="margin-top: 20px">
+                  <div class="md-layout-item md-size-100">
+                    <PageMetadata
+                      ref="pageMetadata"
+                      :pageMetadataContent="tip.pageMetadata"
+                    />
+                  </div>
+                </div>
               </md-card-content>
 
               <md-card-actions>
@@ -118,11 +127,13 @@ import { isEmpty } from "../../utils/validations";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
 import MyEditor from "../../components/common/MyEditor.vue";
 import { PathRouteConstants } from "../../routes/pathRoutes";
+import PageMetadata from "../../components/common/PageMetadata.vue";
 
 export default {
   components: {
     DropzoneUpload,
     MyEditor,
+    PageMetadata
   },
   data: () => ({
     tip: {
@@ -166,6 +177,7 @@ export default {
       data.image = isEmpty(tipImage) ? null : tipImage[0].dataURL;
       data.content = content;
       data.contentEn = contentEn;
+      data.pageMetadata = this.$refs["pageMetadata"].$data.pageMetadata;
 
       if (this.insertTip) {
         await this.handleInsertTip(data);

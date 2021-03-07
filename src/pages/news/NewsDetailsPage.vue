@@ -133,6 +133,15 @@
               </div>
             </div>
 
+            <div class="md-layout md-gutter" style="margin-top: 20px">
+              <div class="md-layout-item md-size-100">
+                <PageMetadata
+                  ref="pageMetadata"
+                  :pageMetadataContent="news.pageMetadata"
+                />
+              </div>
+            </div>
+
             <div class="md-layout md-gutter">
               <md-button
                 @click="handleBack"
@@ -166,11 +175,13 @@ import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
 import MyEditor from "../../components/common/MyEditor.vue";
 import DropzoneUpload from "../../components/common/DropzoneUpload.vue";
 import { PathRouteConstants } from "../../routes/pathRoutes";
+import PageMetadata from "../../components/common/PageMetadata.vue";
 
 export default {
   components: {
     MyEditor,
     DropzoneUpload,
+    PageMetadata
   },
 
   data: () => ({
@@ -232,6 +243,8 @@ export default {
           if (!this.insertNews) newsItem.newsId = this.news.id;
         }
       });
+
+      news.pageMetadata = this.$refs["pageMetadata"].$data.pageMetadata;
 
       if (this.insertNews) {
         await this.handleInsertNews(news);

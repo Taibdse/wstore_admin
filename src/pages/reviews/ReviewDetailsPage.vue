@@ -126,6 +126,15 @@
                     <md-checkbox v-model="review.hot">Hot review (show in homepage)</md-checkbox>
                   </div>
                 </div>
+
+                <div class="md-layout md-gutter" style="margin-top: 20px">
+                  <div class="md-layout-item md-size-100">
+                    <PageMetadata
+                      ref="pageMetadata"
+                      :pageMetadataContent="review.pageMetadata"
+                    />
+                  </div>
+                </div>
               </md-card-content>
               <md-card-actions>
                 <md-button type="submit" class="md-primary">Save</md-button>
@@ -150,11 +159,13 @@ import { showErrors, showSuccessMsg } from "../../utils/alert";
 import { isEmpty } from "../../utils/validations";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
 import MyEditor from "../../components/common/MyEditor.vue";
+import PageMetadata from "../../components/common/PageMetadata.vue";
 
 export default {
   components: {
     DropzoneUpload,
     MyEditor,
+    PageMetadata
   },
 
   data: () => ({
@@ -201,6 +212,7 @@ export default {
       data.image = isEmpty(reviewImage) ? null : reviewImage[0].dataURL;
       data.content = content;
       data.contentEn = contentEn;
+      data.pageMetadata = this.$refs["pageMetadata"].$data.pageMetadata;
 
       if (this.insertReview) {
         await this.handleInsertReview(data);

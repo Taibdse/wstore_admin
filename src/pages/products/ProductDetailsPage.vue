@@ -196,7 +196,6 @@
 
                 <div class="md-layout md-gutter" style="margin-top: 20px">
                   <div class="md-layout-item md-size-100">
-                    <!-- <strong style="margin-bottom: 20px">Upload sub image (can upload multiple images)</strong><br/><br/> -->
                     <PageMetadata
                       ref="pageMetadata"
                       :pageMetadataContent="product.pageMetadata"

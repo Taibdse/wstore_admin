@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { isEmpty } from "../../utils/validations";
 export default {
   props: {
     onSubmit: Function,
@@ -68,20 +69,21 @@ export default {
   }),
 
   methods: {
-    handleSubmit: function() {
+    handleSubmit: function () {
       if (!this.canSave) return;
       this.onSubmit();
     },
   },
 
   watch: {
-      pageMetadataContent: function(newVal, oldVal){
-          this.pageMetadata = newVal;
-      }
+    pageMetadataContent: function (newVal, oldVal) {
+      if (isEmpty(newVal)) this.pageMetadata = {};
+      else this.pageMetadata = newVal;
+    },
   },
 
   created() {
-      this.pageMetadata = this.pageMetadataContent;
+    this.pageMetadata = isEmpty(this.pageMetadataContent) ? {} : this.pageMetadataContent;
   },
 };
 </script>
