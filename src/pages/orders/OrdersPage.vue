@@ -8,21 +8,21 @@
       </md-card-header>
       <md-card-content>
         <div class="md-layout md-gutter">
-          <div class="md-layout-item sm-size-100">
+          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-100 md-xsmall-size-100">
             <strong>customer's name/phone/email</strong>
             <md-field>
               <md-input v-model="filters.keyword" />
             </md-field>
           </div>
-          <div class="md-layout-item sm-size-100">
+          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50">
             <strong>from date</strong>
             <md-datepicker v-model="selectedDate.from" md-immediately />
           </div>
-          <div class="md-layout-item sm-size-100">
+          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50">
             <strong>to date</strong>
             <md-datepicker v-model="selectedDate.to" md-immediately />
           </div>
-          <div class="md-layout-item sm-size-100">
+          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50">
             <strong>Status</strong>
             <md-field>
               <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
@@ -37,9 +37,7 @@
               </md-select>
             </md-field>
           </div>
-        </div>
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-size-25">
+          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50">
             <strong>Order by Time</strong>
             <md-field>
               <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
@@ -57,6 +55,9 @@
               </md-select>
             </md-field>
           </div>
+        </div>
+        <div class="md-layout md-gutter">
+          
         </div>
 
         <div class="md-layout md-gutter">
