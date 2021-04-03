@@ -3,6 +3,7 @@ import SideBar from "./components/SidebarPlugin";
 
 // asset imports
 import VueMaterial from "vue-material";
+import 'vue-datetime/dist/vue-datetime.css'
 import "vue-material/dist/vue-material.min.css";
 
 import "./assets/scss/material-dashboard.scss";

@@ -14,6 +14,7 @@ import { interceptResponse } from "./utils/auth";
 export default {
   methods: {},
   beforeCreate() {
+    this.$material.locale.dateFormat = "dd/MM/yyyy";
     //initialize response intercepter if status code == 401 or 403
     interceptResponse(() => {
       clearAuthorization();

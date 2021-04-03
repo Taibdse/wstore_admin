@@ -20,6 +20,14 @@ export const formatVNDate = (d) => {
     return date + '/' + m + '/' + y;
 }
 
+export const formatVNDatetime = (d) => {
+    if(!d) return '';
+    d = new Date(d);
+    const hour = ten(d.getHours());
+    const minute = ten(d.getMinutes());
+    return formatVNDate(d) + ' ' + hour + ':' + minute;
+}
+
 export const convertVNDateToSQLDateFormat = (d) => {
     const arr = d.split('/');
     return arr[2] + '-' + arr[1] + '-' + arr[0];
