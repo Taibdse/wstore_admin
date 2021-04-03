@@ -22,6 +22,8 @@ import WebsiteInfoPage from '../pages/website/WebsiteInfoPage.vue';
 import LanguagePage from '../pages/language/LanguagePage.vue';
 import CustomersPage from '../pages/customer/CustomersPage.vue';
 import PaymentMethodPage from '../pages/payment-method/PaymentMethodPage.vue';
+import PromotionCodesPage from '../pages/promotion-code/PromotionCodesPage.vue';
+import PromotionCodeDetailsPage from '../pages/promotion-code/PromotionCodeDetailsPage.vue';
 import NotFoundPage from '../pages/notfound/NotFoundPage';
 import LoginTempPage from '../pages/auth/LoginTemp.vue';
 
@@ -215,6 +217,21 @@ const routes = [
         component: PaymentMethodPage,
       },
 
+      {
+        path: PathRouteConstants.promotionCodesRoute,
+        name: 'Promotion Code',
+        component: PromotionCodesPage,
+      },
+      {
+        path: PathRouteConstants.promotionCodeInsertRoute,
+        name: 'Insert Promotion Code',
+        component: PromotionCodeDetailsPage,
+      },
+      {
+        path: PathRouteConstants.promotionCodeDetailsRoute + '/:id',
+        name: 'Update Promotion Code',
+        component: PromotionCodeDetailsPage,
+      },
 
        //=========== NOT FOUND ROUTES ============== 
        {

@@ -42,6 +42,10 @@
         <i class="fas fa-file-contract"></i>
         <p>Policies</p>
       </sidebar-link>
+      <sidebar-link to="/promotion-code">
+        <i class="fab fa-product-hunt"></i>
+        <p>Promotion Code</p>
+      </sidebar-link>
       <sidebar-link to="/shippings" style="margin-bottom: 40px">
         <i class="fas fa-truck"></i>
         <p>Shippings</p>

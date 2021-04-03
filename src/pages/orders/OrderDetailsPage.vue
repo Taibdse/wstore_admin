@@ -213,6 +213,12 @@
                   </md-table-cell>
                 </md-table-row>
                 <md-table-row>
+                  <md-table-head>Promotion: </md-table-head>
+                  <md-table-cell>
+                   <strong>{{ order.promotionCode }}</strong>, Discount {{ order.promotionCodeInfo }} ({{ toMoneyFormat(order.discount) }} đ)
+                  </md-table-cell>
+                </md-table-row>
+                <md-table-row>
                   <md-table-head>Order Time: </md-table-head>
                   <md-table-cell>
                     {{ getVNTimeFormat(order.createdAt) }}
@@ -247,11 +253,10 @@ import AddressService from "../../services/address.service";
 import ShippingService from "../../services/shipping.service";
 import { isEmpty } from "../../utils/validations";
 import { toMoneyFormat } from "../../utils/strings";
-import { formatVNDate, getVNTimeFormat } from "../../utils/time";
+import { getVNTimeFormat } from "../../utils/time";
 import { showSuccessMsg, showErrors } from "../../utils/alert";
 import { SHIPPING_TYPES, getPaymentStatus } from "../../common/constants";
 import PaymentMethodService from "../../services/paymentMethod.service";
-import ConfigurationService from "../../services/configuration.service";
 
 export default {
   components: {
@@ -327,16 +332,14 @@ export default {
         shippingType: shipping.type,
         shippingMoney,
         districtId: districtId,
-        totalPrice: this.order.productsPrice + shippingMoney,
+        totalPrice: this.order.productsPrice + shippingMoney - this.order.discount,
       };
 
       this.shouldSetDistrict0 = true;
     },
 
     changeDistrict: function (districtId) {
-      if (
-        this.order.customerProvince.shippingType === SHIPPING_TYPES.NOI_THANH
-      ) {
+      if (this.order.customerProvince.shippingType === SHIPPING_TYPES.NOI_THANH) {
         const district = this.districts.find((d) => d.id == districtId);
         let shippingType = SHIPPING_TYPES.NOI_THANH;
         if (!isEmpty(district.shippingType)) {
@@ -345,7 +348,7 @@ export default {
         let shippingMoney = !this.order.freeship
           ? this.shippings.find((item) => item.type == shippingType).money
           : 0;
-        let totalPrice = this.order.productsPrice + +shippingMoney;
+        let totalPrice = this.order.productsPrice + +shippingMoney - this.order.discount;
         this.order = {
           ...this.order,
           shippingType,

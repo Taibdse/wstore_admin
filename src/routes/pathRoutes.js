@@ -28,5 +28,8 @@ export const PathRouteConstants = {
     languagesRoute: '/language',
     customersRoute: '/customer',
     paymentMethodsRoute: '/payment-method',
+    promotionCodesRoute: '/promotion-code',
+    promotionCodeInsertRoute: '/promotion-code/insert',
+    promotionCodeDetailsRoute: '/promotion-code/edit',
   };
   

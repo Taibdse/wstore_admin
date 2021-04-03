@@ -23,3 +23,9 @@ export const getPaymentStatus = () => {
         { title: 'Paid', value: PAYMENT_STATUS.PAID },
     ]
 }
+
+
+export const PROMOTION_CODE_TYPES = {
+    PERCENT: "PERCENT",
+    AMOUNT_OF_MONEY: "AMOUNT_OF_MONEY",
+}

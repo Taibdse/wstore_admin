@@ -241,7 +241,6 @@ export default {
   },
   async created() {
     this.isLoading = true;
-    this.$material.locale.dateFormat = "dd/MM/yyyy";
     this.loadSearchCondition();
     try {
       const res = await OrderService.getOrderStatus();
