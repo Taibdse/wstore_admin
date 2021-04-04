@@ -15,6 +15,7 @@
       <md-table-cell>{{ formatVNDatetime(promotionCode.fromDate) }}</md-table-cell>
       <md-table-cell>{{ formatVNDatetime(promotionCode.toDate) }}</md-table-cell>
       <md-table-cell>{{ toMoneyFormat(promotionCode.amount) }}</md-table-cell>
+      <md-table-cell>{{ isEmpty(promotionCode.promotionCodeConditions) ? 'none' : toMoneyFormat(promotionCode.promotionCodeConditions[0].amount) }}</md-table-cell>
       <md-table-cell>{{ promotionCode.type }}</md-table-cell>
       <md-table-cell>
         <Status :value="promotionCode.active" />
@@ -35,6 +36,7 @@
 <script>
 import { toMoneyFormat } from "@/utils/strings.js";
 import { formatVNDatetime } from "../../utils/time";
+import { isEmpty } from '../../utils/validations';
 import Status from '@/components/common/Status';
 import { PathRouteConstants } from '../../routes/pathRoutes';
 
@@ -56,6 +58,7 @@ export default {
       "From Date",
       "To Date",
       "Amount",
+      "Minimum cart price",
       "Type",
       "Active",
     ],
@@ -66,7 +69,8 @@ export default {
       this.$router.push(PathRouteConstants.promotionCodeDetailsRoute + '/' + promotionCode.id);
     },
     toMoneyFormat,
-    formatVNDatetime
+    formatVNDatetime,
+    isEmpty
   },
   //  watch: {
   //     promotionCodes: function(newPromotionCodes){

@@ -93,15 +93,24 @@
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item sm-size-100">
                     <strong>from date</strong>
-                    <!-- <md-datepicker
-                      v-model="promotionCode.fromDate"
-                      md-immediately
-                    /> -->
                     <Datetime v-model="promotionCode.fromDate" />
                   </div>
                   <div class="md-layout-item sm-size-100">
                     <strong>to date</strong>
                     <Datetime v-model="promotionCode.toDate" />
+                  </div>
+                </div>
+                <div class="md-layout md-gutter">
+                  <div class="md-layout-item sm-size-100">
+                    <md-field>
+                      <label for="quantity">Minimum cart price</label>
+                      <md-input
+                      name="minCartPrice"
+                      id="minCartPrice"
+                      type="number"
+                      v-model="promotionCode.minCartPrice"
+                    />
+                    </md-field>
                   </div>
                 </div>
                 <div class="md-layout md-gutter">
@@ -131,7 +140,7 @@
 
 <script>
 import PromotionCodeService from "../../services/promotionCode.service";
-import Datetime from '../../components/common/Datetime';
+import Datetime from "../../components/common/Datetime";
 import { isEmpty } from "@/utils/validations.js";
 import { toMoneyFormat } from "../../utils/strings";
 import { getVNTimeFormat } from "../../utils/time";
@@ -143,11 +152,11 @@ import {
   SAVE_FAILED,
 } from "../../utils/constants";
 import { PathRouteConstants } from "../../routes/pathRoutes";
-import { PROMOTION_CODE_TYPES } from "../../common/constants";
+import { PROMOTION_CODE_CONDITION_TYPES, PROMOTION_CODE_TYPES } from "../../common/constants";
 
 export default {
   components: {
-    Datetime
+    Datetime,
   },
   data: () => ({
     promotionCode: {
@@ -176,9 +185,7 @@ export default {
           } else {
             this.promotionCode = {
               ...res.data,
-              // fromDate: new Date(res.data.fromDate),
-              // toDate: new Date(res.data.toDate),
-              // fromDate: formatVNDatetime(res.data.fromDate)
+              minCartPrice: isEmpty(res.data.promotionCodeConditions) ? null : res.data.promotionCodeConditions[0].amount
             };
           }
         } catch (error) {
@@ -192,12 +199,23 @@ export default {
       // console.log(typeof this.promotionCode.fromDate);
       // return;
       this.isLoading = true;
+      let promotionCodeConditions = [];
+      if(!isEmpty(this.promotionCode.minCartPrice)){
+        promotionCodeConditions.push({
+            amount: this.promotionCode.minCartPrice,
+            type: PROMOTION_CODE_CONDITION_TYPES.MIN_CART_PRICE
+        })
+      };
+      const data = {
+        ...this.promotionCode, 
+        promotionCodeConditions
+      }
       try {
         let res;
         if (this.insertPromotionCode) {
-          res = await PromotionCodeService.create(this.promotionCode);
+          res = await PromotionCodeService.create(data);
         } else {
-          res = await PromotionCodeService.update(this.promotionCode);
+          res = await PromotionCodeService.update(data);
         }
         console.log(res);
         const { errors, success } = res.data;
