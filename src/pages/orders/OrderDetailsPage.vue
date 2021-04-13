@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <Loading :isLoading="isLoading" />
     <!-- <h4 class="title">Thông tin đơn hàng</h4> -->
     <md-card>
       <md-card-header data-background-color="orange">
@@ -12,13 +13,13 @@
         </p>
       </md-card-header>
       <md-card-content>
-        <div v-show="isLoading" style="text-align: center">
+        <!-- <div v-show="isLoading" style="text-align: center">
           <md-progress-spinner
             md-mode="indeterminate"
             style="margin: auto"
           ></md-progress-spinner>
-        </div>
-        <div v-show="!isLoading && !notfound && !isEmpty(order)">
+        </div> -->
+        <div v-show="!notfound && !isEmpty(order)">
           <form @submit.prevent="saveOrder">
             <div class="md-layout md-gutter">
               <div class="md-layout-item sm-size-100">
@@ -215,7 +216,11 @@
                 <md-table-row>
                   <md-table-head>Promotion: </md-table-head>
                   <md-table-cell>
-                   <strong>{{ order.promotionCode }}</strong>, Discount {{ order.promotionCodeInfo }} ({{ toMoneyFormat(order.discount) }} đ)
+                    <strong>{{ order.promotionCode }}</strong
+                    >, Discount {{ order.promotionCodeInfo }} ({{
+                      toMoneyFormat(order.discount)
+                    }}
+                    đ)
                   </md-table-cell>
                 </md-table-row>
                 <md-table-row>
@@ -257,10 +262,12 @@ import { getVNTimeFormat } from "../../utils/time";
 import { showSuccessMsg, showErrors } from "../../utils/alert";
 import { SHIPPING_TYPES, getPaymentStatus } from "../../common/constants";
 import PaymentMethodService from "../../services/paymentMethod.service";
+import Loading from "../../components/common/Loading.vue";
 
 export default {
   components: {
     OrderProducts,
+    Loading,
   },
   data: () => ({
     order: {},
@@ -332,14 +339,17 @@ export default {
         shippingType: shipping.type,
         shippingMoney,
         districtId: districtId,
-        totalPrice: this.order.productsPrice + shippingMoney - this.order.discount,
+        totalPrice:
+          this.order.productsPrice + shippingMoney - this.order.discount,
       };
 
       this.shouldSetDistrict0 = true;
     },
 
     changeDistrict: function (districtId) {
-      if (this.order.customerProvince.shippingType === SHIPPING_TYPES.NOI_THANH) {
+      if (
+        this.order.customerProvince.shippingType === SHIPPING_TYPES.NOI_THANH
+      ) {
         const district = this.districts.find((d) => d.id == districtId);
         let shippingType = SHIPPING_TYPES.NOI_THANH;
         if (!isEmpty(district.shippingType)) {
@@ -348,7 +358,8 @@ export default {
         let shippingMoney = !this.order.freeship
           ? this.shippings.find((item) => item.type == shippingType).money
           : 0;
-        let totalPrice = this.order.productsPrice + +shippingMoney - this.order.discount;
+        let totalPrice =
+          this.order.productsPrice + +shippingMoney - this.order.discount;
         this.order = {
           ...this.order,
           shippingType,

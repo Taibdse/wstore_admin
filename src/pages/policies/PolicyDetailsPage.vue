@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <Loading :isLoading="isLoading" />
     <h2 class="my-page-header" v-if="!notfound">Update {{ policy.type }}</h2>
     <md-card>
       <md-card-header data-background-color="orange">
@@ -8,13 +9,13 @@
         </h4>
       </md-card-header>
       <md-card-content>
-        <div v-if="isLoading" style="text-align: center">
+        <!-- <div v-if="isLoading" style="text-align: center">
           <md-progress-spinner
             md-mode="indeterminate"
             style="margin: auto"
           ></md-progress-spinner>
-        </div>
-        <div v-if="!isLoading && !notfound && !isEmpty(policy)">
+        </div> -->
+        <div v-if="!notfound && !isEmpty(policy)">
           <form @submit.prevent="savePolicy">
             <div class="md-layout md-gutter">
               <div class="md-layout-item sm-size-100">
@@ -88,11 +89,13 @@ import { getErrorsFromResponse } from "../../utils/errors";
 import { SERVER_ERROR_MESSAGE } from "../../utils/constants";
 import MyEditor from "../../components/common/MyEditor.vue";
 import PageMetadata from "../../components/common/PageMetadata.vue";
+import Loading from "../../components/common/Loading.vue";
 
 export default {
   components: {
     MyEditor,
     PageMetadata,
+    Loading
   },
 
   data: () => ({

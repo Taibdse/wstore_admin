@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <Loading :isLoading="isLoading" />
     <h2 class="my-page-header">
       {{ insertProduct ? "Insert Product" : "Update Product" }}
     </h2>
@@ -12,13 +13,13 @@
       </md-card-header>
 
       <md-card-content>
-        <div v-if="!insertProduct && isLoading" style="text-align: center">
+        <!-- <div v-if="!insertProduct && isLoading" style="text-align: center">
           <md-progress-spinner
             md-mode="indeterminate"
             style="margin: auto"
           ></md-progress-spinner>
-        </div>
-        <div v-if="insertProduct || (!notfound && !isLoading)">
+        </div> -->
+        <div v-if="insertProduct || !notfound">
           <form class="md-layout" @submit.prevent="saveProduct">
             <md-card class="">
               <md-card-content>
@@ -234,12 +235,14 @@ import DropzoneUpload from "@/components/common/DropzoneUpload";
 import MyEditor from "../../components/common/MyEditor";
 import PageMetadata from "../../components/common/PageMetadata";
 import { SERVER_ERROR_MESSAGE } from '../../utils/constants';
+import Loading from "../../components/common/Loading.vue";
 
 export default {
   components: {
     DropzoneUpload,
     MyEditor,
     PageMetadata,
+    Loading
   },
   data: () => ({
     product: {

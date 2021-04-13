@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <Loading :isLoading="isLoading" />
     <h2 class="my-page-header">
       {{ insertReview ? "Insert review" : "Update Review" }}
     </h2>
@@ -11,13 +12,13 @@
       </md-card-header>
 
       <md-card-content>
-        <div v-if="!insertReview && isLoading" style="text-align: center">
+        <!-- <div v-if="!insertReview && isLoading" style="text-align: center">
           <md-progress-spinner
             md-mode="indeterminate"
             style="margin: auto"
           ></md-progress-spinner>
-        </div>
-        <div v-if="insertReview || (!notfound && !isLoading)">
+        </div> -->
+        <div v-if="insertReview || !notfound">
           <form class="md-layout" @submit.prevent="saveReview">
             <md-card class="">
               <md-card-content>
@@ -160,12 +161,14 @@ import { isEmpty } from "../../utils/validations";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
 import MyEditor from "../../components/common/MyEditor.vue";
 import PageMetadata from "../../components/common/PageMetadata.vue";
+import Loading from "../../components/common/Loading.vue";
 
 export default {
   components: {
     DropzoneUpload,
     MyEditor,
-    PageMetadata
+    PageMetadata,
+    Loading
   },
 
   data: () => ({

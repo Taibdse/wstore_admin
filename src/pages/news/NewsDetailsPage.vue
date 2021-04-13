@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <Loading :isLoading="isLoading" />
     <h2 class="my-page-header">
       {{ insertNews ? "Insert News" : "Update News" }}
     </h2>
@@ -14,13 +15,7 @@
         </p>
       </md-card-header>
       <md-card-content>
-        <div v-if="isLoading" style="text-align: center">
-          <md-progress-spinner
-            md-mode="indeterminate"
-            style="margin: auto"
-          ></md-progress-spinner>
-        </div>
-        <div v-if="!isLoading && !notfound && !isEmpty(news)">
+        <div v-if="!notfound && !isEmpty(news)">
           <form @submit.prevent="saveNews">
             <div class="md-layout md-gutter">
               <div class="md-layout-item md-small-size-100 md-size-33">
@@ -176,12 +171,14 @@ import MyEditor from "../../components/common/MyEditor.vue";
 import DropzoneUpload from "../../components/common/DropzoneUpload.vue";
 import { PathRouteConstants } from "../../routes/pathRoutes";
 import PageMetadata from "../../components/common/PageMetadata.vue";
+import Loading from "../../components/common/Loading.vue";
 
 export default {
   components: {
     MyEditor,
     DropzoneUpload,
-    PageMetadata
+    PageMetadata,
+    Loading
   },
 
   data: () => ({

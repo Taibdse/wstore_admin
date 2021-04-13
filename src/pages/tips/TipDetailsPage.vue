@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+     <Loading :isLoading="isLoading" />
     <h2 class="my-page-header">
       {{ insertTip ? "Insert tip" : "Update Tip" }}
     </h2>
@@ -9,13 +10,13 @@
       </md-card-header>
 
       <md-card-content>
-        <div v-if="!insertTip && isLoading" style="text-align: center">
+        <!-- <div v-if="!insertTip && isLoading" style="text-align: center">
           <md-progress-spinner
             md-mode="indeterminate"
             style="margin: auto"
           ></md-progress-spinner>
-        </div>
-        <div v-if="insertTip || (!notfound && !isLoading)">
+        </div> -->
+        <div v-if="insertTip || !notfound">
           <form @submit.prevent="saveTip">
             <md-card class="">
               <md-card-content>
@@ -128,12 +129,14 @@ import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
 import MyEditor from "../../components/common/MyEditor.vue";
 import { PathRouteConstants } from "../../routes/pathRoutes";
 import PageMetadata from "../../components/common/PageMetadata.vue";
+import Loading from "../../components/common/Loading.vue";
 
 export default {
   components: {
     DropzoneUpload,
     MyEditor,
-    PageMetadata
+    PageMetadata,
+    Loading
   },
   data: () => ({
     tip: {

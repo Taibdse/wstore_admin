@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <Loading :isLoading="isLoading" />
     <h2 class="my-page-header">Website Details</h2>
     <div>
       <md-button
@@ -26,13 +27,13 @@
         <!-- <p v-if="!isLoading && !notfound && !isEmpty(website)" style="text-align:center">ID: {{ website.id }}</p> -->
       </md-card-header>
       <md-card-content>
-        <div v-if="isLoading" style="text-align: center">
+        <!-- <div v-if="isLoading" style="text-align: center">
           <md-progress-spinner
             md-mode="indeterminate"
             style="margin: auto"
           ></md-progress-spinner>
-        </div>
-        <div v-if="!isLoading && !notfound && !isEmpty(website)">
+        </div> -->
+        <div v-if="!notfound && !isEmpty(website)">
           <form @submit.prevent="saveWebsite">
             <div class="md-layout md-gutter" style="margin-top: 20px">
               <div class="md-layout-item md-size-100">
@@ -100,10 +101,12 @@ import {
 } from "../../utils/constants";
 import DropzoneUpload from "../../components/common/DropzoneUpload";
 import { formatImageUrl } from "../../utils/strings";
+import Loading from "../../components/common/Loading.vue";
 
 export default {
   components: {
     DropzoneUpload,
+    Loading,
   },
 
   data: () => ({
