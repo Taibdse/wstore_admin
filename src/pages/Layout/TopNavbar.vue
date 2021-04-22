@@ -83,7 +83,9 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(["setIsAuthorized"]),
+    ...mapActions({
+      setIsAuthorized: "auth/setIsAuthorized",
+    }),
     toggleSidebar() {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
     },

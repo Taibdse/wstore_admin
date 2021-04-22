@@ -173,7 +173,7 @@ const routes = [
 
       //=========== STORE INFORMATION ROUTES ==============
       {
-        path: PathRouteConstants.categoryDetailsRoute,
+        path: PathRouteConstants.informationRoute,
         name: 'Store Information',
         component: StoreInformationPage,
       },

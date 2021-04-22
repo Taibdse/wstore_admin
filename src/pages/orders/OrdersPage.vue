@@ -8,21 +8,29 @@
       </md-card-header>
       <md-card-content>
         <div class="md-layout md-gutter">
-          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-100 md-xsmall-size-100">
+          <div
+            class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-100 md-xsmall-size-100"
+          >
             <strong>customer's name/phone/email</strong>
             <md-field>
               <md-input v-model="filters.keyword" />
             </md-field>
           </div>
-          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50">
+          <div
+            class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50"
+          >
             <strong>from date</strong>
             <md-datepicker v-model="selectedDate.from" md-immediately />
           </div>
-          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50">
+          <div
+            class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50"
+          >
             <strong>to date</strong>
             <md-datepicker v-model="selectedDate.to" md-immediately />
           </div>
-          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50">
+          <div
+            class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50"
+          >
             <strong>Status</strong>
             <md-field>
               <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
@@ -37,7 +45,9 @@
               </md-select>
             </md-field>
           </div>
-          <div class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50">
+          <div
+            class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50"
+          >
             <strong>Order by Time</strong>
             <md-field>
               <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
@@ -56,9 +66,7 @@
             </md-field>
           </div>
         </div>
-        <div class="md-layout md-gutter">
-          
-        </div>
+        <div class="md-layout md-gutter"></div>
 
         <div class="md-layout md-gutter">
           <md-button
@@ -113,6 +121,7 @@ import OrderDetailsDialog from "./OrderDetailsDialog";
 import { formatVNDate, convertVNDateToSQLDateFormat } from "../../utils/time";
 import { isEmpty } from "@/utils/validations.js";
 import Pagination from "@/components/common/Pagination";
+import { mapGetters, mapActions } from "vuex";
 
 const DEFAULT_PAGINATION = { pageCount: 0, currentPage: 1, size: 10 };
 const ORDER_SEARCH_CONDITION_KEY = "orderSearchConditionKey";
@@ -157,9 +166,15 @@ export default {
         index: index + (currentPage - 1) * size,
       }));
     },
+    ...mapGetters({
+      orderSearchCondition: "searchCondition/orders",
+    }),
   },
 
   methods: {
+    ...mapActions({
+      saveOrderSearchCondition: "searchCondition/saveOrderSearchCondition",
+    }),
     handlePageChange: function (pageNum) {
       this.pagination = { ...this.pagination, currentPage: pageNum };
       this.getOrders();
@@ -221,20 +236,19 @@ export default {
         orderBys: this.orderBys,
         pagination: this.pagination,
       };
-      window.localStorage.setItem(
-        ORDER_SEARCH_CONDITION_KEY,
-        JSON.stringify(searchCondition)
-      );
+      this.saveOrderSearchCondition(searchCondition);
     },
     loadSearchCondition: function () {
-      const json = window.localStorage.getItem(ORDER_SEARCH_CONDITION_KEY);
-      try {
-        const searchCondition = JSON.parse(json);
-        this.selectedDate = searchCondition.selectedDate;
+      const searchCondition = this.orderSearchCondition;
+      if (!isEmpty(searchCondition)) {
+        console.log(searchCondition.filters);
+        this.selectedDate = isEmpty(searchCondition.selectedDate)
+          ? this.getDefaultSelectedDate()
+          : searchCondition.selectedDate;
         this.filters = searchCondition.filters;
         this.orderBys = searchCondition.orderBys;
         this.pagination = searchCondition.pagination;
-      } catch (error) {
+      } else {
         this.selectedDate = this.getDefaultSelectedDate();
       }
     },

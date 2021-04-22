@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import Pagination from "@/components/common/Pagination";
 import TipsList from "./TipsList";
 import TipService from "../../services/tip.service.js";
@@ -74,9 +75,15 @@ export default {
         return { ...tip, index: index + size * (currentPage - 1) };
       });
     },
+    ...mapGetters({
+      tipSearchCondition: "searchCondition/tips",
+    }),
   },
 
   methods: {
+    ...mapActions({
+      saveTipSearchCondition: "searchCondition/saveTipSearchCondition",
+    }),
     getTips: async function () {
       this.isLoading = true;
       try {
@@ -104,17 +111,13 @@ export default {
       const searchCondition = {
         pagination: this.pagination,
       };
-      window.localStorage.setItem(
-        TIP_SEARCH_CONDITION_KEY,
-        JSON.stringify(searchCondition)
-      );
+      this.saveTipSearchCondition(searchCondition);
     },
     loadSearchCondition: function () {
-      const json = window.localStorage.getItem(TIP_SEARCH_CONDITION_KEY);
-      try {
-        const searchCondition = JSON.parse(json);
+      const searchCondition = this.tipSearchCondition;
+      if (!isEmpty(searchCondition)) {
         this.pagination = searchCondition.pagination;
-      } catch (error) {}
+      }
     },
   },
 

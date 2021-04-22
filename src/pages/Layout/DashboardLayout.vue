@@ -82,7 +82,9 @@ export default {
   data: () => ({
   }),
   computed: {
-    ...mapGetters(["isAuthorized"]),
+    ...mapGetters({
+      isAuthorized: "auth/isAuthorized"
+    }),
   },
 };
 </script>

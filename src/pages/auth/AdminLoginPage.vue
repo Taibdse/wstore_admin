@@ -75,7 +75,9 @@ export default {
     isLoading: false,
   }),
   methods: {
-    ...mapActions(["setIsAuthorized"]),
+    ...mapActions({
+      setIsAuthorized: "auth/setIsAuthorized",
+    }),
     login: async function () {
       this.isLoading = true;
       try {

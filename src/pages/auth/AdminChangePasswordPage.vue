@@ -76,7 +76,9 @@ export default {
         isLoading: false,
     }),
     methods: {
-        ...mapActions(['setIsAuthorized']),
+        ...mapActions({
+            setIsAuthorized: 'auth/setIsAuthorized'
+        }),
         showErrorsMessage: function(res){
             
         },

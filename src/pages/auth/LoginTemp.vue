@@ -67,7 +67,7 @@
                 class="md-simple md-success md-lg"
                 :disabled="isLoading"
               >
-                {{ isLoading ? 'Logging in...' : 'Get Started' }}
+                {{ isLoading ? "Logging in..." : "Get Started" }}
               </md-button>
             </login-card>
           </div>
@@ -98,7 +98,9 @@ export default {
     isLoading: false,
   }),
   methods: {
-    ...mapActions(["setIsAuthorized"]),
+    ...mapActions({
+      setIsAuthorized: "auth/setIsAuthorized",
+    }),
     login: async function () {
       if (this.isLoading) return;
 

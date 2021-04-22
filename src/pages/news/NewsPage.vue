@@ -56,9 +56,11 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import Pagination from "@/components/common/Pagination";
 import NewsList from "./NewsList";
 import NewsService from "../../services/news.service";
+import { isEmpty } from "../../utils/validations";
 
 const NEWS_SEARCH_CONDITION_KEY = "newsSearchConditionKey";
 
@@ -75,8 +77,16 @@ export default {
     },
     pagination: { pageCount: 0, currentPage: 1, size: 10 },
   }),
+  computed: {
+    ...mapGetters({
+      newsSearchCondition: "searchCondition/newsList",
+    }),
+  },
 
   methods: {
+    ...mapActions({
+      saveNewsSearchCondition: "searchCondition/saveNewsSearchCondition",
+    }),
     getNews: async function () {
       this.isLoading = true;
       try {
@@ -104,17 +114,13 @@ export default {
       const searchCondition = {
         pagination: this.pagination,
       };
-      window.localStorage.setItem(
-        NEWS_SEARCH_CONDITION_KEY,
-        JSON.stringify(searchCondition)
-      );
+      this.saveNewsSearchCondition(searchCondition);
     },
     loadSearchCondition: function () {
-      const json = window.localStorage.getItem(NEWS_SEARCH_CONDITION_KEY);
-      try {
-        const searchCondition = JSON.parse(json);
+      const searchCondition = this.newsSearchCondition;
+      if (!isEmpty(searchCondition)) {
         this.pagination = searchCondition.pagination;
-      } catch (error) {}
+      }
     },
   },
 

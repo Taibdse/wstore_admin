@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import Pagination from "@/components/common/Pagination";
 import ReviewsList from "./ReviewsList";
 import ReviewService from "../../services/review.service";
@@ -93,9 +94,15 @@ export default {
         return { ...review, index: index + size * (currentPage - 1) };
       });
     },
+    ...mapGetters({
+      reviewSearchCondition: "searchCondition/reviews",
+    }),
   },
 
   methods: {
+    ...mapActions({
+      saveReviewSearchCondition: "searchCondition/saveReviewSearchCondition",
+    }),
     getReviews: async function () {
       this.isLoading = true;
       try {
@@ -142,17 +149,13 @@ export default {
       const searchCondition = {
         pagination: this.pagination,
       };
-      window.localStorage.setItem(
-        REVIEW_SEARCH_CONDITION_KEY,
-        JSON.stringify(searchCondition)
-      );
+      this.saveReviewSearchCondition(searchCondition);
     },
     loadSearchCondition: function () {
-      const json = window.localStorage.getItem(REVIEW_SEARCH_CONDITION_KEY);
-      try {
-        const searchCondition = JSON.parse(json);
+      const searchCondition = this.reviewSearchCondition;
+      if (!isEmpty(searchCondition)) {
         this.pagination = searchCondition.pagination;
-      } catch (error) {}
+      }
     },
   },
 

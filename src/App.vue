@@ -18,7 +18,7 @@ export default {
     //initialize response intercepter if status code == 401 or 403
     interceptResponse(() => {
       clearAuthorization();
-      this.$store.dispatch("setIsAuthorized", false);
+      this.$store.dispatch("auth/setIsAuthorized", false);
       this.$router.push("/login");
     });
 
@@ -26,11 +26,11 @@ export default {
     const jwtToken = getJwtTokenLocal();
     if (isEmpty(jwtToken)) {
       setAuthHeader(null);
-      this.$store.dispatch("setIsAuthorized", false);
+      this.$store.dispatch("auth/setIsAuthorized", false);
       this.$router.push("/login");
     } else {
       setAuthHeader(jwtToken);
-      this.$store.dispatch("setIsAuthorized", true);
+      this.$store.dispatch("auth/setIsAuthorized", true);
 
       // navigate to information page if current page is login page
       if (this.$route.path == "/login") {
