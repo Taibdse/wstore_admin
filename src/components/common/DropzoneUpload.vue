@@ -60,6 +60,7 @@ export default {
 
   watch: {
     uploadedFiles: function() {
+      this.removeAllFiles();
       this.showUploadedFilesOnDropzone();
     }
   },
