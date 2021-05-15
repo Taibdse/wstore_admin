@@ -4,7 +4,7 @@
       <md-table-head v-for="(header, index) in tblHeaders" :key="index">{{
         header
       }}</md-table-head>
-      <md-table-head></md-table-head>
+      <md-table-head class="mư-100"></md-table-head>
     </md-table-row>
     <md-table-row v-for="review in reviews" :key="review.id">
       <md-table-cell>{{ review.index + 1 }}</md-table-cell>
@@ -31,24 +31,39 @@
         </md-field>
       </md-table-cell>
       <md-table-cell>
-        <md-button
+        <ActionButton
+          icon="language"
+          tooltip="Preview"
+          classNames="md-danger"
+          @click="handlePreview(review)"
+        />
+        <ActionButton
+          icon="edit"
+          tooltip="Edit"
+          classNames="md-primary"
+          @click="showDetails(review)"
+        />
+        <!-- <md-button
           class="md-just-icon md-simple md-primary"
           @click="showDetails(review)"
         >
           <md-icon>edit</md-icon>
-        </md-button>
+        </md-button> -->
       </md-table-cell>
     </md-table-row>
   </md-table>
 </template>
 
 <script>
+import { ActionButton, Status } from "@/components";
+
 import { formatImageUrl, removeHtmlTags } from "../../utils/strings";
-import Status from "@/components/common/Status.vue";
+import { openNewTab } from '../../utils/utils';
+import { APP_ROOT_DOMAIN } from '../../configs/api';
 
 export default {
   components: {
-    Status
+    Status, ActionButton
   },
   props: {
     reviews: Array,
@@ -68,6 +83,9 @@ export default {
   methods: {
     showDetails: function (review) {
       this.$router.push("/reviews/" + review.slug);
+    },
+    handlePreview: function(review) {
+      openNewTab(APP_ROOT_DOMAIN + '/reviews/' + review.slug);
     },
     formatImageUrl,
     removeHtmlTags,

@@ -220,6 +220,8 @@
 </template>
 
 <script>
+import { Loading, DropzoneUpload, MyEditor, PageMetadata } from "@/components";
+
 import CategoryService from "../../services/category.service";
 import ProductService from "../../services/product.service";
 import { isEmpty } from "@/utils/validations.js";
@@ -231,11 +233,7 @@ import {
 import { getVNTimeFormat } from "../../utils/time";
 import { showSuccessMsg, showErrors } from "../../utils/alert";
 import { getErrorsFromResponse } from "../../utils/errors";
-import DropzoneUpload from "@/components/common/DropzoneUpload";
-import MyEditor from "../../components/common/MyEditor";
-import PageMetadata from "../../components/common/PageMetadata";
 import { SERVER_ERROR_MESSAGE } from '../../utils/constants';
-import Loading from "../../components/common/Loading.vue";
 
 export default {
   components: {

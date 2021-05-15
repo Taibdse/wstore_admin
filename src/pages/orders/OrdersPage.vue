@@ -120,7 +120,7 @@ import OrdersList from "@/pages/orders/OrdersList";
 import OrderDetailsDialog from "./OrderDetailsDialog";
 import { formatVNDate, convertVNDateToSQLDateFormat } from "../../utils/time";
 import { isEmpty } from "@/utils/validations.js";
-import Pagination from "@/components/common/Pagination";
+import { Pagination } from "@/components";
 import { mapGetters, mapActions } from "vuex";
 
 const DEFAULT_PAGINATION = { pageCount: 0, currentPage: 1, size: 10 };

@@ -45,8 +45,9 @@
 </template>
 
 <script>
+import { Pagination } from "@/components";
+
 import { mapGetters, mapActions } from "vuex";
-import Pagination from "@/components/common/Pagination";
 import TipsList from "./TipsList";
 import TipService from "../../services/tip.service.js";
 import { isEmpty } from "../../utils/validations";

@@ -15,23 +15,38 @@
       </md-table-cell>
 
       <md-table-cell>
-        <md-button
+        <ActionButton
+          icon="language"
+          tooltip="Preview"
+          classNames="md-danger"
+          @click="handlePreview(policy)"
+        />
+        <ActionButton
+          icon="edit"
+          tooltip="Edit"
+          classNames="md-primary"
+          @click="showDetails(policy)"
+        />
+        <!-- <md-button
           class="md-just-icon md-simple md-primary"
           @click="showDetails(policy)"
         >
           <md-icon>edit</md-icon>
-        </md-button>
+        </md-button> -->
       </md-table-cell>
     </md-table-row>
   </md-table>
 </template>
 
 <script>
-import Status from "@/components/common/Status";
+import { ActionButton, Status } from "@/components";
+import { APP_ROOT_DOMAIN } from "../../configs/api";
+import { openNewTab } from "../../utils/utils";
 
 export default {
   components: {
     Status,
+    ActionButton,
   },
   props: {
     policies: Array,
@@ -42,6 +57,9 @@ export default {
   methods: {
     showDetails: function (policy) {
       this.$router.push("/policies/" + policy.type.toLowerCase());
+    },
+    handlePreview: function (policy) {
+      openNewTab(APP_ROOT_DOMAIN + "/policies/" + policy.type.toLowerCase());
     },
   },
 };

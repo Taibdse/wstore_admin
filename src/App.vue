@@ -145,4 +145,13 @@ div.content {
 .width-cover {
   width: 100% !important;
 }
+.mw-100 {
+  min-width: 100px;
+}
+.mw-150 {
+  min-width: 150px;
+}
+.float-right {
+  float: right;
+}
 </style>

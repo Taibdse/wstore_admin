@@ -8,7 +8,16 @@
       <md-card-header
         :data-background-color="insertReview ? 'green' : 'orange'"
       >
-        <h4 class="title">Review's information</h4>
+        <h4 class="title">
+          Review's information
+          <ActionButton
+            v-if="!insertReview"
+            icon="language"
+            tooltip="Preview"
+            classNames="float-right"
+            @click="handlePreview(review)"
+          />
+        </h4>
       </md-card-header>
 
       <md-card-content>
@@ -123,8 +132,12 @@
 
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-100">
-                    <md-checkbox v-model="review.active">Active review</md-checkbox>
-                    <md-checkbox v-model="review.hot">Hot review (show in homepage)</md-checkbox>
+                    <md-checkbox v-model="review.active"
+                      >Active review</md-checkbox
+                    >
+                    <md-checkbox v-model="review.hot"
+                      >Hot review (show in homepage)</md-checkbox
+                    >
                   </div>
                 </div>
 
@@ -152,23 +165,24 @@
 </template>
 
 <script>
-import DropzoneUpload from "../../components/common/DropzoneUpload";
+import { ActionButton, Loading, PageMetadata, MyEditor, DropzoneUpload } from "@/components";
+
 import ReviewService from "../../services/review.service";
 import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
 import { getErrorsFromResponse } from "../../utils/errors";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
 import { isEmpty } from "../../utils/validations";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
-import MyEditor from "../../components/common/MyEditor.vue";
-import PageMetadata from "../../components/common/PageMetadata.vue";
-import Loading from "../../components/common/Loading.vue";
+import { openNewTab } from "../../utils/utils";
+import { APP_ROOT_DOMAIN } from "../../configs/api";
 
 export default {
   components: {
     DropzoneUpload,
     MyEditor,
     PageMetadata,
-    Loading
+    Loading,
+    ActionButton,
   },
 
   data: () => ({
@@ -271,7 +285,9 @@ export default {
       this.review.slug = convertStringToSlug(value);
     },
 
-    handleContentChange: function () {},
+    handlePreview: function (review) {
+      openNewTab(APP_ROOT_DOMAIN + "/reviews/" + review.slug);
+    },
   },
   async created() {
     this.getReviewDetails();

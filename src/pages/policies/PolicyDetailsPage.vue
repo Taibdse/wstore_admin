@@ -6,6 +6,12 @@
       <md-card-header data-background-color="orange">
         <h4 class="title" style="text-align: center" v-if="!notfound">
           {{ policy.type }}'s information
+          <ActionButton
+            icon="language"
+            tooltip="Preview"
+            classNames="float-right"
+            @click="handlePreview(policy)"
+          />
         </h4>
       </md-card-header>
       <md-card-content>
@@ -82,20 +88,22 @@
 </template>
 
 <script>
+import { ActionButton, Loading, PageMetadata, MyEditor } from "@/components";
+
 import PolicyService from "../../services/policy.service";
 import { isEmpty } from "../../utils/validations";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
 import { getErrorsFromResponse } from "../../utils/errors";
 import { SERVER_ERROR_MESSAGE } from "../../utils/constants";
-import MyEditor from "../../components/common/MyEditor.vue";
-import PageMetadata from "../../components/common/PageMetadata.vue";
-import Loading from "../../components/common/Loading.vue";
+import { APP_ROOT_DOMAIN } from '../../configs/api';
+import { openNewTab } from '../../utils/utils';
 
 export default {
   components: {
     MyEditor,
     PageMetadata,
-    Loading
+    Loading,
+    ActionButton
   },
 
   data: () => ({
@@ -150,6 +158,9 @@ export default {
       }
 
       this.isLoading = false;
+    },
+    handlePreview: function (policy) {
+      openNewTab(APP_ROOT_DOMAIN + "/policies/" + policy.type.toLowerCase());
     },
     isEmpty,
   },

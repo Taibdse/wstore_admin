@@ -4,7 +4,7 @@
       <md-table-head v-for="(header, index) in tblHeaders" :key="index">{{
         header
       }}</md-table-head>
-      <md-table-head></md-table-head>
+      <md-table-head class="mư-100"></md-table-head>
     </md-table-row>
     <md-table-row v-for="(news, index) in newsArray" :key="news.id">
       <md-table-cell>{{ index + 1 }}</md-table-cell>
@@ -22,26 +22,41 @@
         <Status :value="news.hot" />
       </md-table-cell>
       <md-table-cell>
-        <md-button
+        <ActionButton
+          icon="language"
+          tooltip="Preview"
+          classNames="md-danger"
+          @click="handlePreview(news)"
+        />
+        <ActionButton
+          icon="edit"
+          tooltip="Edit"
+          classNames="md-primary"
+          @click="showDetails(news)"
+        />
+        <!-- <md-button
           class="md-just-icon md-simple md-primary"
           @click="showDetails(news)"
         >
           <md-icon>edit</md-icon>
-        </md-button>
+        </md-button> -->
       </md-table-cell>
     </md-table-row>
   </md-table>
 </template>
 
 <script>
+import { ActionButton, Status } from "@/components";
+
 import { isEmpty } from "../../utils/validations";
 import { formatImageUrl, removeHtmlTags } from "../../utils/strings";
 import { getVNTimeFormat } from "../../utils/time";
-import Status from "@/components/common/Status.vue";
+import { APP_ROOT_DOMAIN } from '../../configs/api';
+import { openNewTab } from '../../utils/utils';
 
 export default {
   components: {
-    Status,
+    Status, ActionButton
   },
   props: {
     newsArray: Array,
@@ -52,6 +67,9 @@ export default {
   methods: {
     showDetails: function (news) {
       this.$router.push("/news/" + news.slug);
+    },
+    handlePreview: function(news) {
+      openNewTab(APP_ROOT_DOMAIN + '/news/' + news.slug);
     },
     formatImageUrl,
     getVNTimeFormat,

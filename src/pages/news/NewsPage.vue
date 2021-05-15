@@ -56,13 +56,12 @@
 </template>
 
 <script>
+import { Pagination } from "@/components";
+
 import { mapGetters, mapActions } from "vuex";
-import Pagination from "@/components/common/Pagination";
 import NewsList from "./NewsList";
 import NewsService from "../../services/news.service";
 import { isEmpty } from "../../utils/validations";
-
-const NEWS_SEARCH_CONDITION_KEY = "newsSearchConditionKey";
 
 export default {
   components: {

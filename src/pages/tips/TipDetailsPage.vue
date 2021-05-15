@@ -1,12 +1,21 @@
 <template>
   <div class="content">
-     <Loading :isLoading="isLoading" />
+    <Loading :isLoading="isLoading" />
     <h2 class="my-page-header">
       {{ insertTip ? "Insert tip" : "Update Tip" }}
     </h2>
     <md-card class="my-card">
       <md-card-header :data-background-color="insertTip ? 'green' : 'orange'">
-        <h4 class="title">Tip's information</h4>
+        <h4 class="title">
+          Tip's information
+          <ActionButton
+            v-if="!insertTip"
+            icon="language"
+            tooltip="Preview"
+            classNames="float-right"
+            @click="handlePreview(tip)"
+          />
+        </h4>
       </md-card-header>
 
       <md-card-content>
@@ -89,7 +98,9 @@
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-100">
                     <md-checkbox v-model="tip.active">Active tip</md-checkbox>
-                    <md-checkbox v-model="tip.hot">Hot tip (show in homepage)</md-checkbox>
+                    <md-checkbox v-model="tip.hot"
+                      >Hot tip (show in homepage)</md-checkbox
+                    >
                   </div>
                 </div>
 
@@ -119,24 +130,25 @@
 </template>
 
 <script>
-import DropzoneUpload from "../../components/common/DropzoneUpload";
+import { DropzoneUpload, MyEditor, PageMetadata, Loading, ActionButton } from "@/components";
+
 import TipService from "../../services/tip.service";
 import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
 import { getErrorsFromResponse } from "../../utils/errors";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
 import { isEmpty } from "../../utils/validations";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
-import MyEditor from "../../components/common/MyEditor.vue";
 import { PathRouteConstants } from "../../routes/pathRoutes";
-import PageMetadata from "../../components/common/PageMetadata.vue";
-import Loading from "../../components/common/Loading.vue";
+import { APP_ROOT_DOMAIN } from "../../configs/api";
+import { openNewTab } from "../../utils/utils";
 
 export default {
   components: {
     DropzoneUpload,
     MyEditor,
     PageMetadata,
-    Loading
+    Loading,
+    ActionButton,
   },
   data: () => ({
     tip: {
@@ -237,6 +249,9 @@ export default {
     },
     handleBack: function () {
       this.$router.push(PathRouteConstants.tipsRoute);
+    },
+    handlePreview: function (tip) {
+      openNewTab(APP_ROOT_DOMAIN + "/tips/" + tip.slug);
     },
   },
   async created() {

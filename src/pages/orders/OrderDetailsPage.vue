@@ -252,6 +252,8 @@
 </template>
 
 <script>
+import { Loading } from "@/components";
+
 import OrderProducts from "./OrderProducts";
 import OrderService from "../../services/order.service";
 import AddressService from "../../services/address.service";
@@ -262,7 +264,6 @@ import { getVNTimeFormat } from "../../utils/time";
 import { showSuccessMsg, showErrors } from "../../utils/alert";
 import { SHIPPING_TYPES, getPaymentStatus } from "../../common/constants";
 import PaymentMethodService from "../../services/paymentMethod.service";
-import Loading from "../../components/common/Loading.vue";
 
 export default {
   components: {

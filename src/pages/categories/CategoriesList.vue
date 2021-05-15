@@ -15,12 +15,24 @@
         <Status :value="category.active" />
       </md-table-cell>
       <md-table-cell>
-        <md-button
+        <ActionButton
+          icon="language"
+          tooltip="Preview"
+          classNames="md-danger"
+          @click="handlePreview(category)"
+        />
+        <ActionButton
+          icon="edit"
+          tooltip="Edit"
+          classNames="md-primary"
+          @click="showDetails(category)"
+        />
+        <!-- <md-button
           class="md-just-icon md-simple md-primary"
           @click="showDetails(category)"
         >
           <md-icon>edit</md-icon>
-        </md-button>
+        </md-button> -->
       </md-table-cell>
     </md-table-row>
   </md-table>
@@ -29,10 +41,14 @@
 <script>
 import { truncate } from "../../utils/strings";
 import Status from "@/components/common/Status";
+import ActionButton from "@/components/common/ActionButton";
+import { openNewTab } from "../../utils/utils";
+import { APP_ROOT_DOMAIN } from "../../configs/api";
 
 export default {
   components: {
     Status,
+    ActionButton,
   },
   props: {
     categories: Array,
@@ -43,6 +59,11 @@ export default {
   methods: {
     showDetails: function (category) {
       this.$router.push("/categories/" + category.slug);
+    },
+    handlePreview: function (category) {
+      openNewTab(
+        APP_ROOT_DOMAIN + "/products?category=" + category.slug + "&page=1"
+      );
     },
     truncate,
   },

@@ -19,24 +19,39 @@
         <Status :value="tip.active" />
       </md-table-cell>
       <md-table-cell>
-        <md-button
+        <ActionButton
+          icon="language"
+          tooltip="Preview"
+          classNames="md-danger"
+          @click="handlePreview(tip)"
+        />
+        <ActionButton
+          icon="edit"
+          tooltip="Edit"
+          classNames="md-primary"
+          @click="showDetails(tip)"
+        />
+        <!-- <md-button
           class="md-just-icon md-simple md-primary"
           @click="showDetails(tip)"
         >
           <md-icon>edit</md-icon>
-        </md-button>
+        </md-button> -->
       </md-table-cell>
     </md-table-row>
   </md-table>
 </template>
 
 <script>
+import { ActionButton, Status } from "@/components";
+
 import { formatImageUrl, removeHtmlTags } from "../../utils/strings";
-import Status from "@/components/common/Status";
+import { APP_ROOT_DOMAIN } from '../../configs/api';
+import { openNewTab } from '../../utils/utils';
 
 export default {
   components: {
-    Status,
+    Status, ActionButton
   },
   props: {
     tips: Array,
@@ -47,6 +62,9 @@ export default {
   methods: {
     showDetails: function (tip) {
       this.$router.push("/tips/" + tip.slug);
+    },
+    handlePreview: function(tip) {
+      openNewTab(APP_ROOT_DOMAIN + '/tips/' + tip.slug);
     },
     formatImageUrl,
     removeHtmlTags,

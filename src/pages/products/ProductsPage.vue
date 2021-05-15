@@ -83,11 +83,11 @@
 </template>
 
 <script>
+import { Pagination } from "@/components";
+
 import ProductService from "@/services/product.service";
 import CategoryService from "@/services/category.service";
 import ProductsList from "@/pages/products/ProductsList";
-import Pagination from "@/components/common/Pagination";
-import DropzoneUpload from "@/components/common/DropzoneUpload";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
 
@@ -95,7 +95,6 @@ export default {
   components: {
     ProductsList,
     Pagination,
-    DropzoneUpload,
   },
 
   async created() {

@@ -62,15 +62,14 @@
 </template>
 
 <script>
+import { Pagination } from "@/components";
+
 import { mapGetters, mapActions } from "vuex";
-import Pagination from "@/components/common/Pagination";
 import ReviewsList from "./ReviewsList";
 import ReviewService from "../../services/review.service";
 import { isEmpty } from "../../utils/validations";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
-
-const REVIEW_SEARCH_CONDITION_KEY = "reviewSearchConditionKey";
 
 export default {
   components: {

@@ -6,7 +6,16 @@
     </h2>
     <md-card>
       <md-card-header :data-background-color="insertNews ? 'green' : 'orange'">
-        <h4 class="title" style="text-align: center">News's information</h4>
+        <h4 class="title" style="text-align: center">
+          News's information
+          <ActionButton
+            v-if="!insertNews"
+            icon="language"
+            tooltip="Preview"
+            classNames="float-right"
+            @click="handlePreview(news)"
+          />
+        </h4>
         <p
           v-if="!insertNews && !isLoading && !notfound && !isEmpty(news)"
           style="text-align: center"
@@ -161,24 +170,25 @@
 </template>
 
 <script>
+import { ActionButton, MyEditor, DropzoneUpload, PageMetadata, Loading } from "@//components";
+
 import NewsService from "../../services/news.service";
 import { isEmpty } from "../../utils/validations";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
 import { uuidv4 } from "../../utils/id";
 import { SERVER_ERROR_MESSAGE } from "../../utils/constants";
 import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
-import MyEditor from "../../components/common/MyEditor.vue";
-import DropzoneUpload from "../../components/common/DropzoneUpload.vue";
 import { PathRouteConstants } from "../../routes/pathRoutes";
-import PageMetadata from "../../components/common/PageMetadata.vue";
-import Loading from "../../components/common/Loading.vue";
+import { APP_ROOT_DOMAIN } from '../../configs/api';
+import { openNewTab } from '../../utils/utils';
 
 export default {
   components: {
     MyEditor,
     DropzoneUpload,
     PageMetadata,
-    Loading
+    Loading,
+    ActionButton
   },
 
   data: () => ({
@@ -336,6 +346,9 @@ export default {
     },
     handleBack: function () {
       this.$router.push(PathRouteConstants.newsListRoute);
+    },
+    handlePreview: function(news) {
+      openNewTab(APP_ROOT_DOMAIN + '/news/' + news.slug);
     },
 
     isEmpty,
