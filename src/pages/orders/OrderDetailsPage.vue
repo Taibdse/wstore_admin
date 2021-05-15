@@ -4,7 +4,15 @@
     <!-- <h4 class="title">Thông tin đơn hàng</h4> -->
     <md-card>
       <md-card-header data-background-color="orange">
-        <h4 class="title">Order Information</h4>
+        <h4 class="title">
+          Order Information
+          <ActionButton
+            icon="language"
+            tooltip="Preview"
+            classNames="float-right"
+            @click="handlePreview(order)"
+          />
+        </h4>
         <p
           v-show="!isLoading && !notfound && !isEmpty(order)"
           style="text-align: center"
@@ -252,7 +260,7 @@
 </template>
 
 <script>
-import { Loading } from "@/components";
+import { Loading, ActionButton } from "@/components";
 
 import OrderProducts from "./OrderProducts";
 import OrderService from "../../services/order.service";
@@ -264,11 +272,14 @@ import { getVNTimeFormat } from "../../utils/time";
 import { showSuccessMsg, showErrors } from "../../utils/alert";
 import { SHIPPING_TYPES, getPaymentStatus } from "../../common/constants";
 import PaymentMethodService from "../../services/paymentMethod.service";
+import { openNewTab } from "../../utils/utils";
+import { APP_ROOT_DOMAIN } from "../../configs/api";
 
 export default {
   components: {
     OrderProducts,
     Loading,
+    ActionButton,
   },
   data: () => ({
     order: {},
@@ -423,6 +434,10 @@ export default {
         }
       } catch (error) {}
       this.isLoading = false;
+    },
+
+    handlePreview: function (order) {
+      openNewTab(APP_ROOT_DOMAIN + "/orders/" + order.id);
     },
 
     toMoneyFormat,
