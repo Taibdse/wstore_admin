@@ -30,7 +30,7 @@
                 <i class="fab fa-google-plus-g"></i>
               </md-button> -->
               <p slot="description" class="description">
-                Wstore's Admin System Test
+                Wstore's Admin System
               </p>
               <div slot="inputs">
                 <form
