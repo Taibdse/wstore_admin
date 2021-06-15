@@ -1,14 +1,5 @@
 <template>
   <div class="content">
-    <div class="row">
-      <md-nav>
-        <div class="col s12">
-          <md-crumb href="#!/breadcrumbs">First</md-crumb>
-          <md-crumb href="#!/breadcrumbs">Second</md-crumb>
-          <md-crumb href="#!/breadcrumbs">Third</md-crumb>
-        </div>
-      </md-nav>
-    </div>
     <h2 class="my-page-header">Orders</h2>
     <md-card>
       <md-card-header data-background-color="green">
