@@ -2,7 +2,7 @@
   <div class="content">
     <Loading :isLoading="isLoading" />
     <h2 class="my-page-header">Website Details</h2>
-    <div>
+    <div style="margin-bottom: 10px">
       <md-button
         class="md-raised md-primary"
         style="margin-left: auto; float: right"
@@ -24,23 +24,14 @@
     <md-card>
       <md-card-header data-background-color="orange">
         <h4 class="title" style="text-align: center">Edit Website Details</h4>
-        <!-- <p v-if="!isLoading && !notfound && !isEmpty(website)" style="text-align:center">ID: {{ website.id }}</p> -->
       </md-card-header>
       <md-card-content>
-        <!-- <div v-if="isLoading" style="text-align: center">
-          <md-progress-spinner
-            md-mode="indeterminate"
-            style="margin: auto"
-          ></md-progress-spinner>
-        </div> -->
         <div v-if="!notfound && !isEmpty(website)">
           <form @submit.prevent="saveWebsite">
             <div class="md-layout md-gutter" style="margin-top: 20px">
               <div class="md-layout-item md-size-100">
-                <strong
-                  >Upload home banner images (can upload multiple
-                  images)</strong
-                ><br /><br />
+                <strong>Upload home banner images (can upload multipleimages)</strong>
+                <br /><br />
                 <div>
                   <DropzoneUpload
                     ref="dropzoneHomeBannerImage"
@@ -67,7 +58,16 @@
               </div>
             </div>
 
-            <div class="md-layout md-gutter">
+            <div class="md-layout md-gutter" style="margin-top: 20px">
+              <div class="md-layout-item md-size-100">
+                <strong>AddThis Social Plugin</strong>
+                <md-field>
+                  <md-textarea v-model="website.socialPlugin" style="width: 100%"></md-textarea>
+                </md-field>
+              </div>
+            </div>
+
+            <div class="md-layout md-gutter mt-5" style="margin-top: 20px">
               <md-button
                 type="submit"
                 class="md-raised md-primary"

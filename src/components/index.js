@@ -14,6 +14,7 @@ import Datetime from './common/Datetime';
 import DropzoneUpload from './common/DropzoneUpload';
 import Loading from './common/Loading';
 import MyEditor from './common/MyEditor';
+import PageContainer from './common/PageContainer';
 import PageMetadata from './common/PageMetadata';
 import Pagination from './common/Pagination';
 import Status from './common/Status';
@@ -31,6 +32,7 @@ export {
   DropzoneUpload,
   Loading,
   MyEditor,
+  PageContainer,
   PageMetadata,
   Pagination,
   Status
