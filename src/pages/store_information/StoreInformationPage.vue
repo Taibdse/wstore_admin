@@ -231,8 +231,9 @@ export default {
           showSuccessMsg({
             title: "Save successfully!",
             text: "",
-            timer: 4000,
+            timer: 4000
           });
+          this.getStoreInformation();
         } else {
           let errorStr = getErrorsFromResponse(res.data.errors);
           showErrors({
@@ -252,7 +253,7 @@ export default {
   },
   async created() {
     this.getStoreInformation();
-  },
+  }
 };
 </script>
 

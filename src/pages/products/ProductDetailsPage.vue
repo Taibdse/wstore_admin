@@ -233,7 +233,7 @@ import {
 import { getVNTimeFormat } from "../../utils/time";
 import { showSuccessMsg, showErrors } from "../../utils/alert";
 import { getErrorsFromResponse } from "../../utils/errors";
-import { SERVER_ERROR_MESSAGE } from '../../utils/constants';
+import { SAVE_SUCCESS, SERVER_ERROR_MESSAGE } from '../../utils/constants';
 
 export default {
   components: {
@@ -360,7 +360,7 @@ export default {
         if (res.data.success === "1") {
           await this.getProductDetails();
           showSuccessMsg({
-            title: "Save successfully!",
+            title: SAVE_SUCCESS,
             text: "",
           });
         } else {

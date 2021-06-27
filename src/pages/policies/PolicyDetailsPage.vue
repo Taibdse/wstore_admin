@@ -115,7 +115,7 @@ export default {
   }),
 
   methods: {
-    getExchangePolicy: async function () {
+    getPolicy: async function () {
       this.isLoading = true;
       const policyType = this.$route.params.type;
       try {
@@ -141,8 +141,9 @@ export default {
           showSuccessMsg({
             title: "Save successfully!",
             text: "",
-            timer: 4000,
+            timer: 4000
           });
+          this.getPolicy();
         } else {
           let errorStr = getErrorsFromResponse(res.data);
           showErrors({
@@ -165,7 +166,7 @@ export default {
     isEmpty,
   },
   async created() {
-    this.getExchangePolicy();
+    this.getPolicy();
   },
 };
 </script>
