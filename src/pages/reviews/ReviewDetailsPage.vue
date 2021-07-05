@@ -79,7 +79,26 @@
                       />
                     </md-field>
                   </div>
+
+                  <div class="md-layout-item sm-small-size-100 md-size-33">
+                    <md-field>
+                      <label>Review Type</label>
+                      <md-select
+                        v-model="review.reviewTypeId"
+                        name="reviewTypeId"
+                        id="reviewTypeId"
+                      >
+                        <md-option
+                          :value="reviewType.id"
+                          v-for="reviewType in reviewTypes"
+                          :key="reviewType.id"
+                          >{{ reviewType.reviewTypeNameEn }}</md-option
+                        >
+                      </md-select>
+                    </md-field>
+                  </div>
                 </div>
+
                 <div class="md-layout md-gutter" style="margin-top: 20px">
                   <div class="md-layout-item md-size-100">
                     <md-field style="width: 100px">
@@ -165,7 +184,13 @@
 </template>
 
 <script>
-import { ActionButton, Loading, PageMetadata, MyEditor, DropzoneUpload } from "@/components";
+import {
+  ActionButton,
+  Loading,
+  PageMetadata,
+  MyEditor,
+  DropzoneUpload,
+} from "@/components";
 
 import ReviewService from "../../services/review.service";
 import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
@@ -188,15 +213,22 @@ export default {
   data: () => ({
     review: {
       active: true,
+      reviewTypeId: "",
     },
+    reviewTypes: [],
+    filters: {
+      type: "all",
+    },
+
     isLoading: false,
     notfound: false,
     insertReview: false,
     reviewImages: [],
+    type: [],
   }),
 
   methods: {
-    getReviewDetails: async function () {
+    getReviewDetails: async function() {
       if (this.$route.path.indexOf("/reviews/insert") > -1) {
         this.insertReview = true;
       } else {
@@ -221,7 +253,12 @@ export default {
       }
     },
 
-    saveReview: async function () {
+    getReviewTypes: async function() {
+      const res = await ReviewService.getReviewType();
+      this.reviewTypes = res.data;
+    },
+
+    saveReview: async function() {
       const reviewImage = this.$refs.dropzoneReviewImage.getUploadedFiles();
       const content = this.$refs["reviewContentVN"].$data.myContent;
       const contentEn = this.$refs["reviewContentEN"].$data.myContent;
@@ -238,7 +275,7 @@ export default {
       }
     },
 
-    handleInsertReview: async function (data) {
+    handleInsertReview: async function(data) {
       this.isLoading = true;
       try {
         const res = await ReviewService.insertReview(data);
@@ -256,7 +293,7 @@ export default {
       this.isLoading = false;
     },
 
-    handleUpdateReview: async function (data) {
+    handleUpdateReview: async function(data) {
       try {
         const res = await ReviewService.updateReview(data);
         if (res.data.success === "1") {
@@ -273,7 +310,7 @@ export default {
       }
     },
 
-    showErrorsMessage: function (res) {
+    showErrorsMessage: function(res) {
       const errors = getErrorsFromResponse(res.data);
       showErrors({
         title: "Please check input data!",
@@ -281,19 +318,19 @@ export default {
       });
     },
 
-    setReviewSlug: function (value) {
+    setReviewSlug: function(value) {
       this.review.slug = convertStringToSlug(value);
     },
 
-    handlePreview: function (review) {
+    handlePreview: function(review) {
       openNewTab(APP_ROOT_DOMAIN + "/reviews/" + review.slug);
     },
   },
   async created() {
     this.getReviewDetails();
+    this.getReviewTypes();
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

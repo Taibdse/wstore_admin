@@ -5,6 +5,32 @@
       <md-card>
         <md-card-content>
           <div class="md-layout md-gutter">
+            <div class="md-layout-item sm-small-size-100 md-size-33">
+              <md-field>
+                <label>Review Type</label>
+                <md-select
+                  v-model="filters.reviewType"
+                  name="reviewType"
+                  id="reviewType"
+                >
+                  <md-option value="0">All</md-option>
+                  <md-option
+                    :value="reviewType.id"
+                    v-for="reviewType in reviewTypes"
+                    :key="reviewType.id"
+                    >{{ reviewType.reviewTypeNameEn }}</md-option
+                  >
+                </md-select>
+              </md-field>
+            </div>
+            <div class="md-layout md-gutter">
+              <md-button
+                class="md-raised md-primary"
+                style="margin-left: 10px"
+                @click="getReviewByType"
+                >Search</md-button
+              >
+            </div>
             <div class="md-layout-item" style="text-align: right">
               <md-button
                 class="md-raised md-success"
@@ -78,6 +104,8 @@ export default {
   },
   data: () => ({
     reviews: [],
+    reviewTypes: [],
+    filters: { reviewType: 0 },
     isLoading: false,
     orderBys: {
       createdAt: "DESC",
@@ -86,7 +114,7 @@ export default {
   }),
 
   computed: {
-    pagingReviews: function () {
+    pagingReviews: function() {
       if (isEmpty(this.reviews)) return [];
       const { currentPage, size } = this.pagination;
       return this.reviews.map((review, index) => {
@@ -102,11 +130,16 @@ export default {
     ...mapActions({
       saveReviewSearchCondition: "searchCondition/saveReviewSearchCondition",
     }),
-    getReviews: async function () {
+    getReviews: async function() {
       this.isLoading = true;
       try {
+        const reviewType = this.filters.reviewType;
         const { currentPage, size } = this.pagination;
-        const res = await ReviewService.getReviews(currentPage, size);
+        const res = await ReviewService.getReviews(
+          currentPage,
+          size,
+          reviewType
+        );
         const { data, numOfPage, page } = res.data;
         this.reviews = data;
         this.pagination = { ...this.pagination, pageCount: numOfPage };
@@ -117,15 +150,24 @@ export default {
       this.isLoading = false;
     },
 
-    handlePageChange: function (pageNum) {
+    getReviewByType: function() {
+      this.getReviews();
+    },
+
+    getReviewTypes: async function() {
+      const res = await ReviewService.getReviewType();
+      this.reviewTypes = res.data;
+    },
+
+    handlePageChange: function(pageNum) {
       this.pagination = { ...this.pagination, currentPage: pageNum };
       this.getReviews();
     },
 
-    gotoInsertReviewPage: function () {
+    gotoInsertReviewPage: function() {
       this.$router.push("/reviews/insert");
     },
-    handleSaveSortIndexes: async function () {
+    handleSaveSortIndexes: async function() {
       this.isLoading = true;
       try {
         const sortIndexes = this.$refs.reviewListRef.sortIndexes;
@@ -144,13 +186,13 @@ export default {
       }
       this.isLoading = false;
     },
-    saveSearchCondition: function () {
+    saveSearchCondition: function() {
       const searchCondition = {
         pagination: this.pagination,
       };
       this.saveReviewSearchCondition(searchCondition);
     },
-    loadSearchCondition: function () {
+    loadSearchCondition: function() {
       const searchCondition = this.reviewSearchCondition;
       if (!isEmpty(searchCondition)) {
         this.pagination = searchCondition.pagination;
@@ -161,6 +203,7 @@ export default {
   async created() {
     this.loadSearchCondition();
     this.getReviews();
+    this.getReviewTypes();
   },
   beforeDestroy() {
     this.saveSearchCondition();
@@ -168,5 +211,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
