@@ -154,4 +154,11 @@ div.content {
 .float-right {
   float: right;
 }
+.sm-btn {
+  padding: 0px !important;
+  font-size: 12px !important;
+}
+.sm-btn > div {
+  padding: 5px !important;
+}
 </style>

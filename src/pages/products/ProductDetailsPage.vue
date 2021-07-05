@@ -31,8 +31,8 @@
                         name="name"
                         id="name"
                         v-model="product.name"
-                        @input="setProductSlug"
                       />
+                      <md-button @click="setProductSlug" class="sm-btn">Create slug</md-button>
                     </md-field>
                   </div>
 
@@ -43,7 +43,6 @@
                         name="slug"
                         id="slug"
                         v-model="product.slug"
-                        disabled
                       />
                     </md-field>
                   </div>
@@ -380,8 +379,8 @@ export default {
       this.categories = res.data;
     },
 
-    setProductSlug: function (value) {
-      this.product.slug = convertStringToSlug(value);
+    setProductSlug: function () {
+      this.product.slug = convertStringToSlug(this.product.name);
     },
 
     toMoneyFormat,
