@@ -4,10 +4,10 @@
       <md-table-head v-for="(header, index) in tblHeaders" :key="index">{{
         header
       }}</md-table-head>
-      <md-table-head class="mư-100"></md-table-head>
+      <md-table-head class="mw-100"></md-table-head>
     </md-table-row>
-    <md-table-row v-for="(news, index) in newsArray" :key="news.id">
-      <md-table-cell>{{ index + 1 }}</md-table-cell>
+    <md-table-row v-for="news in newsArray" :key="news.id">
+      <md-table-cell>{{ news.index + 1 }}</md-table-cell>
       <md-table-cell>
         <img :src="formatImageUrl(news.image)" class="img-fluid" />
       </md-table-cell>
@@ -51,12 +51,13 @@ import { ActionButton, Status } from "@/components";
 import { isEmpty } from "../../utils/validations";
 import { formatImageUrl, removeHtmlTags } from "../../utils/strings";
 import { getVNTimeFormat } from "../../utils/time";
-import { APP_ROOT_DOMAIN } from '../../configs/api';
-import { openNewTab } from '../../utils/utils';
+import { APP_ROOT_DOMAIN } from "../../configs/api";
+import { openNewTab } from "../../utils/utils";
 
 export default {
   components: {
-    Status, ActionButton
+    Status,
+    ActionButton,
   },
   props: {
     newsArray: Array,
@@ -68,8 +69,8 @@ export default {
     showDetails: function (news) {
       this.$router.push("/news/" + news.id);
     },
-    handlePreview: function(news) {
-      openNewTab(APP_ROOT_DOMAIN + '/news/' + news.slug);
+    handlePreview: function (news) {
+      openNewTab(APP_ROOT_DOMAIN + "/news/" + news.slug);
     },
     formatImageUrl,
     getVNTimeFormat,

@@ -44,7 +44,7 @@
               :pagination="pagination"
               :handleChange="handlePageChange"
             />
-            <NewsList :newsArray="newsArray" />
+            <NewsList :newsArray="pagingNewsArray" />
           </div>
           <div v-show="!isLoading && newsArray.length === 0">
             <h3 style="text-align: center">No news found!</h3>
@@ -80,6 +80,13 @@ export default {
     ...mapGetters({
       newsSearchCondition: "searchCondition/newsList",
     }),
+    pagingNewsArray: function () {
+      if (isEmpty(this.newsArray)) return [];
+      const { currentPage, size } = this.pagination;
+      return this.newsArray.map((news, index) => {
+        return { ...news, index: index + size * (currentPage - 1) };
+      });
+    },
   },
 
   methods: {
