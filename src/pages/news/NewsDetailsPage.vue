@@ -34,8 +34,8 @@
                     name="title"
                     id="title"
                     v-model="news.title"
-                    @input="setNewsSlug"
                   />
+                  <md-button @click="setNewsSlug" class="sm-btn">Create slug</md-button>
                 </md-field>
               </div>
               <div class="md-layout-item md-small-size-100 md-size-33">
@@ -55,7 +55,6 @@
                     name="slug"
                     id="slug"
                     v-model="news.slug"
-                    disabled
                   />
                 </md-field>
               </div>
@@ -207,9 +206,9 @@ export default {
         this.insertNews = true;
       } else {
         this.isLoading = true;
-        const newsSlug = this.$route.params.newsSlug;
+        const newsId = this.$route.params.newsId;
         try {
-          const res = await NewsService.getNewsBySlug(newsSlug);
+          const res = await NewsService.getNewsById(newsId);
           this.news = res.data;
           if (isEmpty(this.news)) this.notfound = true;
           else {
@@ -217,7 +216,7 @@ export default {
               newsItem.imageFile = [
                 {
                   url: formatImageUrl(newsItem.image),
-                  name: "",
+                  name: ""
                 },
               ];
               newsItem.new = false;
@@ -337,8 +336,8 @@ export default {
       this.news = { ...this.news };
     },
 
-    setNewsSlug: function (value) {
-      this.news.slug = convertStringToSlug(value);
+    setNewsSlug: function () {
+      this.news = { ...this.news, slug: convertStringToSlug(this.news.title) };
     },
 
     removeNewsItem: function (index) {

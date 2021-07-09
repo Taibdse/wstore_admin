@@ -58,8 +58,8 @@ import { ActionButton, Status } from "@/components";
 
 import { toMoneyFormat } from "@/utils/strings.js";
 import { formatImageUrl } from "../../utils/strings";
-import { openNewTab } from '../../utils/utils';
-import { APP_ROOT_DOMAIN } from '../../configs/api';
+import { openNewTab } from "../../utils/utils";
+import { APP_ROOT_DOMAIN } from "../../configs/api";
 
 export default {
   components: {
@@ -87,10 +87,10 @@ export default {
   }),
   methods: {
     showDetails: function (product) {
-      this.$router.push("/products/" + product.slug);
+      this.$router.push("/products/" + product.id);
     },
-    handlePreview: function(p) {
-      openNewTab(APP_ROOT_DOMAIN + '/products/' + p.slug);
+    handlePreview: function (p) {
+      openNewTab(APP_ROOT_DOMAIN + "/products/" + p.slug);
     },
     toMoneyFormat,
     formatImageUrl,

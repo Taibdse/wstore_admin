@@ -66,7 +66,7 @@ export default {
   }),
   methods: {
     showDetails: function (news) {
-      this.$router.push("/news/" + news.slug);
+      this.$router.push("/news/" + news.id);
     },
     handlePreview: function(news) {
       openNewTab(APP_ROOT_DOMAIN + '/news/' + news.slug);

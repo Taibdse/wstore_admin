@@ -24,6 +24,11 @@ class ReviewService {
     return axios.get(url);
   }
 
+  static async getById(id) {
+    const url = APP_ROOT_API + "/reviews/id/" + id;
+    return axios.get(url);
+  }
+
   static async insertReview(review) {
     const url = APP_ROOT_API + "/reviews";
     return axios.post(url, review);

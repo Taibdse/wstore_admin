@@ -60,8 +60,8 @@ export default {
     tblHeaders: ["#", "Title", "Image", "Hot", "Active"],
   }),
   methods: {
-    showDetails: function (tip) {
-      this.$router.push("/tips/" + tip.slug);
+    showDetails: function(tip) {
+      this.$router.push("/tips/" + tip.id);
     },
     handlePreview: function(tip) {
       openNewTab(APP_ROOT_DOMAIN + '/tips/' + tip.slug);

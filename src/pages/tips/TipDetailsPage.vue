@@ -19,12 +19,6 @@
       </md-card-header>
 
       <md-card-content>
-        <!-- <div v-if="!insertTip && isLoading" style="text-align: center">
-          <md-progress-spinner
-            md-mode="indeterminate"
-            style="margin: auto"
-          ></md-progress-spinner>
-        </div> -->
         <div v-if="insertTip || !notfound">
           <form @submit.prevent="saveTip">
             <md-card class="">
@@ -37,8 +31,8 @@
                         name="title"
                         id="title"
                         v-model="tip.title"
-                        @input="setTipSlug"
                       />
+                      <md-button @click="setTipSlug" class="sm-btn">Create slug</md-button>
                     </md-field>
                   </div>
 
@@ -60,7 +54,6 @@
                         name="slug"
                         id="slug"
                         v-model="tip.slug"
-                        disabled
                       />
                     </md-field>
                   </div>
@@ -148,32 +141,32 @@ export default {
     MyEditor,
     PageMetadata,
     Loading,
-    ActionButton,
+    ActionButton
   },
   data: () => ({
     tip: {
-      active: true,
+      active: true
     },
     isLoading: false,
     notfound: false,
     insertTip: false,
-    tipImages: [],
+    tipImages: []
   }),
   methods: {
-    getTipDetails: async function () {
+    getTipDetails: async function() {
       if (this.$route.path.indexOf("/tips/insert") > -1) {
         this.insertTip = true;
       } else {
         this.isLoading = true;
-        const tipSlug = this.$route.params.tipSlug;
+        const tipId = this.$route.params.tipId;
         try {
-          const res = await TipService.getTipBySlug(tipSlug);
+          const res = await TipService.getTipById(tipId);
           this.tip = res.data;
 
           this.tipImages = [
             {
               url: formatImageUrl(this.tip.image),
-              name: this.tip.title,
+              name: this.tip.title
             },
           ];
 
@@ -184,7 +177,7 @@ export default {
         this.isLoading = false;
       }
     },
-    saveTip: async function () {
+    saveTip: async function() {
       const tipImage = this.$refs.dropzoneTipImage.getUploadedFiles();
       const content = this.$refs["tipContentVN"].$data.myContent;
       const contentEn = this.$refs["tipContentEN"].$data.myContent;
@@ -201,7 +194,7 @@ export default {
       }
     },
 
-    handleInsertTip: async function (data) {
+    handleInsertTip: async function(data) {
       this.isLoading = true;
       try {
         const res = await TipService.insertTip(data);
@@ -213,13 +206,13 @@ export default {
       } catch (error) {
         showErrors({
           title: "Server error!",
-          text: SERVER_ERROR_MESSAGE,
+          text: SERVER_ERROR_MESSAGE
         });
       }
       this.isLoading = false;
     },
 
-    handleUpdateTip: async function (data) {
+    handleUpdateTip: async function(data) {
       try {
         const res = await TipService.updateTip(data);
         if (res.data.success === "1") {
@@ -231,26 +224,26 @@ export default {
       } catch (error) {
         showErrors({
           title: "Server error!",
-          text: SERVER_ERROR_MESSAGE,
+          text: SERVER_ERROR_MESSAGE
         });
       }
     },
 
-    showErrorsMessage: function (res) {
+    showErrorsMessage: function(res) {
       const errors = getErrorsFromResponse(res.data);
       showErrors({
         title: "Please check input data!",
-        text: errors,
+        text: errors
       });
     },
 
-    setTipSlug: function (value) {
-      this.tip.slug = convertStringToSlug(value);
+    setTipSlug: function() {
+      this.tip = { ...this.tip, slug: convertStringToSlug(this.tip.title) };
     },
-    handleBack: function () {
+    handleBack: function() {
       this.$router.push(PathRouteConstants.tipsRoute);
     },
-    handlePreview: function (tip) {
+    handlePreview: function(tip) {
       openNewTab(APP_ROOT_DOMAIN + "/tips/" + tip.slug);
     },
   },

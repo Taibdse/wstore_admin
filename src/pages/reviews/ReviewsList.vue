@@ -82,7 +82,7 @@ export default {
   }),
   methods: {
     showDetails: function (review) {
-      this.$router.push("/reviews/" + review.slug);
+      this.$router.push("/reviews/" + review.id);
     },
     handlePreview: function(review) {
       openNewTab(APP_ROOT_DOMAIN + '/reviews/' + review.slug);

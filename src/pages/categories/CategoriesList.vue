@@ -58,7 +58,7 @@ export default {
   }),
   methods: {
     showDetails: function (category) {
-      this.$router.push("/categories/" + category.slug);
+      this.$router.push("/categories/" + category.id);
     },
     handlePreview: function (category) {
       openNewTab(
@@ -69,6 +69,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

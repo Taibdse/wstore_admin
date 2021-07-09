@@ -21,12 +21,6 @@
       </md-card-header>
 
       <md-card-content>
-        <!-- <div v-if="!insertReview && isLoading" style="text-align: center">
-          <md-progress-spinner
-            md-mode="indeterminate"
-            style="margin: auto"
-          ></md-progress-spinner>
-        </div> -->
         <div v-if="insertReview || !notfound">
           <form class="md-layout" @submit.prevent="saveReview">
             <md-card class="">
@@ -39,8 +33,8 @@
                         name="title"
                         id="title"
                         v-model="review.title"
-                        @input="setReviewSlug"
                       />
+                      <md-button @click="setReviewSlug" class="sm-btn">Create slug</md-button>
                     </md-field>
                   </div>
 
@@ -62,7 +56,6 @@
                         name="slug"
                         id="slug"
                         v-model="review.slug"
-                        disabled
                       />
                     </md-field>
                   </div>
@@ -213,18 +206,18 @@ export default {
   data: () => ({
     review: {
       active: true,
-      reviewTypeId: "",
+      reviewTypeId: ""
     },
     reviewTypes: [],
     filters: {
-      type: "all",
+      type: "all"
     },
 
     isLoading: false,
     notfound: false,
     insertReview: false,
     reviewImages: [],
-    type: [],
+    type: []
   }),
 
   methods: {
@@ -233,16 +226,16 @@ export default {
         this.insertReview = true;
       } else {
         this.isLoading = true;
-        const reviewSlug = this.$route.params.reviewSlug;
+        const reviewId = this.$route.params.reviewId;
         try {
-          const res = await ReviewService.getReviewBySlug(reviewSlug);
+          const res = await ReviewService.getById(reviewId);
           this.review = res.data;
 
           this.reviewImages = [
             {
               url: formatImageUrl(this.review.image),
-              name: this.review.title,
-            },
+              name: this.review.title
+            }
           ];
 
           if (isEmpty(this.review)) this.notfound = true;
@@ -318,8 +311,8 @@ export default {
       });
     },
 
-    setReviewSlug: function(value) {
-      this.review.slug = convertStringToSlug(value);
+    setReviewSlug: function() {
+      this.review = { ...this.review, slug: convertStringToSlug(this.review.title) };
     },
 
     handlePreview: function(review) {

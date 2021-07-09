@@ -13,12 +13,6 @@
       </md-card-header>
 
       <md-card-content>
-        <!-- <div v-if="!insertProduct && isLoading" style="text-align: center">
-          <md-progress-spinner
-            md-mode="indeterminate"
-            style="margin: auto"
-          ></md-progress-spinner>
-        </div> -->
         <div v-if="insertProduct || !notfound">
           <form class="md-layout" @submit.prevent="saveProduct">
             <md-card class="">
@@ -261,9 +255,9 @@ export default {
     getProductDetails: async function () {
       if (!this.insertProduct) {
         this.isLoading = true;
-        const productSlug = this.$route.params.productSlug;
+        const productId = this.$route.params.productId;
         try {
-          const res = await ProductService.getProductDetails(productSlug);
+          const res = await ProductService.getById(productId);
           this.product = res.data;
 
           if (isEmpty(this.product)) {
@@ -380,7 +374,7 @@ export default {
     },
 
     setProductSlug: function () {
-      this.product.slug = convertStringToSlug(this.product.name);
+      this.product = { ...this.product, slug: convertStringToSlug(this.product.name) };
     },
 
     toMoneyFormat,
@@ -398,7 +392,7 @@ export default {
         this.product = { ...this.product, categoryId: this.categories[0].id };
       }
     } catch (error) {}
-  },
+  }
 };
 </script>
 
