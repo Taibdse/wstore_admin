@@ -27,12 +27,10 @@
                   <div class="md-layout-item md-small-size-100 md-size-33">
                     <md-field>
                       <label for="title">Tip Title (VN)</label>
-                      <md-input
-                        name="title"
-                        id="title"
-                        v-model="tip.title"
-                      />
-                      <md-button @click="setTipSlug" class="sm-btn">Create slug</md-button>
+                      <md-input name="title" id="title" v-model="tip.title" />
+                      <md-button @click="setTipSlug" class="sm-btn"
+                        >Create slug</md-button
+                      >
                     </md-field>
                   </div>
 
@@ -50,10 +48,21 @@
                   <div class="md-layout-item md-small-size-100 md-size-33">
                     <md-field>
                       <label for="slug">Slug</label>
+                      <md-input name="slug" id="slug" v-model="tip.slug" />
+                    </md-field>
+                  </div>
+                </div>
+
+                <div class="md-layout md-gutter" style="margin-top: 20px">
+                  <div class="md-layout-item md-size-100">
+                    <md-field style="width: 100px">
+                      <label for="sortIndex">Sort Index</label>
                       <md-input
-                        name="slug"
-                        id="slug"
-                        v-model="tip.slug"
+                        style="width: 100px"
+                        name="sortIndex"
+                        id="sortIndex"
+                        v-model="tip.sortIndex"
+                        type="number"
                       />
                     </md-field>
                   </div>
@@ -123,7 +132,13 @@
 </template>
 
 <script>
-import { DropzoneUpload, MyEditor, PageMetadata, Loading, ActionButton } from "@/components";
+import {
+  DropzoneUpload,
+  MyEditor,
+  PageMetadata,
+  Loading,
+  ActionButton,
+} from "@/components";
 
 import TipService from "../../services/tip.service";
 import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
@@ -141,19 +156,19 @@ export default {
     MyEditor,
     PageMetadata,
     Loading,
-    ActionButton
+    ActionButton,
   },
   data: () => ({
     tip: {
-      active: true
+      active: true,
     },
     isLoading: false,
     notfound: false,
     insertTip: false,
-    tipImages: []
+    tipImages: [],
   }),
   methods: {
-    getTipDetails: async function() {
+    getTipDetails: async function () {
       if (this.$route.path.indexOf("/tips/insert") > -1) {
         this.insertTip = true;
       } else {
@@ -166,7 +181,7 @@ export default {
           this.tipImages = [
             {
               url: formatImageUrl(this.tip.image),
-              name: this.tip.title
+              name: this.tip.title,
             },
           ];
 
@@ -177,7 +192,7 @@ export default {
         this.isLoading = false;
       }
     },
-    saveTip: async function() {
+    saveTip: async function () {
       const tipImage = this.$refs.dropzoneTipImage.getUploadedFiles();
       const content = this.$refs["tipContentVN"].$data.myContent;
       const contentEn = this.$refs["tipContentEN"].$data.myContent;
@@ -194,7 +209,7 @@ export default {
       }
     },
 
-    handleInsertTip: async function(data) {
+    handleInsertTip: async function (data) {
       this.isLoading = true;
       try {
         const res = await TipService.insertTip(data);
@@ -206,13 +221,13 @@ export default {
       } catch (error) {
         showErrors({
           title: "Server error!",
-          text: SERVER_ERROR_MESSAGE
+          text: SERVER_ERROR_MESSAGE,
         });
       }
       this.isLoading = false;
     },
 
-    handleUpdateTip: async function(data) {
+    handleUpdateTip: async function (data) {
       try {
         const res = await TipService.updateTip(data);
         if (res.data.success === "1") {
@@ -224,26 +239,26 @@ export default {
       } catch (error) {
         showErrors({
           title: "Server error!",
-          text: SERVER_ERROR_MESSAGE
+          text: SERVER_ERROR_MESSAGE,
         });
       }
     },
 
-    showErrorsMessage: function(res) {
+    showErrorsMessage: function (res) {
       const errors = getErrorsFromResponse(res.data);
       showErrors({
         title: "Please check input data!",
-        text: errors
+        text: errors,
       });
     },
 
-    setTipSlug: function() {
+    setTipSlug: function () {
       this.tip = { ...this.tip, slug: convertStringToSlug(this.tip.title) };
     },
-    handleBack: function() {
+    handleBack: function () {
       this.$router.push(PathRouteConstants.tipsRoute);
     },
-    handlePreview: function(tip) {
+    handlePreview: function (tip) {
       openNewTab(APP_ROOT_DOMAIN + "/tips/" + tip.slug);
     },
   },

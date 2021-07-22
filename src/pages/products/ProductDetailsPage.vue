@@ -21,23 +21,17 @@
                   <div class="md-layout-item sm-size-100">
                     <md-field>
                       <label for="name">Name</label>
-                      <md-input
-                        name="name"
-                        id="name"
-                        v-model="product.name"
-                      />
-                      <md-button @click="setProductSlug" class="sm-btn">Create slug</md-button>
+                      <md-input name="name" id="name" v-model="product.name" />
+                      <md-button @click="setProductSlug" class="sm-btn"
+                        >Create slug</md-button
+                      >
                     </md-field>
                   </div>
 
                   <div class="md-layout-item sm-size-100">
                     <md-field>
                       <label for="slug">Slug</label>
-                      <md-input
-                        name="slug"
-                        id="slug"
-                        v-model="product.slug"
-                      />
+                      <md-input name="slug" id="slug" v-model="product.slug" />
                     </md-field>
                   </div>
                 </div>
@@ -77,6 +71,18 @@
                       />
                     </md-field>
                   </div>
+                  <div class="md-layout-item sm-small-size-100">
+                    <md-field>
+                      <label for="price">Old Price</label>
+                      <md-input
+                        name="oldPrice"
+                        id="oldPrice"
+                        v-model="product.oldPrice"
+                      />
+                    </md-field>
+                  </div>
+                </div>
+                <div class="md-layout md-gutter">
                   <div class="md-layout-item sm-small-size-100">
                     <md-field>
                       <label for="color">Colors</label>
@@ -152,9 +158,15 @@
 
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-100">
-                    <md-checkbox v-model="product.available">Available</md-checkbox>
-                    <md-checkbox v-model="product.inHomePage">Show product in home page</md-checkbox>
-                    <md-checkbox v-model="product.active">Active product</md-checkbox>
+                    <md-checkbox v-model="product.available"
+                      >Available</md-checkbox
+                    >
+                    <md-checkbox v-model="product.inHomePage"
+                      >Show product in home page</md-checkbox
+                    >
+                    <md-checkbox v-model="product.active"
+                      >Active product</md-checkbox
+                    >
                   </div>
                 </div>
 
@@ -226,14 +238,14 @@ import {
 import { getVNTimeFormat } from "../../utils/time";
 import { showSuccessMsg, showErrors } from "../../utils/alert";
 import { getErrorsFromResponse } from "../../utils/errors";
-import { SAVE_SUCCESS, SERVER_ERROR_MESSAGE } from '../../utils/constants';
+import { SAVE_SUCCESS, SERVER_ERROR_MESSAGE } from "../../utils/constants";
 
 export default {
   components: {
     DropzoneUpload,
     MyEditor,
     PageMetadata,
-    Loading
+    Loading,
   },
   data: () => ({
     product: {
@@ -299,7 +311,8 @@ export default {
     saveProduct: async function () {
       const mainImage = this.$refs.dropzoneMainImage.getUploadedFiles();
       const uploadedSubImages = this.$refs.dropzoneSubImage.getUploadedFiles();
-      const manaullyAddedSubImages = this.$refs.dropzoneSubImage.getManuallyAddedFiles();
+      const manaullyAddedSubImages =
+        this.$refs.dropzoneSubImage.getManuallyAddedFiles();
       const data = JSON.parse(JSON.stringify(this.product));
       data.subImages = uploadedSubImages.map((img) => img.dataURL);
       data.mainImage = isEmpty(mainImage) ? null : mainImage[0].dataURL;
@@ -374,7 +387,10 @@ export default {
     },
 
     setProductSlug: function () {
-      this.product = { ...this.product, slug: convertStringToSlug(this.product.name) };
+      this.product = {
+        ...this.product,
+        slug: convertStringToSlug(this.product.name),
+      };
     },
 
     toMoneyFormat,
@@ -392,7 +408,7 @@ export default {
         this.product = { ...this.product, categoryId: this.categories[0].id };
       }
     } catch (error) {}
-  }
+  },
 };
 </script>
 

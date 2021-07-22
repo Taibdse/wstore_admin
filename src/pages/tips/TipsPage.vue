@@ -33,7 +33,13 @@
               :pagination="pagination"
               :handleChange="handlePageChange"
             />
-            <TipsList :tips="pagingTips" />
+            <md-button
+              class="md-primary"
+              style="float: right"
+              @click="handleSaveSortIndexes"
+              >Save sort index</md-button
+            >
+            <TipsList :tips="pagingTips" ref="tipsListRef" />
           </div>
           <div v-show="!isLoading && tips.length === 0">
             <h3 style="text-align: center">No tip found!</h3>
@@ -51,8 +57,8 @@ import { mapGetters, mapActions } from "vuex";
 import TipsList from "./TipsList";
 import TipService from "../../services/tip.service.js";
 import { isEmpty } from "../../utils/validations";
-
-const TIP_SEARCH_CONDITION_KEY = "tipSearchConditionKey";
+import { showErrors, showSuccessMsg } from "../../utils/alert";
+import { SAVE_SUCCESS, SERVER_ERROR_MESSAGE } from "../../utils/constants";
 
 export default {
   components: {
@@ -119,6 +125,25 @@ export default {
       if (!isEmpty(searchCondition)) {
         this.pagination = searchCondition.pagination;
       }
+    },
+    handleSaveSortIndexes: async function () {
+      this.isLoading = true;
+      try {
+        const sortIndexes = this.$refs.tipsListRef.sortIndexes;
+        const data = Object.keys(sortIndexes).map((id) => ({
+          id,
+          sortIndex: sortIndexes[id],
+        }));
+        const res = await TipService.saveSortIndexes(data);
+        showSuccessMsg({ title: SAVE_SUCCESS, text: "" });
+        this.getTips();
+      } catch (error) {
+        showErrors({
+          title: "Server errors!",
+          text: SERVER_ERROR_MESSAGE,
+        });
+      }
+      this.isLoading = false;
     },
   },
 

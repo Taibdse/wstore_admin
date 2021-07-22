@@ -18,6 +18,15 @@
       <md-table-cell>
         <Status :value="tip.active" />
       </md-table-cell>
+      <md-table-cell style="width: 60px">
+        <md-field>
+          <md-input
+            type="number"
+            style="width: 60px"
+            v-model="sortIndexes[tip.id]"
+          />
+        </md-field>
+      </md-table-cell>
       <md-table-cell>
         <ActionButton
           icon="language"
@@ -31,12 +40,6 @@
           classNames="md-primary"
           @click="showDetails(tip)"
         />
-        <!-- <md-button
-          class="md-just-icon md-simple md-primary"
-          @click="showDetails(tip)"
-        >
-          <md-icon>edit</md-icon>
-        </md-button> -->
       </md-table-cell>
     </md-table-row>
   </md-table>
@@ -46,28 +49,38 @@
 import { ActionButton, Status } from "@/components";
 
 import { formatImageUrl, removeHtmlTags } from "../../utils/strings";
-import { APP_ROOT_DOMAIN } from '../../configs/api';
-import { openNewTab } from '../../utils/utils';
+import { APP_ROOT_DOMAIN } from "../../configs/api";
+import { openNewTab } from "../../utils/utils";
 
 export default {
   components: {
-    Status, ActionButton
+    Status,
+    ActionButton,
   },
   props: {
     tips: Array,
   },
   data: () => ({
-    tblHeaders: ["#", "Title", "Image", "Hot", "Active"],
+    tblHeaders: ["#", "Title", "Image", "Hot", "Active", "Sort Index"],
+    sortIndexes: {},
   }),
   methods: {
-    showDetails: function(tip) {
+    showDetails: function (tip) {
       this.$router.push("/tips/" + tip.id);
     },
-    handlePreview: function(tip) {
-      openNewTab(APP_ROOT_DOMAIN + '/tips/' + tip.slug);
+    handlePreview: function (tip) {
+      openNewTab(APP_ROOT_DOMAIN + "/tips/" + tip.slug);
     },
     formatImageUrl,
     removeHtmlTags,
+  },
+  watch: {
+    tips: function (newTips) {
+      this.sortIndexes = newTips.reduce(
+        (acc, it) => ({ ...acc, [it.id]: it.sortIndex }),
+        {}
+      );
+    },
   },
 };
 </script>

@@ -17,6 +17,7 @@ import MyEditor from './common/MyEditor';
 import PageContainer from './common/PageContainer';
 import PageMetadata from './common/PageMetadata';
 import Pagination from './common/Pagination';
+import SimpleList from './common/SimpleList';
 import Status from './common/Status';
 
 export {
@@ -35,5 +36,6 @@ export {
   PageContainer,
   PageMetadata,
   Pagination,
+  SimpleList,
   Status
 };
