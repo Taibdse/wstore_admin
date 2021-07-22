@@ -30,12 +30,10 @@
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field>
                   <label for="title">Title (VN)</label>
-                  <md-input
-                    name="title"
-                    id="title"
-                    v-model="news.title"
-                  />
-                  <md-button @click="setNewsSlug" class="sm-btn">Create slug</md-button>
+                  <md-input name="title" id="title" v-model="news.title" />
+                  <md-button @click="setNewsSlug" class="sm-btn"
+                    >Create slug</md-button
+                  >
                 </md-field>
               </div>
               <div class="md-layout-item md-small-size-100 md-size-33">
@@ -51,10 +49,21 @@
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field>
                   <label for="slug">Slug</label>
+                  <md-input name="slug" id="slug" v-model="news.slug" />
+                </md-field>
+              </div>
+            </div>
+
+            <div class="md-layout md-gutter" style="margin-top: 20px">
+              <div class="md-layout-item md-size-100">
+                <md-field style="width: 100px">
+                  <label for="sortIndex">Sort Index</label>
                   <md-input
-                    name="slug"
-                    id="slug"
-                    v-model="news.slug"
+                    style="width: 100px"
+                    name="sortIndex"
+                    id="sortIndex"
+                    v-model="news.sortIndex"
+                    type="number"
                   />
                 </md-field>
               </div>
@@ -169,7 +178,13 @@
 </template>
 
 <script>
-import { ActionButton, MyEditor, DropzoneUpload, PageMetadata, Loading } from "@//components";
+import {
+  ActionButton,
+  MyEditor,
+  DropzoneUpload,
+  PageMetadata,
+  Loading,
+} from "@//components";
 
 import NewsService from "../../services/news.service";
 import { isEmpty } from "../../utils/validations";
@@ -178,8 +193,8 @@ import { uuidv4 } from "../../utils/id";
 import { SERVER_ERROR_MESSAGE } from "../../utils/constants";
 import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
 import { PathRouteConstants } from "../../routes/pathRoutes";
-import { APP_ROOT_DOMAIN } from '../../configs/api';
-import { openNewTab } from '../../utils/utils';
+import { APP_ROOT_DOMAIN } from "../../configs/api";
+import { openNewTab } from "../../utils/utils";
 
 export default {
   components: {
@@ -187,7 +202,7 @@ export default {
     DropzoneUpload,
     PageMetadata,
     Loading,
-    ActionButton
+    ActionButton,
   },
 
   data: () => ({
@@ -216,7 +231,7 @@ export default {
               newsItem.imageFile = [
                 {
                   url: formatImageUrl(newsItem.image),
-                  name: ""
+                  name: "",
                 },
               ];
               newsItem.new = false;
@@ -232,13 +247,12 @@ export default {
       const news = JSON.parse(JSON.stringify(this.news));
 
       news.newsItems.forEach((newsItem) => {
-        const imageFile = this.$refs[
-          "dropzoneImage" + newsItem.id
-        ][0].getUploadedFiles();
-        const content = this.$refs["myEditorVN" + newsItem.id][0].$data
-          .myContent;
-        const contentEn = this.$refs["myEditorEN" + newsItem.id][0].$data
-          .myContent;
+        const imageFile =
+          this.$refs["dropzoneImage" + newsItem.id][0].getUploadedFiles();
+        const content =
+          this.$refs["myEditorVN" + newsItem.id][0].$data.myContent;
+        const contentEn =
+          this.$refs["myEditorEN" + newsItem.id][0].$data.myContent;
 
         newsItem.image = isEmpty(imageFile) ? null : imageFile[0].dataURL;
         newsItem.content = content;
@@ -346,8 +360,8 @@ export default {
     handleBack: function () {
       this.$router.push(PathRouteConstants.newsListRoute);
     },
-    handlePreview: function(news) {
-      openNewTab(APP_ROOT_DOMAIN + '/news/' + news.slug);
+    handlePreview: function (news) {
+      openNewTab(APP_ROOT_DOMAIN + "/news/" + news.slug);
     },
 
     isEmpty,

@@ -15,8 +15,6 @@
       </md-table-cell>
       <md-table-cell>
         <Status :value="review.active" />
-        <!-- <strong v-if="!review.active" class="text-danger">INACTIVE</strong> -->
-        <!-- <strong v-if="review.active" class="text-success">ACTIVE</strong> -->
       </md-table-cell>
       <md-table-cell>
         <Status :value="review.hot" />
@@ -43,12 +41,6 @@
           classNames="md-primary"
           @click="showDetails(review)"
         />
-        <!-- <md-button
-          class="md-just-icon md-simple md-primary"
-          @click="showDetails(review)"
-        >
-          <md-icon>edit</md-icon>
-        </md-button> -->
       </md-table-cell>
     </md-table-row>
   </md-table>
@@ -58,12 +50,13 @@
 import { ActionButton, Status } from "@/components";
 
 import { formatImageUrl, removeHtmlTags } from "../../utils/strings";
-import { openNewTab } from '../../utils/utils';
-import { APP_ROOT_DOMAIN } from '../../configs/api';
+import { openNewTab } from "../../utils/utils";
+import { APP_ROOT_DOMAIN } from "../../configs/api";
 
 export default {
   components: {
-    Status, ActionButton
+    Status,
+    ActionButton,
   },
   props: {
     reviews: Array,
@@ -84,8 +77,8 @@ export default {
     showDetails: function (review) {
       this.$router.push("/reviews/" + review.id);
     },
-    handlePreview: function(review) {
-      openNewTab(APP_ROOT_DOMAIN + '/reviews/' + review.slug);
+    handlePreview: function (review) {
+      openNewTab(APP_ROOT_DOMAIN + "/reviews/" + review.slug);
     },
     formatImageUrl,
     removeHtmlTags,

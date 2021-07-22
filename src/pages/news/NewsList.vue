@@ -21,6 +21,15 @@
       <md-table-cell>
         <Status :value="news.hot" />
       </md-table-cell>
+      <md-table-cell style="width: 60px">
+        <md-field>
+          <md-input
+            type="number"
+            style="width: 60px"
+            v-model="sortIndexes[news.id]"
+          />
+        </md-field>
+      </md-table-cell>
       <md-table-cell>
         <ActionButton
           icon="language"
@@ -34,12 +43,6 @@
           classNames="md-primary"
           @click="showDetails(news)"
         />
-        <!-- <md-button
-          class="md-just-icon md-simple md-primary"
-          @click="showDetails(news)"
-        >
-          <md-icon>edit</md-icon>
-        </md-button> -->
       </md-table-cell>
     </md-table-row>
   </md-table>
@@ -63,7 +66,8 @@ export default {
     newsArray: Array,
   },
   data: () => ({
-    tblHeaders: ["#", "", "Title", "Created At", "Active", "Hot"],
+    tblHeaders: ["#", "", "Title", "Created At", "Active", "Hot", "Sort Index"],
+    sortIndexes: {},
   }),
   methods: {
     showDetails: function (news) {
@@ -76,6 +80,14 @@ export default {
     getVNTimeFormat,
     isEmpty,
     removeHtmlTags,
+  },
+  watch: {
+    newsArray: function (newNewsList) {
+      this.sortIndexes = newNewsList.reduce(
+        (acc, it) => ({ ...acc, [it.id]: it.sortIndex }),
+        {}
+      );
+    },
   },
 };
 </script>

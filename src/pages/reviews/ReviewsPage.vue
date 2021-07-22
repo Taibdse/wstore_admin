@@ -40,16 +40,7 @@
             </div>
           </div>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-50">
-              <!-- <md-field>
-                                <label for="createdAt">Sort By Date</label>
-                                <md-select v-model="orderBys.createdAt" name="createdAt" id="createdAt">
-                                    <md-option value="DESC">Moi nhat</md-option>
-                                    <md-option value="ASC">Cu nhat</md-option>
-                                </md-select>
-                            </md-field>
-                            <md-button class="md-raised md-primary" @click="getReviews">Tìm kiếm</md-button> -->
-            </div>
+            <div class="md-layout-item md-size-50"></div>
           </div>
         </md-card-content>
       </md-card>
@@ -114,7 +105,7 @@ export default {
   }),
 
   computed: {
-    pagingReviews: function() {
+    pagingReviews: function () {
       if (isEmpty(this.reviews)) return [];
       const { currentPage, size } = this.pagination;
       return this.reviews.map((review, index) => {
@@ -130,7 +121,7 @@ export default {
     ...mapActions({
       saveReviewSearchCondition: "searchCondition/saveReviewSearchCondition",
     }),
-    getReviews: async function() {
+    getReviews: async function () {
       this.isLoading = true;
       try {
         const reviewType = this.filters.reviewType;
@@ -150,24 +141,24 @@ export default {
       this.isLoading = false;
     },
 
-    getReviewByType: function() {
+    getReviewByType: function () {
       this.getReviews();
     },
 
-    getReviewTypes: async function() {
+    getReviewTypes: async function () {
       const res = await ReviewService.getReviewType();
       this.reviewTypes = res.data;
     },
 
-    handlePageChange: function(pageNum) {
+    handlePageChange: function (pageNum) {
       this.pagination = { ...this.pagination, currentPage: pageNum };
       this.getReviews();
     },
 
-    gotoInsertReviewPage: function() {
+    gotoInsertReviewPage: function () {
       this.$router.push("/reviews/insert");
     },
-    handleSaveSortIndexes: async function() {
+    handleSaveSortIndexes: async function () {
       this.isLoading = true;
       try {
         const sortIndexes = this.$refs.reviewListRef.sortIndexes;
@@ -186,13 +177,13 @@ export default {
       }
       this.isLoading = false;
     },
-    saveSearchCondition: function() {
+    saveSearchCondition: function () {
       const searchCondition = {
         pagination: this.pagination,
       };
       this.saveReviewSearchCondition(searchCondition);
     },
-    loadSearchCondition: function() {
+    loadSearchCondition: function () {
       const searchCondition = this.reviewSearchCondition;
       if (!isEmpty(searchCondition)) {
         this.pagination = searchCondition.pagination;

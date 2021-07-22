@@ -12,20 +12,31 @@
       <md-table-cell>
         <img :src="formatImageUrl(product.mainImage)" class="img-fluid" />
       </md-table-cell>
-      <md-table-cell>{{ product.availableSizes }}</md-table-cell>
-      <md-table-cell>{{ product.color }}</md-table-cell>
+      <md-table-cell style="min-width: 150px">
+        <SimpleList :data="product.availableSizes.split(',')" />
+      </md-table-cell>
+      <md-table-cell>
+        <SimpleList :data="product.color.split(',')" />
+      </md-table-cell>
       <md-table-cell>
         <strong class="text-primary"
           >{{ toMoneyFormat(product.price) }} đ</strong
         >
       </md-table-cell>
       <md-table-cell>
+        <strong class="text-primary"
+          >{{ toMoneyFormat(product.oldPrice) }} đ</strong
+        >
+      </md-table-cell>
+      <md-table-cell style="min-width: 80px">
         <Status :value="product.available" />
       </md-table-cell>
-      <md-table-cell>
+      <md-table-cell style="min-width: 80px">
         <Status :value="product.active" />
       </md-table-cell>
-      <md-table-cell>{{ product.category.name }}</md-table-cell>
+      <md-table-cell style="min-width: 80px">{{
+        product.category.name
+      }}</md-table-cell>
       <md-table-cell>
         <md-field>
           <md-input
@@ -54,7 +65,7 @@
 </template>
 
 <script>
-import { ActionButton, Status } from "@/components";
+import { ActionButton, Status, SimpleList } from "@/components";
 
 import { toMoneyFormat } from "@/utils/strings.js";
 import { formatImageUrl } from "../../utils/strings";
@@ -65,6 +76,7 @@ export default {
   components: {
     Status,
     ActionButton,
+    SimpleList,
   },
   props: {
     products: Array,
@@ -78,6 +90,7 @@ export default {
       "Sizes",
       "Colors",
       "Price",
+      "Old Price",
       "Available",
       "Active",
       "Category",

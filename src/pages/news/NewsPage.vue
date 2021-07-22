@@ -14,16 +14,7 @@
             </div>
           </div>
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-50">
-              <!-- <md-field>
-                                <label for="createdAt">Sort By Date</label>
-                                <md-select v-model="orderBys.createdAt" name="createdAt" id="createdAt">
-                                    <md-option value="DESC">Moi nhat</md-option>
-                                    <md-option value="ASC">Cu nhat</md-option>
-                                </md-select>
-                            </md-field>
-                            <md-button class="md-raised md-primary" @click="getReviews">Tìm kiếm</md-button> -->
-            </div>
+            <div class="md-layout-item md-size-50"></div>
           </div>
         </md-card-content>
       </md-card>
@@ -44,7 +35,13 @@
               :pagination="pagination"
               :handleChange="handlePageChange"
             />
-            <NewsList :newsArray="pagingNewsArray" />
+            <md-button
+              class="md-primary"
+              style="float: right"
+              @click="handleSaveSortIndexes"
+              >Save sort index</md-button
+            >
+            <NewsList :newsArray="pagingNewsArray" ref="newsListRef" />
           </div>
           <div v-show="!isLoading && newsArray.length === 0">
             <h3 style="text-align: center">No news found!</h3>
@@ -62,6 +59,8 @@ import { mapGetters, mapActions } from "vuex";
 import NewsList from "./NewsList";
 import NewsService from "../../services/news.service";
 import { isEmpty } from "../../utils/validations";
+import { SAVE_SUCCESS, SERVER_ERROR_MESSAGE } from "../../utils/constants";
+import { showErrors, showSuccessMsg } from "../../utils/alert";
 
 export default {
   components: {
@@ -127,6 +126,25 @@ export default {
       if (!isEmpty(searchCondition)) {
         this.pagination = searchCondition.pagination;
       }
+    },
+    handleSaveSortIndexes: async function () {
+      this.isLoading = true;
+      try {
+        const sortIndexes = this.$refs.newsListRef.sortIndexes;
+        const data = Object.keys(sortIndexes).map((id) => ({
+          id,
+          sortIndex: sortIndexes[id],
+        }));
+        const res = await NewsService.saveSortIndexes(data);
+        showSuccessMsg({ title: SAVE_SUCCESS, text: "" });
+        this.getNews();
+      } catch (error) {
+        showErrors({
+          title: "Server errors!",
+          text: SERVER_ERROR_MESSAGE,
+        });
+      }
+      this.isLoading = false;
     },
   },
 
