@@ -105,7 +105,7 @@ export default {
   }),
 
   computed: {
-    pagingReviews: function () {
+    pagingReviews: function() {
       if (isEmpty(this.reviews)) return [];
       const { currentPage, size } = this.pagination;
       return this.reviews.map((review, index) => {
@@ -121,7 +121,7 @@ export default {
     ...mapActions({
       saveReviewSearchCondition: "searchCondition/saveReviewSearchCondition",
     }),
-    getReviews: async function () {
+    getReviews: async function() {
       this.isLoading = true;
       try {
         const reviewType = this.filters.reviewType;
@@ -141,24 +141,28 @@ export default {
       this.isLoading = false;
     },
 
-    getReviewByType: function () {
+    getReviewByType: function() {
       this.getReviews();
     },
 
-    getReviewTypes: async function () {
-      const res = await ReviewService.getReviewType();
-      this.reviewTypes = res.data;
+    getReviewTypes: async function() {
+      try {
+        const res = await ReviewService.getReviewType();
+        this.reviewTypes = res.data;
+      } catch (error) {
+        this.reviewTypes = [];
+      }
     },
 
-    handlePageChange: function (pageNum) {
+    handlePageChange: function(pageNum) {
       this.pagination = { ...this.pagination, currentPage: pageNum };
       this.getReviews();
     },
 
-    gotoInsertReviewPage: function () {
+    gotoInsertReviewPage: function() {
       this.$router.push("/reviews/insert");
     },
-    handleSaveSortIndexes: async function () {
+    handleSaveSortIndexes: async function() {
       this.isLoading = true;
       try {
         const sortIndexes = this.$refs.reviewListRef.sortIndexes;
@@ -177,13 +181,13 @@ export default {
       }
       this.isLoading = false;
     },
-    saveSearchCondition: function () {
+    saveSearchCondition: function() {
       const searchCondition = {
         pagination: this.pagination,
       };
       this.saveReviewSearchCondition(searchCondition);
     },
-    loadSearchCondition: function () {
+    loadSearchCondition: function() {
       const searchCondition = this.reviewSearchCondition;
       if (!isEmpty(searchCondition)) {
         this.pagination = searchCondition.pagination;
