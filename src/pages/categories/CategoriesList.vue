@@ -10,10 +10,22 @@
       <md-table-cell>{{ index + 1 }}</md-table-cell>
       <md-table-cell>{{ category.name }}</md-table-cell>
 
-      <md-table-cell>{{ truncate(category.description, 100) }}</md-table-cell>
+      <md-table-cell>{{ truncate(category.description, 50) }}</md-table-cell>
+
+      <md-table-cell style="width: 60px">
+        <md-field>
+          <md-input
+            type="number"
+            style="width: 60px"
+            v-model="sortIndexes[category.id]"
+          />
+        </md-field>
+      </md-table-cell>
+
       <md-table-cell>
         <Status :value="category.active" />
       </md-table-cell>
+
       <md-table-cell>
         <ActionButton
           icon="language"
@@ -54,18 +66,30 @@ export default {
     categories: Array,
   },
   data: () => ({
-    tblHeaders: ["#", "Name", "Description", "Active"],
+    sortIndexes: {},
+
+    tblHeaders: ["#", "Name", "Description", "Sort Index", "Active"],
   }),
+
   methods: {
-    showDetails: function (category) {
+    showDetails: function(category) {
       this.$router.push("/categories/" + category.id);
     },
-    handlePreview: function (category) {
+    handlePreview: function(category) {
       openNewTab(
         APP_ROOT_DOMAIN + "/products?category=" + category.slug + "&page=1"
       );
     },
     truncate,
+  },
+
+  watch: {
+    categories: function(newCategories) {
+      this.sortIndexes = newCategories.reduce(
+        (acc, r) => ({ ...acc, [r.id]: r.sortIndex }),
+        {}
+      );
+    },
   },
 };
 </script>

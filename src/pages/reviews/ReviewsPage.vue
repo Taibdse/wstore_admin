@@ -171,6 +171,7 @@ export default {
           sortIndex: sortIndexes[id],
         }));
         const res = await ReviewService.saveSortIndexes(data);
+        console.log(res);
         showSuccessMsg({ title: SAVE_SUCCESS, text: "" });
         this.getReviews();
       } catch (error) {

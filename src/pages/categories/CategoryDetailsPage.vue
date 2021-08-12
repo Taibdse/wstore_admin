@@ -34,8 +34,33 @@
 
                   <div class="md-layout-item sm-size-100">
                     <md-field>
+                      <label for="name">Name (En)</label>
+                      <md-input
+                        name="name"
+                        id="name"
+                        v-model="category.nameEn"
+                      />
+                    </md-field>
+                  </div>
+                </div>
+
+                <div class="md-layout md-gutter">
+                  <div class="md-layout-item sm-size-100">
+                    <md-field>
                       <label for="slug">Slug</label>
                       <md-input name="slug" id="slug" v-model="category.slug" />
+                    </md-field>
+                  </div>
+
+                  <div class="md-layout-item sm-size-100">
+                    <md-field>
+                      <label for="sortIndex">Sort Index</label>
+                      <md-input
+                        name="sortIndex"
+                        id="sortIndex"
+                        v-model="category.sortIndex"
+                        type="number"
+                      />
                     </md-field>
                   </div>
                 </div>
@@ -53,6 +78,15 @@
                     <md-checkbox v-model="category.active"
                       >Active category</md-checkbox
                     >
+                  </div>
+                </div>
+
+                <div class="md-layout md-gutter" style="margin-top: 20px">
+                  <div class="md-layout-item md-size-100">
+                    <PageMetadata
+                      ref="pageMetadata"
+                      :pageMetadataContent="category.pageMetadata"
+                    />
                   </div>
                 </div>
               </md-card-content>
@@ -78,9 +112,12 @@ import { convertStringToSlug } from "../../utils/strings";
 import { showSuccessMsg, showErrors } from "../../utils/alert";
 import { getErrorsFromResponse } from "../../utils/errors";
 import { SAVE_SUCCESS, SERVER_ERROR_MESSAGE } from "../../utils/constants";
+import { PageMetadata } from "@/components";
 
 export default {
-  components: {},
+  components: {
+    PageMetadata,
+  },
   data: () => ({
     category: {
       active: true,
@@ -90,7 +127,7 @@ export default {
     insertCategory: false,
   }),
   methods: {
-    getCategoryDetails: async function () {
+    getCategoryDetails: async function() {
       if (this.$route.path.indexOf("/categories/insert") > -1) {
         this.insertCategory = true;
       } else {
@@ -99,6 +136,7 @@ export default {
         try {
           const res = await CategoryService.getCategoryById(categoryId);
           this.category = res.data;
+          console.log(this.category);
           if (isEmpty(this.category)) this.notfound = true;
         } catch (error) {
           this.notfound = true;
@@ -107,7 +145,7 @@ export default {
       }
     },
 
-    showErrorsMessage: function (res) {
+    showErrorsMessage: function(res) {
       const errors = getErrorsFromResponse(res.data.errors);
       showErrors({
         title: "Please check input data again!",
@@ -115,8 +153,12 @@ export default {
       });
     },
 
-    saveCategory: async function () {
+    saveCategory: async function() {
       this.isLoading = true;
+      this.category.pageMetadata = this.$refs[
+        "pageMetadata"
+      ].$data.pageMetadata;
+
       if (this.insertCategory) {
         await this.handleInsertCategory(this.category);
       } else {
@@ -125,7 +167,7 @@ export default {
       this.isLoading = false;
     },
 
-    handleInsertCategory: async function (data) {
+    handleInsertCategory: async function(data) {
       try {
         const res = await CategoryService.insertCategory(data);
         if (res.data.success === "1") {
@@ -141,7 +183,7 @@ export default {
       }
     },
 
-    handleUpdateCategory: async function (data) {
+    handleUpdateCategory: async function(data) {
       try {
         const res = await CategoryService.updateCategory(data);
         if (res.data.success === "1") {
@@ -160,12 +202,12 @@ export default {
       }
     },
 
-    getCategories: async function () {
+    getCategories: async function() {
       const res = await CategoryService.getCategories();
       this.categories = res.data;
     },
 
-    setCategorySlug: function () {
+    setCategorySlug: function() {
       this.category = {
         ...this.category,
         slug: convertStringToSlug(this.category.name),
