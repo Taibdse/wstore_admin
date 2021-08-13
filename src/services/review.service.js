@@ -43,11 +43,6 @@ class ReviewService {
     const url = APP_ROOT_API + "/reviews/sortIndexes";
     return axios.put(url, reviews);
   }
-
-  static async getReviewType() {
-    const url = APP_ROOT_API + "/reviews/reviewType";
-    return axios.get(url);
-  }
 }
 
 export default ReviewService;

@@ -84,6 +84,7 @@ import { Pagination } from "@/components";
 import { mapGetters, mapActions } from "vuex";
 import ReviewsList from "./ReviewsList";
 import ReviewService from "../../services/review.service";
+import ReviewTypeService from "../../services/reviewType.service";
 import { isEmpty } from "../../utils/validations";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
@@ -147,7 +148,8 @@ export default {
 
     getReviewTypes: async function() {
       try {
-        const res = await ReviewService.getReviewType();
+        let isActive = "";
+        const res = await ReviewTypeService.getReviewTypes(isActive);
         this.reviewTypes = res.data;
       } catch (error) {
         this.reviewTypes = [];

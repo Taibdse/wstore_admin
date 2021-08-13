@@ -74,17 +74,17 @@ export default {
     sortIndexes: {},
   }),
   methods: {
-    showDetails: function (review) {
+    showDetails: function(review) {
       this.$router.push("/reviews/" + review.id);
     },
-    handlePreview: function (review) {
+    handlePreview: function(review) {
       openNewTab(APP_ROOT_DOMAIN + "/reviews/" + review.slug);
     },
     formatImageUrl,
     removeHtmlTags,
   },
   watch: {
-    reviews: function (newReviews) {
+    reviews: function(newReviews) {
       this.sortIndexes = newReviews.reduce(
         (acc, r) => ({ ...acc, [r.id]: r.sortIndex }),
         {}
@@ -94,5 +94,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

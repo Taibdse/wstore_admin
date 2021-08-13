@@ -21,6 +21,10 @@
         <i class="fas fa-users"></i>
         <p>Reviews</p>
       </sidebar-link>
+      <sidebar-link to="/reviewTypes">
+        <i class="fas fa-list-alt"></i>
+        <p>Review Types</p>
+      </sidebar-link>
       <sidebar-link to="/tips">
         <i class="fas fa-lightbulb"></i>
         <p>Tips</p>
@@ -79,11 +83,10 @@ export default {
     ContentFooter,
     MobileMenu,
   },
-  data: () => ({
-  }),
+  data: () => ({}),
   computed: {
     ...mapGetters({
-      isAuthorized: "auth/isAuthorized"
+      isAuthorized: "auth/isAuthorized",
     }),
   },
 };

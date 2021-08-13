@@ -34,7 +34,9 @@
                         id="title"
                         v-model="review.title"
                       />
-                      <md-button @click="setReviewSlug" class="sm-btn">Create slug</md-button>
+                      <md-button @click="setReviewSlug" class="sm-btn"
+                        >Create slug</md-button
+                      >
                     </md-field>
                   </div>
 
@@ -52,11 +54,7 @@
                   <div class="md-layout-item sm-size-100">
                     <md-field>
                       <label for="slug">Slug</label>
-                      <md-input
-                        name="slug"
-                        id="slug"
-                        v-model="review.slug"
-                      />
+                      <md-input name="slug" id="slug" v-model="review.slug" />
                     </md-field>
                   </div>
                 </div>
@@ -186,6 +184,7 @@ import {
 } from "@/components";
 
 import ReviewService from "../../services/review.service";
+import ReviewTypeService from "../../services/reviewType.service";
 import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
 import { getErrorsFromResponse } from "../../utils/errors";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
@@ -206,18 +205,18 @@ export default {
   data: () => ({
     review: {
       active: true,
-      reviewTypeId: ""
+      reviewTypeId: "",
     },
     reviewTypes: [],
     filters: {
-      type: "all"
+      type: "all",
     },
 
     isLoading: false,
     notfound: false,
     insertReview: false,
     reviewImages: [],
-    type: []
+    type: [],
   }),
 
   methods: {
@@ -234,8 +233,8 @@ export default {
           this.reviewImages = [
             {
               url: formatImageUrl(this.review.image),
-              name: this.review.title
-            }
+              name: this.review.title,
+            },
           ];
 
           if (isEmpty(this.review)) this.notfound = true;
@@ -247,7 +246,8 @@ export default {
     },
 
     getReviewTypes: async function() {
-      const res = await ReviewService.getReviewType();
+      let isActive = "";
+      const res = await ReviewTypeService.getReviewTypes(isActive);
       this.reviewTypes = res.data;
     },
 
@@ -312,7 +312,10 @@ export default {
     },
 
     setReviewSlug: function() {
-      this.review = { ...this.review, slug: convertStringToSlug(this.review.title) };
+      this.review = {
+        ...this.review,
+        slug: convertStringToSlug(this.review.title),
+      };
     },
 
     handlePreview: function(review) {
