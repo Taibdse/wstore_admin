@@ -54,6 +54,20 @@
               </div>
             </div>
 
+            <div class="md-layout md-gutter">
+              <div class="md-layout-item sm-small-size-100">
+                <md-field>
+                  <multiselect
+                    v-model="news.tagIds"
+                    :options="tags.map((tag) => tag.id)"
+                    :custom-label="(opt) => tags.find((x) => x.id == opt).name"
+                    :multiple="true"
+                    placeholder="Select Tags"
+                  ></multiselect>
+                </md-field>
+              </div>
+            </div>
+
             <div class="md-layout md-gutter" style="margin-top: 20px">
               <div class="md-layout-item md-size-100">
                 <md-field style="width: 100px">
@@ -186,6 +200,7 @@ import {
   Loading,
 } from "@//components";
 
+import TagService from "../../services/tag.service";
 import NewsService from "../../services/news.service";
 import { isEmpty } from "../../utils/validations";
 import { showErrors, showSuccessMsg } from "../../utils/alert";
@@ -195,6 +210,7 @@ import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
 import { PathRouteConstants } from "../../routes/pathRoutes";
 import { APP_ROOT_DOMAIN } from "../../configs/api";
 import { openNewTab } from "../../utils/utils";
+import Multiselect from "vue-multiselect";
 
 export default {
   components: {
@@ -203,20 +219,23 @@ export default {
     PageMetadata,
     Loading,
     ActionButton,
+    Multiselect,
   },
 
   data: () => ({
     news: {
       active: true,
       newsItems: [],
+      tagIds: [],
     },
     isLoading: false,
     notfound: false,
     insertNews: false,
+    tags: [],
   }),
 
   methods: {
-    getNews: async function () {
+    getNews: async function() {
       if (this.$route.path.indexOf("/news/insert") > -1) {
         this.insertNews = true;
       } else {
@@ -243,16 +262,23 @@ export default {
         this.isLoading = false;
       }
     },
-    saveNews: async function () {
+
+    getTags: async function() {
+      const res = await TagService.getAllTagsActive();
+      this.tags = res.data;
+    },
+
+    saveNews: async function() {
       const news = JSON.parse(JSON.stringify(this.news));
 
       news.newsItems.forEach((newsItem) => {
-        const imageFile =
-          this.$refs["dropzoneImage" + newsItem.id][0].getUploadedFiles();
-        const content =
-          this.$refs["myEditorVN" + newsItem.id][0].$data.myContent;
-        const contentEn =
-          this.$refs["myEditorEN" + newsItem.id][0].$data.myContent;
+        const imageFile = this.$refs[
+          "dropzoneImage" + newsItem.id
+        ][0].getUploadedFiles();
+        const content = this.$refs["myEditorVN" + newsItem.id][0].$data
+          .myContent;
+        const contentEn = this.$refs["myEditorEN" + newsItem.id][0].$data
+          .myContent;
 
         newsItem.image = isEmpty(imageFile) ? null : imageFile[0].dataURL;
         newsItem.content = content;
@@ -273,7 +299,7 @@ export default {
       }
     },
 
-    handleUpdateNews: async function (news) {
+    handleUpdateNews: async function(news) {
       this.isLoading = true;
       try {
         const res = await NewsService.updateNews(news);
@@ -300,7 +326,7 @@ export default {
       this.isLoading = false;
     },
 
-    handleInsertNews: async function (news) {
+    handleInsertNews: async function(news) {
       this.isLoading = true;
       try {
         const res = await NewsService.inserNews(news);
@@ -326,7 +352,7 @@ export default {
       this.isLoading = false;
     },
 
-    getErrorsMsg: function (errors) {
+    getErrorsMsg: function(errors) {
       let str = "";
       for (let prop in errors) {
         if (prop.indexOf("newsItem") > -1) {
@@ -338,7 +364,7 @@ export default {
       return str;
     },
 
-    addMoreNewsItem: function () {
+    addMoreNewsItem: function() {
       this.news.newsItems.push({
         id: uuidv4(),
         active: true,
@@ -350,17 +376,17 @@ export default {
       this.news = { ...this.news };
     },
 
-    setNewsSlug: function () {
+    setNewsSlug: function() {
       this.news = { ...this.news, slug: convertStringToSlug(this.news.title) };
     },
 
-    removeNewsItem: function (index) {
+    removeNewsItem: function(index) {
       this.news.newsItems.splice(index, 1);
     },
-    handleBack: function () {
+    handleBack: function() {
       this.$router.push(PathRouteConstants.newsListRoute);
     },
-    handlePreview: function (news) {
+    handlePreview: function(news) {
       openNewTab(APP_ROOT_DOMAIN + "/news/" + news.slug);
     },
 
@@ -368,6 +394,7 @@ export default {
   },
   async created() {
     this.getNews();
+    this.getTags();
   },
 };
 </script>

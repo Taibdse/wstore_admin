@@ -118,17 +118,29 @@
                   </div>
                 </div>
 
-                <div class="md-layout md-gutter" style="margin-top: 20px">
-                  <div class="md-layout-item md-size-100">
-                    <md-field style="width: 100px">
+                <div class="md-layout md-gutter">
+                  <div class="md-layout-item md-size-25">
+                    <md-field>
                       <label for="sortIndex">Sort Index</label>
                       <md-input
-                        style="width: 100px"
                         name="sortIndex"
                         id="sortIndex"
                         v-model="product.sortIndex"
                         type="number"
                       />
+                    </md-field>
+                  </div>
+                  <div class="md-layout-item">
+                    <md-field>
+                      <multiselect
+                        v-model="product.tagIds"
+                        :options="tags.map((tag) => tag.id)"
+                        :custom-label="
+                          (opt) => tags.find((x) => x.id == opt).name
+                        "
+                        :multiple="true"
+                        placeholder="Select Tags"
+                      ></multiselect>
                     </md-field>
                   </div>
                 </div>
@@ -226,7 +238,7 @@
 
 <script>
 import { Loading, DropzoneUpload, MyEditor, PageMetadata } from "@/components";
-
+import TagService from "../../services/tag.service";
 import CategoryService from "../../services/category.service";
 import ProductService from "../../services/product.service";
 import { isEmpty } from "@/utils/validations.js";
@@ -239,6 +251,7 @@ import { getVNTimeFormat } from "../../utils/time";
 import { showSuccessMsg, showErrors } from "../../utils/alert";
 import { getErrorsFromResponse } from "../../utils/errors";
 import { SAVE_SUCCESS, SERVER_ERROR_MESSAGE } from "../../utils/constants";
+import Multiselect from "vue-multiselect";
 
 export default {
   components: {
@@ -246,6 +259,7 @@ export default {
     MyEditor,
     PageMetadata,
     Loading,
+    Multiselect,
   },
   data: () => ({
     product: {
@@ -254,6 +268,7 @@ export default {
       available: true,
       inHomePage: true,
       pageMetadata: {},
+      tagIds: [],
     },
     isLoading: false,
     notfound: false,
@@ -262,9 +277,10 @@ export default {
     productSubImages: [],
     productMainImages: [],
     insertProduct: false,
+    tags: [],
   }),
   methods: {
-    getProductDetails: async function () {
+    getProductDetails: async function() {
       if (!this.insertProduct) {
         this.isLoading = true;
         const productId = this.$route.params.productId;
@@ -300,7 +316,7 @@ export default {
       }
     },
 
-    showErrorsMessage: function (res) {
+    showErrorsMessage: function(res) {
       const errors = getErrorsFromResponse(res.data);
       showErrors({
         title: "Please check input data!",
@@ -308,11 +324,10 @@ export default {
       });
     },
 
-    saveProduct: async function () {
+    saveProduct: async function() {
       const mainImage = this.$refs.dropzoneMainImage.getUploadedFiles();
       const uploadedSubImages = this.$refs.dropzoneSubImage.getUploadedFiles();
-      const manaullyAddedSubImages =
-        this.$refs.dropzoneSubImage.getManuallyAddedFiles();
+      const manaullyAddedSubImages = this.$refs.dropzoneSubImage.getManuallyAddedFiles();
       const data = JSON.parse(JSON.stringify(this.product));
       data.subImages = uploadedSubImages.map((img) => img.dataURL);
       data.mainImage = isEmpty(mainImage) ? null : mainImage[0].dataURL;
@@ -335,13 +350,14 @@ export default {
       data.descriptionEn = this.$refs["descriptionEN"].$data.myContent;
       data.pageMetadata = this.$refs["pageMetadata"].$data.pageMetadata;
       if (this.insertProduct) {
+        console.log(data);
         await this.handleInsertProduct(data);
       } else {
         await this.handleUpdateProduct(data);
       }
     },
 
-    handleInsertProduct: async function (data) {
+    handleInsertProduct: async function(data) {
       this.isLoading = true;
       try {
         const res = await ProductService.insertProduct(data);
@@ -359,7 +375,7 @@ export default {
       this.isLoading = false;
     },
 
-    handleUpdateProduct: async function (data) {
+    handleUpdateProduct: async function(data) {
       this.isLoading = true;
       try {
         const res = await ProductService.updateProduct(data);
@@ -381,12 +397,17 @@ export default {
       this.isLoading = false;
     },
 
-    getCategories: async function () {
+    getCategories: async function() {
       const res = await CategoryService.getCategories("");
       this.categories = res.data;
     },
 
-    setProductSlug: function () {
+    getTags: async function() {
+      const res = await TagService.getAllTagsActive();
+      this.tags = res.data;
+    },
+
+    setProductSlug: function() {
       this.product = {
         ...this.product,
         slug: convertStringToSlug(this.product.name),
@@ -402,6 +423,7 @@ export default {
       this.insertProduct = true;
     }
     try {
+      await this.getTags();
       await this.getCategories();
       this.getProductDetails();
       if (this.insertProduct) {
@@ -423,4 +445,10 @@ export default {
   margin-top: 0;
   font-size: 2em;
 }
+
+.multiselect__tags {
+  border-radius: none !important;
+  border: none !important;
+}
 </style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

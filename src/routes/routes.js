@@ -15,6 +15,8 @@ import NewsPage from "../pages/news/NewsPage.vue";
 import NewsDetailsPage from "../pages/news/NewsDetailsPage.vue";
 import CategoriesPage from "../pages/categories/CategoriesPage.vue";
 import CategoryDetailsPage from "../pages/categories/CategoryDetailsPage.vue";
+import TagsPage from "../pages/tags/TagsPage.vue";
+import TagDetailsPage from "../pages/tags/TagDetailsPage.vue";
 import StoreInformationPage from "../pages/store_information/StoreInformationPage.vue";
 import ShippingsPage from "../pages/shippings/ShippingsPage.vue";
 import ShippingDetailsPage from "../pages/shippings/ShippingDetailsPage.vue";
@@ -146,7 +148,7 @@ const routes = [
       },
       {
         path: PathRouteConstants.policyDetailsRoute,
-        name: "Policy",
+        name: "Update Policy",
         component: PolicyDetailsPage,
       },
 
@@ -244,6 +246,24 @@ const routes = [
         path: PathRouteConstants.promotionCodeDetailsRoute + "/:id",
         name: "Update Promotion Code",
         component: PromotionCodeDetailsPage,
+      },
+
+      //=========== TAGS ROUTES ==============
+      {
+        path: PathRouteConstants.tagsRoute,
+        name: "Tags",
+        component: TagsPage,
+      },
+
+      {
+        path: PathRouteConstants.tagDetailsRoute,
+        name: "Update Tag",
+        component: TagDetailsPage,
+      },
+      {
+        path: PathRouteConstants.tagInsertRoute,
+        name: "Insert Tag",
+        component: TagDetailsPage,
       },
 
       //=========== NOT FOUND ROUTES ==============

@@ -88,10 +88,8 @@
                       </md-select>
                     </md-field>
                   </div>
-                </div>
 
-                <div class="md-layout md-gutter" style="margin-top: 20px">
-                  <div class="md-layout-item md-size-100">
+                  <div class="md-layout-item sm-small-size-100 md-size-33">
                     <md-field style="width: 100px">
                       <label for="sortIndex">Sort Index</label>
                       <md-input
@@ -101,6 +99,23 @@
                         v-model="review.sortIndex"
                         type="number"
                       />
+                    </md-field>
+                  </div>
+                </div>
+
+                <div class="md-layout md-gutter">
+                  <div class="md-layout-item sm-small-size-100">
+                    <md-field>
+                      <multiselect
+                        v-model="review.tagIds"
+                        :options="tags.map((tag) => tag.id)"
+                        :custom-label="
+                          (opt) => tags.find((x) => x.id == opt).name
+                        "
+                        :multiple="true"
+                        placeholder="Select Tags"
+                        @select="updateTag"
+                      ></multiselect>
                     </md-field>
                   </div>
                 </div>
@@ -183,6 +198,7 @@ import {
   DropzoneUpload,
 } from "@/components";
 
+import TagService from "../../services/tag.service";
 import ReviewService from "../../services/review.service";
 import ReviewTypeService from "../../services/reviewType.service";
 import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
@@ -192,6 +208,7 @@ import { isEmpty } from "../../utils/validations";
 import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
 import { openNewTab } from "../../utils/utils";
 import { APP_ROOT_DOMAIN } from "../../configs/api";
+import Multiselect from "vue-multiselect";
 
 export default {
   components: {
@@ -200,12 +217,14 @@ export default {
     PageMetadata,
     Loading,
     ActionButton,
+    Multiselect,
   },
 
   data: () => ({
     review: {
       active: true,
       reviewTypeId: "",
+      tagIds: [],
     },
     reviewTypes: [],
     filters: {
@@ -217,6 +236,7 @@ export default {
     insertReview: false,
     reviewImages: [],
     type: [],
+    tags: [],
   }),
 
   methods: {
@@ -251,7 +271,13 @@ export default {
       this.reviewTypes = res.data;
     },
 
+    getTags: async function() {
+      const res = await TagService.getAllTagsActive();
+      this.tags = res.data;
+    },
+
     saveReview: async function() {
+      console.log(this.review.tags);
       const reviewImage = this.$refs.dropzoneReviewImage.getUploadedFiles();
       const content = this.$refs["reviewContentVN"].$data.myContent;
       const contentEn = this.$refs["reviewContentEN"].$data.myContent;
@@ -325,8 +351,13 @@ export default {
   async created() {
     this.getReviewDetails();
     this.getReviewTypes();
+    this.getTags();
   },
 };
 </script>
 
-<style></style>
+<style>
+.space_checkbox {
+  flex-flow: row-reverse;
+}
+</style>

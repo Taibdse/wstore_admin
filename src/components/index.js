@@ -8,18 +8,17 @@
 // import OrderedTable from "./Tables/OrderedTable.vue";
 // import SimpleTable from "./Tables/SimpleTable.vue";
 
-import ActionButton from './common/ActionButton';
-import AppPagination from './common/AppPagination';
-import Datetime from './common/Datetime';
-import DropzoneUpload from './common/DropzoneUpload';
-import Loading from './common/Loading';
-import MyEditor from './common/MyEditor';
-import PageContainer from './common/PageContainer';
-import PageMetadata from './common/PageMetadata';
-import Pagination from './common/Pagination';
-import SimpleList from './common/SimpleList';
-import Status from './common/Status';
-
+import ActionButton from "./common/ActionButton";
+import AppPagination from "./common/AppPagination";
+import Datetime from "./common/Datetime";
+import DropzoneUpload from "./common/DropzoneUpload";
+import Loading from "./common/Loading";
+import MyEditor from "./common/MyEditor";
+import PageContainer from "./common/PageContainer";
+import PageMetadata from "./common/PageMetadata";
+import Pagination from "./common/Pagination";
+import SimpleList from "./common/SimpleList";
+import Status from "./common/Status";
 export {
   // ChartCard,
   // NavTabsCard,
@@ -37,5 +36,5 @@ export {
   PageMetadata,
   Pagination,
   SimpleList,
-  Status
+  Status,
 };

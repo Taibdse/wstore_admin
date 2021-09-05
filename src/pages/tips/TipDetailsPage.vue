@@ -53,6 +53,22 @@
                   </div>
                 </div>
 
+                <div class="md-layout md-gutter">
+                  <div class="md-layout-item sm-small-size-100">
+                    <md-field>
+                      <multiselect
+                        v-model="tip.tagIds"
+                        :options="tags.map((tag) => tag.id)"
+                        :custom-label="
+                          (opt) => tags.find((x) => x.id == opt).name
+                        "
+                        :multiple="true"
+                        placeholder="Select Tags"
+                      ></multiselect>
+                    </md-field>
+                  </div>
+                </div>
+
                 <div class="md-layout md-gutter" style="margin-top: 20px">
                   <div class="md-layout-item md-size-100">
                     <md-field style="width: 100px">
@@ -140,6 +156,7 @@ import {
   ActionButton,
 } from "@/components";
 
+import TagService from "../../services/tag.service";
 import TipService from "../../services/tip.service";
 import { convertStringToSlug, formatImageUrl } from "../../utils/strings";
 import { getErrorsFromResponse } from "../../utils/errors";
@@ -149,6 +166,7 @@ import { SERVER_ERROR_MESSAGE, SAVE_SUCCESS } from "../../utils/constants";
 import { PathRouteConstants } from "../../routes/pathRoutes";
 import { APP_ROOT_DOMAIN } from "../../configs/api";
 import { openNewTab } from "../../utils/utils";
+import Multiselect from "vue-multiselect";
 
 export default {
   components: {
@@ -157,18 +175,21 @@ export default {
     PageMetadata,
     Loading,
     ActionButton,
+    Multiselect,
   },
   data: () => ({
     tip: {
       active: true,
+      tagIds: [],
     },
     isLoading: false,
     notfound: false,
     insertTip: false,
     tipImages: [],
+    tags: [],
   }),
   methods: {
-    getTipDetails: async function () {
+    getTipDetails: async function() {
       if (this.$route.path.indexOf("/tips/insert") > -1) {
         this.insertTip = true;
       } else {
@@ -192,7 +213,13 @@ export default {
         this.isLoading = false;
       }
     },
-    saveTip: async function () {
+
+    getTags: async function() {
+      const res = await TagService.getAllTagsActive();
+      this.tags = res.data;
+    },
+
+    saveTip: async function() {
       const tipImage = this.$refs.dropzoneTipImage.getUploadedFiles();
       const content = this.$refs["tipContentVN"].$data.myContent;
       const contentEn = this.$refs["tipContentEN"].$data.myContent;
@@ -209,7 +236,7 @@ export default {
       }
     },
 
-    handleInsertTip: async function (data) {
+    handleInsertTip: async function(data) {
       this.isLoading = true;
       try {
         const res = await TipService.insertTip(data);
@@ -227,7 +254,7 @@ export default {
       this.isLoading = false;
     },
 
-    handleUpdateTip: async function (data) {
+    handleUpdateTip: async function(data) {
       try {
         const res = await TipService.updateTip(data);
         if (res.data.success === "1") {
@@ -244,7 +271,7 @@ export default {
       }
     },
 
-    showErrorsMessage: function (res) {
+    showErrorsMessage: function(res) {
       const errors = getErrorsFromResponse(res.data);
       showErrors({
         title: "Please check input data!",
@@ -252,21 +279,21 @@ export default {
       });
     },
 
-    setTipSlug: function () {
+    setTipSlug: function() {
       this.tip = { ...this.tip, slug: convertStringToSlug(this.tip.title) };
     },
-    handleBack: function () {
+    handleBack: function() {
       this.$router.push(PathRouteConstants.tipsRoute);
     },
-    handlePreview: function (tip) {
+    handlePreview: function(tip) {
       openNewTab(APP_ROOT_DOMAIN + "/tips/" + tip.slug);
     },
   },
   async created() {
     this.getTipDetails();
+    this.getTags();
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

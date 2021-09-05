@@ -38,6 +38,12 @@
         <i class="fas fa-users"></i>
         <p>Customer</p>
       </sidebar-link>
+
+      <sidebar-link to="/tags">
+        <i class="fab fa-tumblr"></i>
+        <p>Tags</p>
+      </sidebar-link>
+
       <sidebar-link to="/payment-method">
         <i class="fas fa-money-check-alt"></i>
         <p>Payment Method</p>
