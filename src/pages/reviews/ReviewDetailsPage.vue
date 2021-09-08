@@ -114,7 +114,6 @@
                         "
                         :multiple="true"
                         placeholder="Select Tags"
-                        @select="updateTag"
                       ></multiselect>
                     </md-field>
                   </div>
@@ -277,7 +276,6 @@ export default {
     },
 
     saveReview: async function() {
-      console.log(this.review.tags);
       const reviewImage = this.$refs.dropzoneReviewImage.getUploadedFiles();
       const content = this.$refs["reviewContentVN"].$data.myContent;
       const contentEn = this.$refs["reviewContentEN"].$data.myContent;

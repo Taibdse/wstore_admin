@@ -21,11 +21,10 @@ class TagService {
     return axios.get(url);
   }
 
-  static async getTagById(id) {
-    const url = APP_ROOT_API + "/tags/id/" + id;
+  static async getTagById(id, active) {
+    const url = APP_ROOT_API + "/tags/id/" + id + "?active=" + active;
     return axios.get(url);
   }
-
   static async updateTag(tag) {
     const url = APP_ROOT_API + "/tags";
     return axios.put(url, tag);

@@ -67,15 +67,15 @@ export default {
   }),
   methods: {
     getTagDetails: async function() {
+      let active = false;
       if (this.$route.path.indexOf("/tags/insert") > -1) {
         this.insertTag = true;
       } else {
         this.isLoading = true;
         const tagId = this.$route.params.tagId;
         try {
-          const res = await TagService.getTagById(tagId);
+          const res = await TagService.getTagById(tagId, active);
           this.tag = res.data;
-          console.log(this.tag);
           if (isEmpty(this.tag)) this.notfound = true;
         } catch (error) {
           this.notfound = true;

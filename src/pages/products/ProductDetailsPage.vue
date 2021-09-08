@@ -136,10 +136,28 @@
                         v-model="product.tagIds"
                         :options="tags.map((tag) => tag.id)"
                         :custom-label="
-                          (opt) => tags.find((x) => x.id == opt).name
+                          (opt) => tags.find((tag) => tag.id == opt).name
                         "
                         :multiple="true"
                         placeholder="Select Tags"
+                      ></multiselect>
+                    </md-field>
+                  </div>
+                </div>
+
+                <div class="md-layout md-gutter">
+                  <div class="md-layout-item">
+                    <md-field>
+                      <multiselect
+                        v-model="parentProducts"
+                        :options="allProducts.map((product) => product.id)"
+                        :custom-label="
+                          (opt) =>
+                            allProducts.find((product) => product.id == opt)
+                              .name
+                        "
+                        :multiple="true"
+                        placeholder="Select Parent Product"
                       ></multiselect>
                     </md-field>
                   </div>
@@ -269,6 +287,7 @@ export default {
       inHomePage: true,
       pageMetadata: {},
       tagIds: [],
+      parentIds: "",
     },
     isLoading: false,
     notfound: false,
@@ -278,6 +297,8 @@ export default {
     productMainImages: [],
     insertProduct: false,
     tags: [],
+    parentProducts: [],
+    allProducts: [],
   }),
   methods: {
     getProductDetails: async function() {
@@ -304,7 +325,9 @@ export default {
                 name: subImage.id,
               };
             });
-
+            this.parentProducts = this.product.parentProducts.map(
+              (product) => product.id
+            );
             if (isEmpty(this.product.pageMetadata)) {
               this.product.pageMetadata = {};
             }
@@ -325,6 +348,7 @@ export default {
     },
 
     saveProduct: async function() {
+      this.product.parentIds = this.parentProducts.join();
       const mainImage = this.$refs.dropzoneMainImage.getUploadedFiles();
       const uploadedSubImages = this.$refs.dropzoneSubImage.getUploadedFiles();
       const manaullyAddedSubImages = this.$refs.dropzoneSubImage.getManuallyAddedFiles();
@@ -350,7 +374,6 @@ export default {
       data.descriptionEn = this.$refs["descriptionEN"].$data.myContent;
       data.pageMetadata = this.$refs["pageMetadata"].$data.pageMetadata;
       if (this.insertProduct) {
-        console.log(data);
         await this.handleInsertProduct(data);
       } else {
         await this.handleUpdateProduct(data);
@@ -407,6 +430,11 @@ export default {
       this.tags = res.data;
     },
 
+    getAllProducts: async function() {
+      const res = await ProductService.getAllProductActive();
+      this.allProducts = res.data;
+    },
+
     setProductSlug: function() {
       this.product = {
         ...this.product,
@@ -424,8 +452,9 @@ export default {
     }
     try {
       await this.getTags();
+      await this.getAllProducts();
       await this.getCategories();
-      this.getProductDetails();
+      await this.getProductDetails();
       if (this.insertProduct) {
         this.product = { ...this.product, categoryId: this.categories[0].id };
       }
