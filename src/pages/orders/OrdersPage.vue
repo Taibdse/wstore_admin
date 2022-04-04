@@ -65,6 +65,27 @@
               </md-select>
             </md-field>
           </div>
+
+          <div
+            class="md-layout-item md-xlarge-size-25 md-large-size-25 md-medium-size-25 md-small-size-50 md-xsmall-size-50"
+          >
+            <strong>Affiliates</strong>
+            <md-field>
+              <!-- <label for="status" style="font-weight: bold; font-size: 2em">Trang thai</label> -->
+              <md-select
+                v-model="orderBys.createdAt"
+                name="orderByTime"
+                id="orderByTime"
+              >
+                <md-option
+                  v-for="orderBy in orderByOptions"
+                  :key="orderBy.value"
+                  :value="orderBy.value"
+                  >{{ orderBy.text }}</md-option
+                >
+              </md-select>
+            </md-field>
+          </div>
         </div>
         <div class="md-layout md-gutter"></div>
 
@@ -158,7 +179,7 @@ export default {
   }),
 
   computed: {
-    pagingOrders: function () {
+    pagingOrders: function() {
       if (isEmpty(this.orders)) return [];
       const { currentPage, size } = this.pagination;
       return this.orders.map((order, index) => ({
@@ -175,26 +196,26 @@ export default {
     ...mapActions({
       saveOrderSearchCondition: "searchCondition/saveOrderSearchCondition",
     }),
-    handlePageChange: function (pageNum) {
+    handlePageChange: function(pageNum) {
       this.pagination = { ...this.pagination, currentPage: pageNum };
       this.getOrders();
     },
 
-    handleCloseDialog: function () {
+    handleCloseDialog: function() {
       this.showDialog = false;
     },
 
-    handleViewOrderDetails: function (order) {
+    handleViewOrderDetails: function(order) {
       this.order = order;
       this.showDialog = true;
     },
 
-    handleSearch: function () {
+    handleSearch: function() {
       this.pagination = { ...this.pagination, currentPage: 1 };
       this.getOrders();
     },
 
-    getOrders: async function () {
+    getOrders: async function() {
       this.isLoading = true;
       let { from, to } = this.selectedDate;
       from = convertVNDateToSQLDateFormat(from);
@@ -222,14 +243,14 @@ export default {
       }
       this.isLoading = false;
     },
-    getDefaultSelectedDate: function () {
+    getDefaultSelectedDate: function() {
       let d = new Date();
       const to = formatVNDate(d);
       d = new Date(d.setDate(d.getDate() - 7));
       const from = formatVNDate(d);
       return { from, to };
     },
-    saveSearchCondition: function () {
+    saveSearchCondition: function() {
       const searchCondition = {
         selectedDate: this.selectedDate,
         filters: this.filters,
@@ -238,7 +259,7 @@ export default {
       };
       this.saveOrderSearchCondition(searchCondition);
     },
-    loadSearchCondition: function () {
+    loadSearchCondition: function() {
       const searchCondition = this.orderSearchCondition;
       if (!isEmpty(searchCondition)) {
         console.log(searchCondition.filters);

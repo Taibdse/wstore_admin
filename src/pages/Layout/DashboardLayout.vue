@@ -39,6 +39,11 @@
         <p>Customer</p>
       </sidebar-link>
 
+      <sidebar-link to="/affiliates">
+        <i class="fas fa-users"></i>
+        <p>Affiliates</p>
+      </sidebar-link>
+
       <sidebar-link to="/tags">
         <i class="fab fa-tumblr"></i>
         <p>Tags</p>

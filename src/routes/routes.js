@@ -17,6 +17,8 @@ import CategoriesPage from "../pages/categories/CategoriesPage.vue";
 import CategoryDetailsPage from "../pages/categories/CategoryDetailsPage.vue";
 import TagsPage from "../pages/tags/TagsPage.vue";
 import TagDetailsPage from "../pages/tags/TagDetailsPage.vue";
+import AffiliatePage from "../pages/affiliate/AffiliatePage.vue";
+import AffiliateDetailsPage from "../pages/affiliate/AffiliateDetailsPage.vue";
 import StoreInformationPage from "../pages/store_information/StoreInformationPage.vue";
 import ShippingsPage from "../pages/shippings/ShippingsPage.vue";
 import ShippingDetailsPage from "../pages/shippings/ShippingDetailsPage.vue";
@@ -264,6 +266,24 @@ const routes = [
         path: PathRouteConstants.tagInsertRoute,
         name: "Insert Tag",
         component: TagDetailsPage,
+      },
+
+      //=========== AFFILIATES ROUTES ==============
+      {
+        path: PathRouteConstants.affiliateRoute,
+        name: "Affiliates",
+        component: AffiliatePage,
+      },
+
+      {
+        path: PathRouteConstants.affiliateDetailsRoute,
+        name: "Update Affiliate",
+        component: AffiliateDetailsPage,
+      },
+      {
+        path: PathRouteConstants.affiliateInsertRoute,
+        name: "Insert Affiliate",
+        component: AffiliateDetailsPage,
       },
 
       //=========== NOT FOUND ROUTES ==============
